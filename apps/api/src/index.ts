@@ -24,7 +24,44 @@ app.register(groupRoutes)
 app.register(itemRoutes)
 app.register(columnRoutes)
 
-app.get('/health', async () => ({ status: 'ok' }))
+// Health check endpoint with detailed status
+app.get('/health', async (request, reply) => {
+  const startTime = Date.now()
+  let dbStatus = 'unknown'
+  let dbLatency = 0
+
+  try {
+    // Check database connection
+    const dbStart = Date.now()
+    await app.prisma.$queryRaw`SELECT 1`
+    dbLatency = Date.now() - dbStart
+    dbStatus = 'connected'
+  } catch (error) {
+    dbStatus = 'disconnected'
+    app.log.warn('Database health check failed:', error)
+  }
+
+  const totalLatency = Date.now() - startTime
+
+  return {
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: env.NODE_ENV,
+    version: '0.0.1',
+    database: {
+      status: dbStatus,
+      latency: `${dbLatency}ms`,
+    },
+    server: {
+      port: env.PORT,
+      latency: `${totalLatency}ms`,
+    },
+  }
+})
+
+// Quick health check for load balancers
+app.get('/ping', async () => ({ pong: true }))
 
 app.setErrorHandler((error, _request, reply) => {
   if (error instanceof ZodError) {

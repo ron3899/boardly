@@ -1,12 +1,30 @@
 import { mockApi } from './mock-data'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 const USE_MOCK_API = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
+const API_TIMEOUT = parseInt(process.env.NEXT_PUBLIC_API_TIMEOUT || '10000', 10)
+const FALLBACK_TO_MOCK = process.env.NEXT_PUBLIC_API_FALLBACK_TO_MOCK === 'true'
 
 class ApiError extends Error {
   constructor(public status: number, message: string) {
     super(message)
   }
+}
+
+// Helper function to add timeout to fetch
+function fetchWithTimeout(url: string, options: RequestInit, timeout: number): Promise<Response> {
+  return new Promise((resolve, reject) => {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => {
+      controller.abort()
+      reject(new Error('Request timeout'))
+    }, timeout)
+
+    fetch(url, { ...options, signal: controller.signal })
+      .then(resolve)
+      .catch(reject)
+      .finally(() => clearTimeout(timeoutId))
+  })
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
@@ -15,22 +33,35 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     return handleMockRequest<T>(path, options)
   }
 
-  // Otherwise, use real API
-  const res = await fetch(`${API_URL}${path}`, {
-    ...options,
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
-  })
+  try {
+    // Use real API with timeout
+    const res = await fetchWithTimeout(`${API_URL}${path}`, {
+      ...options,
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    }, API_TIMEOUT)
 
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({ error: res.statusText }))
-    throw new ApiError(res.status, body.error || 'Something went wrong')
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({ error: res.statusText }))
+      throw new ApiError(res.status, body.error || 'Something went wrong')
+    }
+
+    return res.json()
+  } catch (error) {
+    // If API is unreachable and fallback is enabled, use mock data
+    if (FALLBACK_TO_MOCK && (error instanceof Error &&
+        (error.message.includes('timeout') ||
+         error.message.includes('fetch') ||
+         error.message.includes('Failed to fetch') ||
+         error.name === 'AbortError'))) {
+      console.warn(`API request failed, falling back to mock data: ${error.message}`)
+      return handleMockRequest<T>(path, options)
+    }
+    throw error
   }
-
-  return res.json()
 }
 
 // Mock request handler

@@ -34,12 +34,24 @@ This application now includes a development mode that allows you to run the app 
 The development mode is controlled by the `.env.local` file in `apps/web/`:
 
 ```env
-# Set to 'true' to use mock data
-NEXT_PUBLIC_USE_MOCK_API=true
+# Set to 'true' to use mock data only
+NEXT_PUBLIC_USE_MOCK_API=false
 
-# API URL (not used when mock API is enabled)
-NEXT_PUBLIC_API_URL=http://localhost:3001
+# API URL
+NEXT_PUBLIC_API_URL=http://localhost:8000
+
+# API timeout (in milliseconds)
+NEXT_PUBLIC_API_TIMEOUT=10000
+
+# Fallback to mock data if API is unavailable
+NEXT_PUBLIC_API_FALLBACK_TO_MOCK=true
 ```
+
+**Configuration Options:**
+
+- `NEXT_PUBLIC_USE_MOCK_API=true`: Forces mock data mode (no API calls)
+- `NEXT_PUBLIC_USE_MOCK_API=false` + `NEXT_PUBLIC_API_FALLBACK_TO_MOCK=true`: Tries API first, falls back to mock on failure (recommended for development)
+- `NEXT_PUBLIC_USE_MOCK_API=false` + `NEXT_PUBLIC_API_FALLBACK_TO_MOCK=false`: Production mode (API required)
 
 ### Switching to Production Mode
 
@@ -48,10 +60,11 @@ To test with a real backend:
 1. Update `.env.local`:
    ```env
    NEXT_PUBLIC_USE_MOCK_API=false
-   NEXT_PUBLIC_API_URL=http://localhost:3001
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   NEXT_PUBLIC_API_FALLBACK_TO_MOCK=false
    ```
 
-2. Start your backend API server on port 3001
+2. Start your backend API server on port 8000
 
 3. Restart the Next.js development server
 
