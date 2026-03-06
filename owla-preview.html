@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Configuration Fix - Boardly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #1a202c;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #718096;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .status-success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-error {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .success-dot {
+            background: #38a169;
+        }
+
+        .error-dot {
+            background: #e53e3e;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            color: #1a202c;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .issue-list {
+            list-style: none;
+        }
+
+        .issue-list li {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: #fff5f5;
+            border-left: 4px solid #fc8181;
+            border-radius: 4px;
+            color: #742a2a;
+        }
+
+        .solution-list li {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: #f0fff4;
+            border-left: 4px solid #68d391;
+            border-radius: 4px;
+            color: #22543d;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .env-var {
+            color: #68d391;
+        }
+
+        .env-value {
+            color: #fbd38d;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #718096;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .comparison-item {
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .comparison-before {
+            background: #fff5f5;
+            border: 2px solid #fc8181;
+        }
+
+        .comparison-after {
+            background: #f0fff4;
+            border: 2px solid #68d391;
+        }
+
+        .comparison h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .badge-error {
+            background: #fc8181;
+            color: white;
+        }
+
+        .badge-success {
+            background: #68d391;
+            color: white;
+        }
+
+        .architecture {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .architecture h2 {
+            font-size: 1.5rem;
+            color: #1a202c;
+            margin-bottom: 1.5rem;
+        }
+
+        .flow-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .flow-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .flow-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .flow-box p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: #667eea;
+            margin: 0 1rem;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .checkmark {
+            color: #38a169;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-diagram {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .header h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 CORS Configuration Fix</h1>
+            <p>Cross-Origin Resource Sharing (CORS) issue resolution for Boardly application</p>
+            <div class="status-indicator status-success">
+                <span class="status-dot success-dot"></span>
+                CORS Configuration Fixed
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    Issues Identified
+                </h2>
+                <ul class="issue-list">
+                    <li>❌ Placeholder API URL causing connection failures</li>
+                    <li>❌ Missing environment configuration files</li>
+                    <li>❌ CORS errors in browser console</li>
+                    <li>❌ API requests failing with network errors</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Solutions Implemented
+                </h2>
+                <ul class="solution-list">
+                    <li>✅ Created proper .env files for web and API</li>
+                    <li>✅ Configured local development URLs</li>
+                    <li>✅ Verified CORS plugin configuration</li>
+                    <li>✅ Updated .env.example with documentation</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('env-web')">Web App .env</button>
+                <button class="tab" onclick="switchTab('env-api')">API Server .env</button>
+                <button class="tab" onclick="switchTab('cors-config')">CORS Configuration</button>
+            </div>
+
+            <div id="env-web" class="tab-content active">
+                <h3>apps/web/.env</h3>
+                <div class="code-block">
+                    <pre><span class="env-var">NEXT_PUBLIC_API_URL</span>=<span class="env-value">http://localhost:3001</span></pre>
+                </div>
+                <p style="color: #718096; margin-top: 1rem;">
+                    This environment variable tells the Next.js web app where to find the API server.
+                    For local development, it points to localhost:3001.
+                </p>
+            </div>
+
+            <div id="env-api" class="tab-content">
+                <h3>apps/api/.env</h3>
+                <div class="code-block">
+                    <pre><span class="env-var">DATABASE_URL</span>=<span class="env-value">"postgresql://user:password@localhost:5432/boardly"</span>
+<span class="env-var">JWT_SECRET</span>=<span class="env-value">"dev-secret-change-me-in-production"</span>
+<span class="env-var">PORT</span>=<span class="env-value">3001</span>
+<span class="env-var">CORS_ORIGIN</span>=<span class="env-value">"http://localhost:3000"</span></pre>
+                </div>
+                <p style="color: #718096; margin-top: 1rem;">
+                    The API server configuration includes the allowed CORS origin. This must match
+                    the web app's URL for CORS to work with credentials.
+                </p>
+            </div>
+
+            <div id="cors-config" class="tab-content">
+                <h3>apps/api/src/plugins/cors.ts</h3>
+                <div class="code-block">
+                    <pre>app.register(fastifyCors, {
+  origin: (process.env.CORS_ORIGIN || 'http://localhost:3000').split(','),
+  credentials: true,
+})</pre>
+                </div>
+                <p style="color: #718096; margin-top: 1rem;">
+                    The CORS plugin is configured to allow specific origins (not wildcard *) and
+                    enable credentials for cookie-based authentication. Multiple origins can be
+                    specified using comma-separated values.
+                </p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <h2>⚠️ Why Wildcard CORS Doesn't Work with Credentials</h2>
+            <div class="comparison">
+                <div class="comparison-item comparison-before">
+                    <h3>❌ Incorrect Configuration</h3>
+                    <div class="code-block" style="margin-top: 1rem;">
+                        <pre>origin: '*',
+credentials: true</pre>
+                    </div>
+                    <p style="color: #742a2a; margin-top: 1rem; font-size: 0.9rem;">
+                        Browsers block this combination for security. You cannot use wildcard
+                        origin when credentials are enabled.
+                    </p>
+                </div>
+                <div class="comparison-item comparison-after">
+                    <h3>✅ Correct Configuration</h3>
+                    <div class="code-block" style="margin-top: 1rem;">
+                        <pre>origin: ['http://localhost:3000'],
+credentials: true</pre>
+                    </div>
+                    <p style="color: #22543d; margin-top: 1rem; font-size: 0.9rem;">
+                        Specific origins are required with credentials. This ensures secure
+                        cookie-based authentication.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="architecture">
+            <h2>🏗️ Architecture Overview</h2>
+            <div class="flow-diagram">
+                <div class="flow-item">
+                    <div class="flow-box">
+                        <h3>Next.js Web App</h3>
+                        <p>Port: 3000</p>
+                        <div style="margin-top: 0.75rem; font-size: 0.8rem;">
+                            <div>credentials: 'include'</div>
+                            <div>NEXT_PUBLIC_API_URL</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">
+                    <div class="flow-box">
+                        <h3>CORS Preflight</h3>
+                        <p>OPTIONS Request</p>
+                        <div style="margin-top: 0.75rem; font-size: 0.8rem;">
+                            <div>Origin: localhost:3000</div>
+                            <div>Checks permissions</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-item">
+                    <div class="flow-box">
+                        <h3>Fastify API</h3>
+                        <p>Port: 3001</p>
+                        <div style="margin-top: 0.75rem; font-size: 0.8rem;">
+                            <div>CORS Plugin</div>
+                            <div>Validates origin</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p style="color: #718096; text-align: center; margin-top: 1rem;">
+                The web app makes requests with credentials to the API. The browser first sends a
+                preflight OPTIONS request to check CORS permissions before allowing the actual request.
+            </p>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <h2>
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                </svg>
+                Setup Checklist
+            </h2>
+            <ul class="checklist">
+                <li>
+                    <span class="checkmark">✓</span>
+                    <span>Created <code>apps/web/.env</code> with local API URL</span>
+                </li>
+                <li>
+                    <span class="checkmark">✓</span>
+                    <span>Created <code>apps/api/.env</code> with CORS configuration</span>
+                </li>
+                <li>
+                    <span class="checkmark">✓</span>
+                    <span>Verified CORS plugin uses specific origins, not wildcard</span>
+                </li>
+                <li>
+                    <span class="checkmark">✓</span>
+                    <span>Verified credentials are enabled in both client and server</span>
+                </li>
+                <li>
+                    <span class="checkmark">✓</span>
+                    <span>Updated .env.example files with proper documentation</span>
+                </li>
+                <li>
+                    <span class="checkmark">✓</span>
+                    <span>Created comprehensive CORS_SETUP.md documentation</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <h2>🚀 Development Setup</h2>
+            <div style="margin-top: 1rem;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem;">Quick Start</h3>
+                <div class="code-block">
+                    <pre># 1. Environment files are already created
+# (apps/web/.env and apps/api/.env)
+
+# 2. Install dependencies
+pnpm install
+
+# 3. Setup database (update DATABASE_URL first)
+cd apps/api
+pnpm db:push
+pnpm db:seed
+
+# 4. Start development servers
+cd ../..
+pnpm dev</pre>
+                </div>
+                <p style="color: #718096; margin-top: 1rem;">
+                    This will start both the web app on <code>http://localhost:3000</code> and
+                    the API server on <code>http://localhost:3001</code> with proper CORS configuration.
+                </p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 2rem;">
+            <h2>📋 Production Deployment</h2>
+            <div style="margin-top: 1rem;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.75rem;">Environment Variables</h3>
+                <p style="color: #718096; margin-bottom: 1rem;">
+                    For production deployment, update the environment variables to match your
+                    deployed URLs:
+                </p>
+                <div class="comparison">
+                    <div class="comparison-item" style="background: #ebf8ff; border-color: #4299e1;">
+                        <h3>Web App (Vercel)</h3>
+                        <div class="code-block" style="margin-top: 1rem;">
+                            <pre><span class="env-var">NEXT_PUBLIC_API_URL</span>=<span class="env-value">https://your-api.onrender.com</span></pre>
+                        </div>
+                    </div>
+                    <div class="comparison-item" style="background: #e6fffa; border-color: #38b2ac;">
+                        <h3>API Server (Render)</h3>
+                        <div class="code-block" style="margin-top: 1rem;">
+                            <pre><span class="env-var">CORS_ORIGIN</span>=<span class="env-value">https://your-app.vercel.app</span></pre>
+                        </div>
+                    </div>
+                </div>
+                <p style="color: #718096; margin-top: 1rem; font-style: italic;">
+                    💡 Tip: You can specify multiple origins separated by commas for staging and
+                    production environments.
+                </p>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h2 style="color: white;">📚 Additional Resources</h2>
+            <ul style="list-style: none; margin-top: 1rem;">
+                <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                    📖 <strong>CORS_SETUP.md</strong> - Comprehensive CORS configuration guide
+                </li>
+                <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                    🔧 <strong>apps/web/.env.example</strong> - Web app environment template
+                </li>
+                <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.2);">
+                    🔧 <strong>apps/api/.env.example</strong> - API server environment template
+                </li>
+                <li style="padding: 0.75rem 0;">
+                    🌐 <strong>MDN CORS Documentation</strong> - Browser CORS policy reference
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Deactivate all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabId).classList.add('active');
+
+            // Activate clicked tab
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
