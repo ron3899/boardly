@@ -2,5 +2,8 @@
   "buildCommand": "pnpm turbo build --filter=@boardly/web",
   "outputDirectory": "apps/web/.next",
   "installCommand": "pnpm install",
-  "framework": null
+  "framework": "nextjs",
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://boardly-api-f4co.onrender.com"
+  }
 }
