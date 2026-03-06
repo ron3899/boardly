@@ -30,7 +30,7 @@ app.setErrorHandler((error, _request, reply) => {
   if (error instanceof ZodError) {
     return reply.status(400).send({ error: 'Validation error', details: error.flatten() })
   }
-  const statusCode = (error as any).statusCode || 500
+  const statusCode = (error as Record<string, unknown>).statusCode as number || 500
   reply.status(statusCode).send({ error: error.message })
 })
 
