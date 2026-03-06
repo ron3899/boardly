@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime      @default(now())
+  memberships  BoardMember[]
+}
+
+model Board {
+  id        String        @id @default(cuid())
+  name      String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  members   BoardMember[]
+  groups    Group[]
+  columns   Column[]
+}
+
+model BoardMember {
+  id      String @id @default(cuid())
+  boardId String
+  userId  String
+  role    String @default("member")
+  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([boardId, userId])
+}
+
+model Group {
+  id        String  @id @default(cuid())
+  boardId   String
+  name      String
+  color     String  @default("#579bfc")
+  order     Int     @default(0)
+  collapsed Boolean @default(false)
+  board     Board   @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  items     Item[]
+}
+
+model Item {
+  id           String        @id @default(cuid())
+  groupId      String
+  name         String
+  order        Int           @default(0)
+  group        Group         @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  columnValues ColumnValue[]
+}
+
+model Column {
+  id           String        @id @default(cuid())
+  boardId      String
+  name         String
+  type         String
+  order        Int           @default(0)
+  settings     Json          @default("{}")
+  board        Board         @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  columnValues ColumnValue[]
+}
+
+model ColumnValue {
+  id       String @id @default(cuid())
+  itemId   String
+  columnId String
+  value    Json   @default("null")
+  item     Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, columnId])
+}

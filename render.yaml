@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: boardly-api
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: npm install -g pnpm@10.30.3 && pnpm install && cd apps/api && npx prisma generate
+    startCommand: cd apps/api && npx tsx src/index.ts
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 3001
+      - key: NODE_ENV
+        value: production
+      - key: CORS_ORIGIN
+        sync: false
