@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 
+const IS_DEV_MODE = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
+
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -18,6 +20,17 @@ export default function LoginPage() {
     setLoading(true)
     try {
       await login({ email, password })
+    } catch {
+      // error is in loginError
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDevLogin = async () => {
+    setLoading(true)
+    try {
+      await login({ email: 'demo@example.com', password: 'demo' })
     } catch {
       // error is in loginError
     } finally {
@@ -59,6 +72,27 @@ export default function LoginPage() {
               {loading ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
+          {IS_DEV_MODE && (
+            <div className="mt-4">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">Development Mode</span>
+                </div>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full mt-4"
+                onClick={handleDevLogin}
+                disabled={loading}
+              >
+                🚀 Auto Login (Dev)
+              </Button>
+            </div>
+          )}
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{' '}
             <Link href="/register" className="text-primary hover:underline">
