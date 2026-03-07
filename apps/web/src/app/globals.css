@@ -2,28 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Monday.com Vibe Design System - Custom Properties */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    /* Monday.com Brand Colors */
+    --monday-purple: 246 100% 69%;        /* #6161FF - Primary brand color */
+    --monday-dark: 230 30% 15%;           /* #181B34 - Dark backgrounds */
+    --monday-light: 233 100% 97%;         /* #F0F3FF - Light backgrounds */
+    --monday-white: 0 0% 100%;            /* #FFFFFF - Pure white */
+
+    /* Extended Monday.com Palette */
+    --monday-purple-hover: 246 100% 63%;  /* Darker purple for hover states */
+    --monday-purple-light: 246 100% 95%;  /* Very light purple for subtle backgrounds */
+    --monday-dark-secondary: 230 25% 25%; /* Lighter dark for secondary elements */
+    --monday-gray-50: 220 20% 97%;        /* Very light gray */
+    --monday-gray-100: 220 15% 92%;       /* Light gray for borders */
+    --monday-gray-200: 220 13% 85%;       /* Border gray */
+    --monday-gray-300: 220 10% 70%;       /* Muted text */
+    --monday-gray-400: 220 8% 55%;        /* Secondary text */
+    --monday-gray-500: 220 8% 40%;        /* Tertiary text */
+
+    /* Status Colors (Monday.com palette) */
+    --status-success: 145 65% 45%;        /* #00C875 - Green */
+    --status-warning: 42 100% 62%;        /* #FDAB3D - Orange */
+    --status-error: 0 90% 60%;            /* #E44258 - Red */
+    --status-info: 207 90% 54%;           /* #0086C0 - Blue */
+    --status-working: 246 100% 69%;       /* Purple - same as primary */
+    --status-stuck: 0 90% 60%;            /* Red */
+    --status-done: 145 65% 45%;           /* Green */
+
+    /* Semantic tokens mapped to Monday.com palette */
+    --background: var(--monday-white);
+    --foreground: var(--monday-dark);
+    --card: var(--monday-white);
+    --card-foreground: var(--monday-dark);
+    --popover: var(--monday-white);
+    --popover-foreground: var(--monday-dark);
+    --primary: var(--monday-purple);
+    --primary-foreground: var(--monday-white);
+    --secondary: var(--monday-light);
+    --secondary-foreground: var(--monday-dark);
+    --muted: var(--monday-gray-50);
+    --muted-foreground: var(--monday-gray-400);
+    --accent: var(--monday-light);
+    --accent-foreground: var(--monday-dark);
+    --destructive: var(--status-error);
+    --destructive-foreground: var(--monday-white);
+    --border: var(--monday-gray-200);
+    --input: var(--monday-gray-200);
+    --ring: var(--monday-purple);
+    --radius: 8px; /* Monday.com uses 8px border radius */
+
+    /* Monday.com specific shadows */
+    --shadow-small: 0 2px 4px rgba(0, 0, 0, 0.06);
+    --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-large: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -31,7 +65,52 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    letter-spacing: -0.01em; /* Tight letter spacing like Monday.com */
+  }
+
+  /* Monday.com Typography Scale */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+    letter-spacing: -0.02em;
+  }
+
+  h1 { @apply text-3xl; }
+  h2 { @apply text-2xl; }
+  h3 { @apply text-xl; }
+  h4 { @apply text-lg; }
+  h5 { @apply text-base; }
+  h6 { @apply text-sm; }
+}
+
+/* Monday.com utility classes */
+@layer utilities {
+  .monday-shadow-sm {
+    box-shadow: var(--shadow-small);
+  }
+
+  .monday-shadow {
+    box-shadow: var(--shadow-medium);
+  }
+
+  .monday-shadow-lg {
+    box-shadow: var(--shadow-large);
+  }
+
+  .monday-shadow-hover {
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* Monday.com transition styles */
+  .monday-transition {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Monday.com purple gradient */
+  .monday-gradient {
+    background: linear-gradient(135deg, hsl(var(--monday-purple)) 0%, hsl(246 100% 75%) 100%);
   }
 }
