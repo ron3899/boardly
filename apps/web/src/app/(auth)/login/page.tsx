@@ -59,12 +59,18 @@ export default function LoginPage() {
               {loading ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
-          <p className="mt-4 text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{' '}
-            <Link href="/register" className="text-primary hover:underline">
-              Register
-            </Link>
-          </p>
+
+          <div className="mt-6 flex items-center gap-4">
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-xs text-muted-foreground">or</span>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+
+          <Link href="/register" className="mt-6 block">
+            <Button variant="outline" className="w-full" type="button">
+              Create an account
+            </Button>
+          </Link>
         </CardContent>
       </Card>
     </div>
