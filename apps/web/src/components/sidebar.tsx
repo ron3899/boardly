@@ -18,6 +18,7 @@ import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/hooks/use-auth'
 import { Button } from '@/components/ui/button'
+import { CreateBoardDialog } from '@/components/create-board-dialog'
 
 const navItems = [
   { href: '/app', icon: LayoutDashboard, label: 'Home' },
@@ -35,6 +36,7 @@ export function Sidebar() {
   const pathname = usePathname()
   const { user, logout } = useAuth()
   const [collapsed, setCollapsed] = useState(false)
+  const [createOpen, setCreateOpen] = useState(false)
 
   return (
     <>
@@ -65,7 +67,10 @@ export function Sidebar() {
 
           {/* New Button */}
           <div className="px-4 py-3">
-            <button className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 border-monday-purple text-monday-purple hover:bg-monday-purple/10 transition-colors font-medium text-sm">
+            <button
+              onClick={() => setCreateOpen(true)}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 border-monday-purple text-monday-purple hover:bg-monday-purple/10 transition-colors font-medium text-sm"
+            >
               <Plus className="h-4 w-4" />
               New
             </button>
@@ -141,6 +146,8 @@ export function Sidebar() {
           </div>
         </div>
       </aside>
+
+      <CreateBoardDialog open={createOpen} onOpenChange={setCreateOpen} />
     </>
   )
 }

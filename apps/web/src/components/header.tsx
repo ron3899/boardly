@@ -2,6 +2,8 @@
 
 import { Search, Bell, HelpCircle, User } from 'lucide-react'
 import { useAuth } from '@/hooks/use-auth'
+import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 
 interface HeaderProps {
   title: string
@@ -11,6 +13,52 @@ interface HeaderProps {
 
 export function Header({ title, breadcrumb, children }: HeaderProps) {
   const { user } = useAuth()
+  const router = useRouter()
+  const [searchValue, setSearchValue] = useState('')
+  const [debounceTimeout, setDebounceTimeout] = useState<NodeJS.Timeout | null>(null)
+
+  // Navigate to search page on Enter or after debounce
+  const handleSearch = (value: string) => {
+    if (value.trim()) {
+      router.push(`/app/search?q=${encodeURIComponent(value.trim())}`)
+    }
+  }
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchValue(value)
+
+    // Clear existing timeout
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout)
+    }
+
+    // Set new timeout for debounced search
+    if (value.trim()) {
+      const timeout = setTimeout(() => {
+        handleSearch(value)
+      }, 500)
+      setDebounceTimeout(timeout)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout)
+      }
+      handleSearch(searchValue)
+    }
+  }
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout)
+      }
+    }
+  }, [debounceTimeout])
 
   return (
     <header className="sticky top-0 z-30 bg-white border-b border-[#E6E9EF] h-[60px] flex items-center px-6">
@@ -31,6 +79,9 @@ export function Header({ title, breadcrumb, children }: HeaderProps) {
           <input
             type="text"
             placeholder="Search"
+            value={searchValue}
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyDown}
             className="w-full h-9 pl-10 pr-4 rounded-full bg-[#F6F7FB] border border-[#E6E9EF] text-sm text-[#323338] placeholder:text-[#9699A6] focus:outline-none focus:ring-2 focus:ring-monday-purple/20 focus:border-monday-purple transition-all"
           />
         </div>
