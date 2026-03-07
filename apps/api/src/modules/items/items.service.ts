@@ -4,6 +4,47 @@ import type { CreateItemInput, UpdateItemInput, ReorderItemsInput } from '@board
 export class ItemsService {
   constructor(private prisma: PrismaClient) {}
 
+  async getMyItems(userId: string) {
+    // Get all items where user is assigned (via person column)
+    // For now, return all items from boards the user is a member of
+    const userBoards = await this.prisma.boardMember.findMany({
+      where: { userId },
+      select: { boardId: true },
+    })
+
+    const boardIds = userBoards.map((bm) => bm.boardId)
+
+    const items = await this.prisma.item.findMany({
+      where: {
+        group: {
+          boardId: { in: boardIds },
+        },
+      },
+      include: {
+        columnValues: true,
+        group: {
+          include: {
+            board: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    })
+
+    // Transform to include board and group names
+    return items.map((item) => ({
+      ...item,
+      boardId: item.group.boardId,
+      boardName: item.group.board.name,
+      groupName: item.group.name,
+    }))
+  }
+
   async create(groupId: string, input: CreateItemInput) {
     const maxOrder = await this.prisma.item.aggregate({
       where: { groupId },

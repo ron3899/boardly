@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import type { Board } from '@boardly/shared'
-import { MoreHorizontal, Trash2 } from 'lucide-react'
+import { MoreHorizontal, Trash2, Star } from 'lucide-react'
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu'
+import { useState, useEffect } from 'react'
 
 interface BoardCardProps {
   board: Board
@@ -45,9 +46,48 @@ const getDaysSince = (date: Date) => {
 export function BoardCard({ board, onDelete }: BoardCardProps) {
   const accentColor = getAccentColor(board.id)
   const boardEmoji = getBoardEmoji(board.name)
+  const [isFavorite, setIsFavorite] = useState(false)
 
   // Mock member avatars (colored circles)
   const memberColors = ['#6161FF', '#00C875', '#FDAB3D']
+
+  // Load favorite status from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem('boardly-favorites')
+    if (stored) {
+      try {
+        const favorites = JSON.parse(stored) as string[]
+        setIsFavorite(favorites.includes(board.id))
+      } catch {
+        setIsFavorite(false)
+      }
+    }
+  }, [board.id])
+
+  // Toggle favorite status
+  const toggleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const stored = localStorage.getItem('boardly-favorites')
+    let favorites: string[] = []
+    if (stored) {
+      try {
+        favorites = JSON.parse(stored)
+      } catch {
+        favorites = []
+      }
+    }
+
+    if (isFavorite) {
+      favorites = favorites.filter((id) => id !== board.id)
+    } else {
+      favorites.push(board.id)
+    }
+
+    localStorage.setItem('boardly-favorites', JSON.stringify(favorites))
+    setIsFavorite(!isFavorite)
+  }
 
   return (
     <div className="group relative rounded-lg bg-white monday-card-shadow hover:monday-card-shadow-hover transition-all hover:-translate-y-1 duration-200">
@@ -95,8 +135,20 @@ export function BoardCard({ board, onDelete }: BoardCardProps) {
         </div>
       </Link>
 
-      {/* Three-dot menu (appears on hover) */}
-      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+      {/* Favorite star and menu (appears on hover) */}
+      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+        {/* Favorite Star */}
+        <button
+          onClick={toggleFavorite}
+          className="p-1.5 rounded-lg hover:bg-[#F6F7FB] transition-colors"
+          title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+        >
+          <Star
+            className={`h-4 w-4 ${isFavorite ? 'fill-monday-warning text-monday-warning' : 'text-[#676879]'}`}
+          />
+        </button>
+
+        {/* Three-dot menu */}
         <DropdownMenu>
           <DropdownMenuTrigger className="p-1.5 rounded-lg hover:bg-[#F6F7FB] transition-colors">
             <MoreHorizontal className="h-4 w-4 text-[#676879]" />
