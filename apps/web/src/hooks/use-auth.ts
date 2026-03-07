@@ -9,10 +9,11 @@ export function useAuth() {
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['auth', 'me'],
     queryFn: () => api.get<{ user: User }>('/auth/me'),
     retry: false,
+    enabled: false, // Disable automatic authentication check - users must explicitly login
   })
 
   const loginMutation = useMutation({
@@ -48,6 +49,7 @@ export function useAuth() {
     login: loginMutation.mutateAsync,
     register: registerMutation.mutateAsync,
     logout: logoutMutation.mutateAsync,
+    checkAuth: refetch, // Manual method to check authentication status
     loginError: loginMutation.error,
     registerError: registerMutation.error,
   }
