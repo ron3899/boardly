@@ -24,9 +24,13 @@ export function KanbanCard({ item }: KanbanCardProps) {
       draggable
       onDragStart={(e) => e.dataTransfer.setData('text/plain', item.id)}
       onClick={openDetail}
-      className="bg-background border rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
+      className="bg-white border border-gray-200 rounded-lg p-3.5 cursor-pointer hover:shadow-monday-hover hover:-translate-y-0.5 monday-transition group"
     >
-      <p className="text-sm font-medium">{item.name}</p>
+      <p className="text-sm font-semibold text-gray-900 group-hover:text-monday-purple">{item.name}</p>
+      <div className="flex items-center gap-2 mt-2">
+        <div className="h-1.5 w-1.5 rounded-full bg-monday-purple"></div>
+        <span className="text-xs text-gray-500">Task</span>
+      </div>
     </div>
   )
 }
