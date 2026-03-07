@@ -1,29 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Monday.com inspired color palette */
+    --background: 250 250 252; /* Light purple-gray background #FAFAFC */
+    --foreground: 32 33 36; /* Dark text #202124 */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 32 33 36;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    --popover-foreground: 32 33 36;
+    --primary: 252 108 71; /* Monday Purple #6C6CFF */
+    --primary-foreground: 255 255 255;
+    --secondary: 108 92 231; /* Light purple accent */
+    --secondary-foreground: 255 255 255;
+    --destructive: 228 66 88; /* Monday Red #E44258 */
+    --destructive-foreground: 255 255 255;
+    --muted: 243 244 246;
+    --muted-foreground: 107 114 128;
+    --accent: 252 108 71; /* Purple accent */
+    --accent-foreground: 255 255 255;
+    --border: 229 231 235;
+    --input: 229 231 235;
+    --ring: 252 108 71;
+    --radius: 8px; /* Monday.com uses 8px border radius */
+
+    /* Status colors - Monday.com style */
+    --status-done: 0 200 117; /* Green #00C875 */
+    --status-working: 253 171 61; /* Orange/Yellow #FDAB3D */
+    --status-stuck: 228 66 88; /* Red #E44258 */
+    --status-blank: 196 196 196; /* Gray */
   }
 }
 
@@ -31,7 +40,63 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    font-family: 'Roboto', system-ui, sans-serif;
+  }
+
+  /* Monday.com Typography Scale */
+  h1 {
+    @apply text-4xl font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply text-2xl font-bold tracking-tight;
+  }
+
+  h3 {
+    @apply text-xl font-semibold;
+  }
+
+  h4 {
+    @apply text-lg font-semibold;
+  }
+}
+
+@layer components {
+  /* Monday.com style accent bar */
+  .monday-accent-bar {
+    @apply absolute left-0 top-0 h-full w-1 rounded-l-lg;
+  }
+
+  /* Glass effect for elevated cards */
+  .glass-effect {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Smooth transitions */
+  .monday-transition {
+    @apply transition-all duration-200 ease-in-out;
+  }
+}
+
+@layer utilities {
+  /* Status color utilities */
+  .status-done {
+    @apply bg-monday-green text-white;
+  }
+
+  .status-working {
+    @apply bg-monday-orange text-white;
+  }
+
+  .status-stuck {
+    @apply bg-monday-red text-white;
+  }
+
+  .status-blank {
+    @apply bg-gray-400 text-white;
   }
 }
