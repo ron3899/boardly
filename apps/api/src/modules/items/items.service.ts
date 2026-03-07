@@ -61,4 +61,38 @@ export class ItemsService {
       },
     })
   }
+
+  async getForUser(userId: string) {
+    // Get all items where the user is assigned
+    const items = await this.prisma.item.findMany({
+      where: {
+        columnValues: {
+          some: {
+            column: { type: 'person' },
+            value: { path: '$', equals: userId },
+          },
+        },
+      },
+      include: {
+        columnValues: {
+          include: {
+            column: true,
+          },
+        },
+        group: {
+          include: {
+            board: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { updatedAt: 'desc' },
+    })
+
+    return items
+  }
 }

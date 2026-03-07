@@ -51,8 +51,12 @@ export function CreateBoardDialog({ open, onOpenChange }: CreateBoardDialogProps
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={!name.trim() || createBoard.isPending}>
-              Create
+            <Button
+              type="submit"
+              disabled={!name.trim() || createBoard.isPending}
+              className="bg-[#6161FF] hover:bg-[#5151EF]"
+            >
+              {createBoard.isPending ? 'Creating...' : 'Create'}
             </Button>
           </div>
         </form>

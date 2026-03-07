@@ -8,6 +8,11 @@ export default async function itemRoutes(app: FastifyInstance) {
 
   app.addHook('preHandler', authenticate)
 
+  app.get('/me/items', async (request) => {
+    const items = await service.getForUser(request.user.userId)
+    return { items }
+  })
+
   app.post('/groups/:groupId/items', async (request, reply) => {
     const { groupId } = request.params as { groupId: string }
     const input = createItemSchema.parse(request.body)
