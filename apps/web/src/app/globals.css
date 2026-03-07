@@ -1,29 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Monday.com Color System */
+
+    /* Primary Purple - Monday.com's signature color */
+    --primary-purple: #6C6CFF;
+    --primary-purple-dark: #5959D1;
+    --primary-purple-light: #F0F0FF;
+
+    /* Status Colors - Monday.com exact colors */
+    --status-done: #00C875;
+    --status-working: #FDAB3D;
+    --status-stuck: #E44258;
+    --status-progress: #579BFC;
+
+    /* Accent Colors */
+    --accent-orange: #FF7B54;
+    --accent-blue: #00B4D8;
+    --accent-green: #00C875;
+    --accent-red: #E44258;
+    --accent-yellow: #FFCB00;
+    --accent-pink: #FF69B4;
+
+    /* Backgrounds & Surfaces */
+    --app-background: #F6F7FB;
+    --sidebar-background: #2B2C5E;
+    --sidebar-hover: rgba(255, 255, 255, 0.1);
+    --sidebar-active: rgba(255, 255, 255, 0.15);
+    --card-background: #FFFFFF;
+    --surface-hover: #F0F0FF;
+
+    /* Text Colors - Monday.com typography */
+    --text-primary: #323338;
+    --text-secondary: #676879;
+    --text-muted: #C5C7D0;
+    --text-white: #FFFFFF;
+    --text-white-70: rgba(255, 255, 255, 0.7);
+
+    /* Borders */
+    --border-color: #E6E9EF;
+    --border-light: #F0F0F0;
+
+    /* Shadows - Monday.com elevation system */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.16);
+
+    /* Tailwind CSS variables (mapped to Monday.com colors) */
+    --background: 246 247 251; /* #F6F7FB */
+    --foreground: 50 51 56; /* #323338 */
+
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 50 51 56;
+
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    --popover-foreground: 50 51 56;
+
+    --primary: 108 108 255; /* #6C6CFF */
+    --primary-foreground: 255 255 255;
+
+    --secondary: 240 240 255; /* #F0F0FF */
+    --secondary-foreground: 50 51 56;
+
+    --muted: 230 233 239; /* #E6E9EF */
+    --muted-foreground: 103 104 121; /* #676879 */
+
+    --accent: 240 240 255; /* #F0F0FF */
+    --accent-foreground: 50 51 56;
+
+    --destructive: 228 66 88; /* #E44258 */
+    --destructive-foreground: 255 255 255;
+
+    --border: 230 233 239; /* #E6E9EF */
+    --input: 197 199 208; /* #C5C7D0 */
+    --ring: 108 108 255; /* #6C6CFF */
+
+    --radius: 8px;
   }
 }
 
@@ -31,7 +88,231 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+    font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-primary);
+    background-color: var(--app-background);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+
+  small {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+}
+
+@layer utilities {
+  /* Monday.com specific utilities */
+  .monday-card {
+    background: var(--card-background);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    transition: all 150ms ease;
+  }
+
+  .monday-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+
+  .monday-sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-white-70);
+    transition: all 150ms ease;
+    cursor: pointer;
+  }
+
+  .monday-sidebar-item:hover {
+    background: var(--sidebar-hover);
+    color: var(--text-white);
+  }
+
+  .monday-sidebar-item.active {
+    background: var(--sidebar-active);
+    color: var(--text-white);
+  }
+
+  .monday-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 150ms ease;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .monday-button:active {
+    transform: scale(0.97);
+  }
+
+  .monday-button-primary {
+    background: var(--primary-purple);
+    color: white;
+    padding: 0 16px;
+    height: 32px;
+  }
+
+  .monday-button-primary:hover {
+    background: var(--primary-purple-dark);
+  }
+
+  .monday-button-secondary {
+    background: white;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 0 16px;
+    height: 32px;
+  }
+
+  .monday-button-secondary:hover {
+    background: var(--surface-hover);
+  }
+
+  .monday-button-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 0 12px;
+    height: 32px;
+  }
+
+  .monday-button-ghost:hover {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+  }
+
+  .monday-input {
+    width: 100%;
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--input);
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: white;
+    transition: all 150ms ease;
+  }
+
+  .monday-input:focus {
+    outline: none;
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 1px var(--primary-purple);
+  }
+
+  .monday-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+    white-space: nowrap;
+  }
+
+  .status-done {
+    background-color: var(--status-done);
+  }
+
+  .status-working {
+    background-color: var(--status-working);
+  }
+
+  .status-stuck {
+    background-color: var(--status-stuck);
+  }
+
+  .status-progress {
+    background-color: var(--status-progress);
+  }
+
+  /* Smooth transitions */
+  .transition-monday {
+    transition: all 150ms ease;
+  }
+
+  /* Board card accent bars */
+  .board-accent-purple {
+    background: linear-gradient(90deg, #6C6CFF 0%, #5959D1 100%);
+  }
+
+  .board-accent-green {
+    background: linear-gradient(90deg, #00C875 0%, #00B894 100%);
+  }
+
+  .board-accent-orange {
+    background: linear-gradient(90deg, #FF7B54 0%, #FF6B3D 100%);
+  }
+
+  .board-accent-blue {
+    background: linear-gradient(90deg, #579BFC 0%, #4A8FEB 100%);
+  }
+
+  .board-accent-pink {
+    background: linear-gradient(90deg, #FF69B4 0%, #FF5AA5 100%);
+  }
+}
+
+/* Scrollbar styling - Monday.com style */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Selection color */
+::selection {
+  background: var(--primary-purple-light);
+  color: var(--text-primary);
 }
