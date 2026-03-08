@@ -6,7 +6,53 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Monday.com Brand Colors
+        // Brand Colors - Linear/Modern Style
+        brand: {
+          DEFAULT: '#5B6EF5',
+          hover: '#4A5CE4',
+          light: '#EEF0FE',
+          dark: '#3648D0',
+        },
+        // Surface Colors (Dark Mode Default)
+        surface: {
+          DEFAULT: '#0F0F14',
+          mid: '#17171F',
+          light: '#1E1E2A',
+          card: '#1A1A26',
+          overlay: '#252535',
+        },
+        // Border Colors
+        border: {
+          subtle: '#2A2A38',
+          DEFAULT: '#333347',
+          strong: '#4A4A65',
+        },
+        // Text Colors
+        text: {
+          primary: '#F0F0F5',
+          secondary: '#9090A8',
+          disabled: '#5A5A70',
+          inverse: '#0F0F14',
+        },
+        // Status Colors
+        status: {
+          backlog: '#6B7280',
+          todo: '#64748B',
+          'in-progress': '#F59E0B',
+          review: '#A855F7',
+          done: '#22C55E',
+          cancelled: '#9CA3AF',
+          blocked: '#EF4444',
+        },
+        // Priority Colors
+        priority: {
+          urgent: '#EF4444',
+          high: '#F97316',
+          medium: '#F59E0B',
+          low: '#6B7280',
+        },
+
+        // Legacy Monday.com colors for compatibility
         'monday-purple': '#6161FF',
         'monday-purple-hover': '#4B4BE8',
         'monday-dark': '#1C1F3B',
@@ -16,19 +62,7 @@ const config: Config = {
         'monday-danger': '#E2445C',
         'monday-info': '#579BFC',
 
-        // Monday.com Accent Colors (for board strips)
-        'monday-accent-1': '#6161FF',
-        'monday-accent-2': '#00C875',
-        'monday-accent-3': '#FDAB3D',
-        'monday-accent-4': '#E2445C',
-        'monday-accent-5': '#579BFC',
-        'monday-accent-6': '#FF7575',
-        'monday-accent-7': '#A25DDC',
-
         // shadcn/ui compatibility
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
@@ -59,14 +93,25 @@ const config: Config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        lg: 'var(--radius-lg)',
+        md: 'var(--radius-md)',
+        sm: 'var(--radius-sm)',
+        xl: 'var(--radius-xl)',
       },
       fontFamily: {
+        sans: ['var(--font-inter)', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        mono: ['var(--font-mono)', 'JetBrains Mono', 'Fira Code', 'monospace'],
         poppins: ['Poppins', 'sans-serif'],
+      },
+      boxShadow: {
+        'card': 'var(--shadow-card)',
+        'sm': 'var(--shadow-sm)',
+        'md': 'var(--shadow-md)',
+        'lg': 'var(--shadow-lg)',
       },
     },
   },

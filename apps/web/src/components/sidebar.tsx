@@ -49,100 +49,105 @@ export function Sidebar() {
 
       <aside
         className={cn(
-          'fixed left-0 top-0 z-40 h-full w-[260px] bg-[#1C1F3B] transition-transform md:translate-x-0',
+          'fixed left-0 top-0 z-40 h-full w-[240px] bg-surface-mid border-r border-border-subtle transition-transform md:translate-x-0 flex flex-col',
           collapsed ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         )}
       >
-        <div className="flex h-full flex-col text-white">
-          {/* Logo and Workspace */}
-          <div className="px-4 py-5 border-b border-white/10">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-monday-purple to-monday-info flex items-center justify-center">
-                <LayoutGrid className="h-5 w-5 text-white" />
-              </div>
-              <h1 className="text-xl font-semibold text-white">Boardly</h1>
+        {/* Logo and Workspace */}
+        <div className="px-4 py-4 border-b border-border-subtle">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand to-purple-600 flex items-center justify-center shadow-md">
+              <LayoutGrid className="h-4 w-4 text-white" />
             </div>
-            <p className="text-xs text-white/60 pl-10">My Workspace</p>
+            <h1 className="text-[15px] font-semibold text-text-primary">Boardly</h1>
           </div>
-
-          {/* New Button */}
-          <div className="px-4 py-3">
-            <button
-              onClick={() => setCreateOpen(true)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 border-monday-purple text-monday-purple hover:bg-monday-purple/10 transition-colors font-medium text-sm"
-            >
-              <Plus className="h-4 w-4" />
-              New
-            </button>
+          <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-md bg-surface-light border border-border-subtle cursor-pointer hover:bg-surface-overlay transition-colors">
+            <div className="w-5 h-5 rounded bg-gradient-to-br from-brand to-purple-600 flex items-center justify-center text-[10px] font-bold text-white">
+              {user?.name?.charAt(0).toUpperCase() || 'W'}
+            </div>
+            <span className="text-xs font-medium text-text-primary truncate flex-1">My Workspace</span>
           </div>
+        </div>
 
-          {/* Main Navigation */}
-          <nav className="flex-1 px-3 py-2 space-y-0.5">
-            {navItems.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href || (item.href !== '/app' && pathname.startsWith(item.href))
+        {/* New Button */}
+        <div className="px-3 py-3">
+          <button
+            onClick={() => setCreateOpen(true)}
+            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-brand text-white hover:bg-brand-hover transition-all font-medium text-[13px] shadow-sm hover:shadow-md"
+          >
+            <Plus className="h-3.5 w-3.5" />
+            New Board
+          </button>
+        </div>
 
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
-                    isActive
-                      ? 'bg-white/12 text-white'
-                      : 'text-white/90 hover:bg-white/8'
-                  )}
-                >
-                  <Icon className="h-4 w-4 flex-shrink-0" />
-                  {item.label}
-                </Link>
-              )
-            })}
+        {/* Main Navigation */}
+        <nav className="flex-1 px-2 py-1 space-y-0.5 overflow-y-auto">
+          <div className="sidebar-section-header">
+            <span>Main</span>
+          </div>
+          {navItems.map((item) => {
+            const Icon = item.icon
+            const isActive = pathname === item.href || (item.href !== '/app' && pathname.startsWith(item.href))
 
-            {/* Divider */}
-            <div className="h-px bg-white/10 my-3" />
-
-            {/* Secondary Navigation */}
-            {secondaryNavItems.map((item) => {
-              const Icon = item.icon
-              const isActive = pathname === item.href
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
-                    isActive
-                      ? 'bg-white/12 text-white'
-                      : 'text-white/90 hover:bg-white/8'
-                  )}
-                >
-                  <Icon className="h-4 w-4 flex-shrink-0" />
-                  {item.label}
-                </Link>
-              )
-            })}
-          </nav>
-
-          {/* User Profile Section */}
-          <div className="border-t border-white/10 p-3">
-            <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/8 transition-colors">
-              <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-monday-purple to-monday-info text-white text-sm font-semibold">
-                {user?.name?.charAt(0).toUpperCase() || 'U'}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate text-white">{user?.name || 'User'}</p>
-                <p className="text-xs text-white/60 truncate">{user?.email || 'user@boardly.com'}</p>
-              </div>
-              <button
-                onClick={() => logout()}
-                className="flex-shrink-0 p-1.5 rounded-lg hover:bg-white/10 transition-colors"
-                title="Logout"
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  'sidebar-item',
+                  isActive && 'active'
+                )}
               >
-                <LogOut className="h-4 w-4 text-white/70" />
-              </button>
+                <Icon className="h-4 w-4 flex-shrink-0" />
+                {item.label}
+              </Link>
+            )
+          })}
+
+          {/* Divider */}
+          <div className="h-px bg-border-subtle my-2" />
+
+          <div className="sidebar-section-header">
+            <span>Tools</span>
+          </div>
+          {/* Secondary Navigation */}
+          {secondaryNavItems.map((item) => {
+            const Icon = item.icon
+            const isActive = pathname === item.href
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  'sidebar-item',
+                  isActive && 'active'
+                )}
+              >
+                <Icon className="h-4 w-4 flex-shrink-0" />
+                {item.label}
+              </Link>
+            )
+          })}
+        </nav>
+
+        {/* User Profile Section */}
+        <div className="border-t border-border-subtle p-2">
+          <div className="flex items-center gap-2 px-2 py-2 rounded-lg hover:bg-surface-light transition-colors cursor-pointer group">
+            <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand to-purple-600 text-white text-[11px] font-bold ring-2 ring-transparent group-hover:ring-brand/20 transition-all">
+              {user?.name?.charAt(0).toUpperCase() || 'U'}
             </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[13px] font-medium truncate text-text-primary">{user?.name || 'User'}</p>
+              <p className="text-[11px] text-text-disabled truncate">{user?.email || 'user@boardly.com'}</p>
+            </div>
+            <button
+              onClick={() => logout()}
+              className="flex-shrink-0 p-1 rounded hover:bg-surface-overlay transition-colors opacity-0 group-hover:opacity-100"
+              title="Logout"
+            >
+              <LogOut className="h-3.5 w-3.5 text-text-secondary" />
+            </button>
           </div>
         </div>
       </aside>

@@ -61,53 +61,56 @@ export function Header({ title, breadcrumb, children }: HeaderProps) {
   }, [debounceTimeout])
 
   return (
-    <header className="sticky top-0 z-30 bg-white border-b border-[#E6E9EF] h-[60px] flex items-center px-6">
+    <header className="app-header">
       <div className="flex-1 flex items-center gap-4">
         {/* Page Title and Breadcrumb */}
-        <div className="flex flex-col">
+        <div className="flex flex-col min-w-0">
           {breadcrumb && (
-            <span className="text-xs text-[#9699A6] font-medium">{breadcrumb}</span>
+            <div className="header-breadcrumb">
+              <span className="text-text-secondary">{breadcrumb}</span>
+              <span className="text-text-secondary">/</span>
+            </div>
           )}
-          <h2 className="text-[15px] font-semibold text-[#323338]">{title}</h2>
+          <h2 className="text-[15px] font-semibold text-text-primary truncate">{title}</h2>
         </div>
       </div>
 
       {/* Center Search Bar */}
       <div className="hidden md:flex flex-1 justify-center max-w-md">
-        <div className="relative w-full max-w-[300px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#676879]" />
+        <div className="relative w-full max-w-[340px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-disabled" />
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search... (⌘K)"
             value={searchValue}
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
-            className="w-full h-9 pl-10 pr-4 rounded-full bg-[#F6F7FB] border border-[#E6E9EF] text-sm text-[#323338] placeholder:text-[#9699A6] focus:outline-none focus:ring-2 focus:ring-monday-purple/20 focus:border-monday-purple transition-all"
+            className="w-full h-9 pl-9 pr-4 rounded-lg bg-surface-light border border-border-subtle text-[13px] text-text-primary placeholder:text-text-disabled focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand focus:bg-surface-card transition-all"
           />
         </div>
       </div>
 
       {/* Right Actions */}
-      <div className="flex-1 flex items-center justify-end gap-3">
+      <div className="flex-1 flex items-center justify-end gap-2">
         {children}
 
         {/* Icon Buttons */}
         <button
-          className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F6F7FB] transition-colors"
+          className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-surface-light transition-colors text-text-secondary hover:text-text-primary"
           title="Notifications"
         >
-          <Bell className="h-[18px] w-[18px] text-[#676879]" />
+          <Bell className="h-[17px] w-[17px]" />
         </button>
 
         <button
-          className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F6F7FB] transition-colors"
+          className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-surface-light transition-colors text-text-secondary hover:text-text-primary"
           title="Help"
         >
-          <HelpCircle className="h-[18px] w-[18px] text-[#676879]" />
+          <HelpCircle className="h-[17px] w-[17px]" />
         </button>
 
         {/* User Avatar */}
-        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-monday-purple to-monday-info text-white text-xs font-semibold cursor-pointer hover:ring-2 hover:ring-monday-purple/30 transition-all">
+        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-brand to-purple-600 text-white text-xs font-bold cursor-pointer hover:ring-2 hover:ring-brand/30 transition-all shadow-sm">
           {user?.name?.charAt(0).toUpperCase() || 'U'}
         </div>
       </div>
