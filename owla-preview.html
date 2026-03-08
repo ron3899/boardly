@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boardly - הסרת Auto-Login | Demo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Boardly Home Page - Visual Style Updates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,229 +13,269 @@
         }
 
         body {
-            font-family: 'Heebo', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 2rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 40px 20px;
         }
 
         .header {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
             text-align: center;
-        }
-
-        .header h1 {
-            color: #667eea;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .header .subtitle {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .badge {
-            display: inline-block;
-            background: #10b981;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-top: 1rem;
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .card {
+            margin-bottom: 50px;
+            padding: 30px;
             background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
-
-        .card h2 {
-            color: #667eea;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .icon {
-            width: 24px;
-            height: 24px;
-        }
-
-        .change-list {
-            list-style: none;
-            margin-bottom: 1rem;
-        }
-
-        .change-list li {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
-            display: flex;
-            align-items: start;
-            gap: 0.5rem;
-        }
-
-        .change-list li.removed {
-            background: #fee;
-            border-right: 3px solid #ef4444;
-        }
-
-        .change-list li.added {
-            background: #efe;
-            border-right: 3px solid #10b981;
-        }
-
-        .change-list li.modified {
-            background: #fef3c7;
-            border-right: 3px solid #f59e0b;
-        }
-
-        .change-icon {
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .code-block {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 1rem;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-
-        .code-block .comment {
-            color: #6a9955;
-        }
-
-        .code-block .keyword {
-            color: #569cd6;
-        }
-
-        .code-block .string {
-            color: #ce9178;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        .tab {
-            padding: 0.75rem 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: 'Heebo', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #666;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.3s;
-        }
-
-        .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-
-        .tab:hover {
-            color: #667eea;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .comparison-side {
-            padding: 1rem;
-            border-radius: 8px;
-        }
-
-        .comparison-side h3 {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .comparison-side.before {
-            background: #fef2f2;
-            border: 2px solid #ef4444;
-        }
-
-        .comparison-side.after {
-            background: #f0fdf4;
-            border: 2px solid #10b981;
-        }
-
-        .flow-diagram {
-            background: #f9fafb;
-            padding: 2rem;
             border-radius: 12px;
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .flow-step {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .flow-arrow {
-            color: #667eea;
-            font-size: 2rem;
-            margin: 0.5rem 0;
+        .header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
         }
 
-        .highlight-box {
-            background: #eff6ff;
-            border-right: 4px solid #3b82f6;
-            padding: 1rem;
+        .header p {
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            font-weight: 600;
+            color: #495057;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .preview-wrapper {
+            border: 2px solid #dee2e6;
             border-radius: 8px;
-            margin: 1rem 0;
+            overflow: hidden;
+            margin-bottom: 30px;
         }
 
-        .highlight-box strong {
-            color: #3b82f6;
+        .preview-label {
+            background: #495057;
+            color: white;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .preview-content {
+            padding: 40px;
+            background: white;
+        }
+
+        /* Mock Boardly Page Styles */
+        .boardly-page {
+            display: flex;
+            min-height: 400px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1px;
+            border: 10px solid;
+            margin-top: 0px;
+            color: #5f6895;
+        }
+
+        .boardly-page h1 {
+            font-size: 45px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .boardly-page p {
+            color: #6c757d;
+            margin-bottom: 32px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 8px 24px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            border-width: 1px;
+            border-style: dotted;
+            border-color: #3253b3;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: hsl(222.2 47.4% 11.2%);
+            color: hsl(210 40% 98%);
+        }
+
+        .btn-secondary {
+            background: hsl(210 40% 96.1%);
+            color: hsl(222.2 47.4% 11.2%);
+        }
+
+        /* Changes List */
+        .changes-list {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .change-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #28a745;
+        }
+
+        .change-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .change-target {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .change-details {
+            margin-left: 20px;
+        }
+
+        .change-property {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .property-name {
+            font-weight: 600;
+            color: #495057;
+            font-family: 'Courier New', monospace;
+        }
+
+        .property-value {
+            color: #007bff;
+            font-family: 'Courier New', monospace;
+            background: #e7f3ff;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .tailwind-class {
+            background: #d4edda;
+            color: #155724;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        /* Side-by-side comparison */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .comparison-item {
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .comparison-label {
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .comparison-label.new {
+            background: #28a745;
+        }
+
+        .comparison-content {
+            padding: 30px;
+            background: white;
+            min-height: 350px;
+        }
+
+        /* Old version styles (before changes) */
+        .boardly-page-old {
+            display: flex;
+            min-height: 350px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: inherit;
+        }
+
+        .boardly-page-old h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: inherit;
+        }
+
+        .boardly-page-old p {
+            color: #6c757d;
+            margin-bottom: 32px;
+        }
+
+        .btn-old {
+            padding: 8px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            border: none;
         }
 
         @media (max-width: 768px) {
@@ -246,302 +284,199 @@
             }
 
             .header h1 {
-                font-size: 1.8rem;
+                font-size: 28px;
+            }
+
+            .section {
+                padding: 25px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
         <div class="header">
-            <h1>🎯 Boardly - הסרת מנגנון Auto-Login</h1>
-            <p class="subtitle">מיזוג מוצלח של השינויים מ-PR #6 ל-main branch</p>
-            <span class="badge">✅ Merged Successfully</span>
+            <h1>🎨 Boardly Home Page - Visual Style Updates</h1>
+            <p>Feature: Applied Tailwind CSS utility classes for font sizes, borders, and colors</p>
         </div>
 
-        <div class="content-grid">
-            <div class="card">
-                <h2>
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    סיכום השינויים
-                </h2>
-                <ul class="change-list">
-                    <li class="removed">
-                        <span class="change-icon">−</span>
-                        <div>
-                            <strong>הסרת Auto-Login Mechanism</strong>
-                            <div>הסרנו את המנגנון שבדק אימות אוטומטי בטעינת הדף</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">~</span>
-                        <div>
-                            <strong>שינוי ב-useAuth Hook</strong>
-                            <div>הגדרת <code>enabled: false</code> ב-query של האימות</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">~</span>
-                        <div>
-                            <strong>עדכון Middleware</strong>
-                            <div>הסרת redirect אוטומטי מדפי login/register</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">+</span>
-                        <div>
-                            <strong>הוספת checkAuth Method</strong>
-                            <div>שיטה ידנית לבדיקת סטטוס אימות</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h2>
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                    קבצים ששונו
-                </h2>
-                <ul class="change-list">
-                    <li class="modified">
-                        <span class="change-icon">📝</span>
-                        <div>
-                            <strong>apps/web/src/hooks/use-auth.ts</strong>
-                            <div style="font-size: 0.9rem; color: #666;">4 שורות שונו</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">📝</span>
-                        <div>
-                            <strong>apps/web/src/middleware.ts</strong>
-                            <div style="font-size: 0.9rem; color: #666;">6 שורות שונו</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">➕</span>
-                        <div>
-                            <strong>vercel.json</strong>
-                            <div style="font-size: 0.9rem; color: #666;">הוסף עבור deployment</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">➕</span>
-                        <div>
-                            <strong>render.yaml</strong>
-                            <div style="font-size: 0.9rem; color: #666;">עודכן עבור deployment</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="tabs">
-                <button class="tab active" onclick="switchTab('before-after')">לפני ואחרי</button>
-                <button class="tab" onclick="switchTab('code-changes')">שינויי קוד</button>
-                <button class="tab" onclick="switchTab('flow')">תרשים זרימה</button>
-            </div>
-
-            <div id="before-after" class="tab-content active">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">השוואה: לפני ואחרי</h2>
-                <div class="comparison">
-                    <div class="comparison-side before">
-                        <h3>❌ לפני - עם Auto-Login</h3>
-                        <ul style="list-style: none;">
-                            <li style="margin: 0.5rem 0;">🔄 בדיקה אוטומטית בכל טעינת דף</li>
-                            <li style="margin: 0.5rem 0;">🔄 Redirect אוטומטי ל-/app אם יש token</li>
-                            <li style="margin: 0.5rem 0;">⚠️ גורם לבעיות UX</li>
-                            <li style="margin: 0.5rem 0;">⚠️ משתמשים לא יכלו להתנתק באופן אפקטיבי</li>
-                        </ul>
-                    </div>
-                    <div class="comparison-side after">
-                        <h3>✅ אחרי - בלי Auto-Login</h3>
-                        <ul style="list-style: none;">
-                            <li style="margin: 0.5rem 0;">✋ אין בדיקה אוטומטית</li>
-                            <li style="margin: 0.5rem 0;">👤 משתמשים חייבים להתחבר באופן מפורש</li>
-                            <li style="margin: 0.5rem 0;">✨ חוויית משתמש משופרת</li>
-                            <li style="margin: 0.5rem 0;">✨ התנתקות עובדת כראוי</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="code-changes" class="tab-content">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">שינויי קוד מפתח</h2>
-
-                <h3 style="margin: 1.5rem 0 1rem;">1. apps/web/src/hooks/use-auth.ts</h3>
-                <div class="code-block">
-<span class="keyword">const</span> { data, isLoading, refetch } = <span class="keyword">useQuery</span>({
-  queryKey: [<span class="string">'auth'</span>, <span class="string">'me'</span>],
-  queryFn: () => api.get&lt;{ user: User }&gt;(<span class="string">'/auth/me'</span>),
-  retry: <span class="keyword">false</span>,
-  enabled: <span class="keyword">false</span>, <span class="comment">// Disable automatic authentication check</span>
-})
-
-<span class="comment">// Added manual authentication check method:</span>
-checkAuth: refetch, <span class="comment">// Manual method to check authentication status</span>
-                </div>
-
-                <h3 style="margin: 1.5rem 0 1rem;">2. apps/web/src/middleware.ts</h3>
-                <div class="code-block">
-<span class="comment">// Only protect /app routes - redirect to login if no token</span>
-<span class="keyword">if</span> (request.nextUrl.pathname.startsWith(<span class="string">'/app'</span>) && !token) {
-  <span class="keyword">return</span> NextResponse.redirect(<span class="keyword">new</span> URL(<span class="string">'/login'</span>, request.url))
-}
-
-<span class="comment">// Removed: Auto-redirect from login/register pages when token exists</span>
-<span class="comment">// Users must explicitly login even if they have a token cookie</span>
-                </div>
-
-                <div class="highlight-box">
-                    <strong>💡 מה זה אומר?</strong><br>
-                    משתמשים חייבים ללחוץ על כפתור "התחבר" בכל פעם שהם רוצים לגשת לאפליקציה,
-                    גם אם הם מחוברים. זה פותר את הבעיה שבה משתמשים לא יכלו להתנתק או לעבור
-                    בין חשבונות שונים.
-                </div>
-            </div>
-
-            <div id="flow" class="tab-content">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">תרשים זרימת אימות</h2>
-
-                <div class="flow-diagram">
-                    <h3 style="color: #667eea; margin-bottom: 1rem;">זרימת אימות חדשה</h3>
-
-                    <div class="flow-step">
-                        <strong>1️⃣ משתמש נכנס לדף /login</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">הדף נטען ללא בדיקות אימות אוטומטיות</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>2️⃣ משתמש מזין פרטי התחברות</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">מייל וסיסמה</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>3️⃣ לחיצה על כפתור "התחבר"</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">שליחת בקשת POST ל-/auth/login</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>4️⃣ שרת מאמת ומחזיר token</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">Token נשמר ב-cookie</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step" style="background: #f0fdf4; border: 2px solid #10b981;">
-                        <strong>5️⃣ ניווט ל-/app</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">משתמש מחובר בהצלחה!</div>
-                    </div>
-                </div>
-
-                <div class="flow-diagram" style="margin-top: 2rem;">
-                    <h3 style="color: #667eea; margin-bottom: 1rem;">הגנת נתיבים (Route Protection)</h3>
-
-                    <div class="flow-step">
-                        <strong>משתמש מנסה לגשת ל-/app</strong>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step" style="background: #fef3c7;">
-                        <strong>Middleware בודק אם יש token</strong>
-                    </div>
-
-                    <div class="flow-arrow">↙ ↘</div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-                        <div class="flow-step" style="background: #fee; border: 2px solid #ef4444;">
-                            <strong>❌ אין token</strong>
-                            <div style="color: #666; margin-top: 0.5rem;">Redirect ל-/login</div>
-                        </div>
-                        <div class="flow-step" style="background: #f0fdf4; border: 2px solid #10b981;">
-                            <strong>✅ יש token</strong>
-                            <div style="color: #666; margin-top: 0.5rem;">גישה לאפליקציה</div>
+        <!-- Updated Version Preview -->
+        <div class="section">
+            <h2 class="section-title">✨ Updated Home Page (After Changes)</h2>
+            <div class="preview-wrapper">
+                <div class="preview-label">Live Preview - New Styles Applied</div>
+                <div class="preview-content">
+                    <div class="boardly-page">
+                        <h1>Boardly</h1>
+                        <p>Work management platform</p>
+                        <div class="button-group">
+                            <a href="#" class="btn btn-primary">Login</a>
+                            <a href="#" class="btn btn-secondary">Register</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card" style="margin-top: 2rem;">
-            <h2 style="color: #667eea; margin-bottom: 1rem;">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                </svg>
-                סיכום טכני
-            </h2>
-
-            <div style="display: grid; gap: 1rem;">
-                <div class="highlight-box">
-                    <strong>📊 סטטיסטיקות:</strong><br>
-                    • 2 קבצים שונו<br>
-                    • 6 שורות הוספו, 4 שורות הוסרו<br>
-                    • 4 commits נוספים (deployment configs)<br>
-                    • Fast-forward merge (ללא conflicts)
+        <!-- Side-by-Side Comparison -->
+        <div class="section">
+            <h2 class="section-title">🔄 Before & After Comparison</h2>
+            <div class="comparison">
+                <div class="comparison-item">
+                    <div class="comparison-label">Before (Original)</div>
+                    <div class="comparison-content">
+                        <div class="boardly-page-old">
+                            <h1>Boardly</h1>
+                            <p>Work management platform</p>
+                            <div class="button-group">
+                                <a href="#" class="btn-old btn-primary">Login</a>
+                                <a href="#" class="btn-old btn-secondary">Register</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="highlight-box" style="background: #fef3c7; border-right-color: #f59e0b;">
-                    <strong>⚠️ שינויים פורצי תאימות (Breaking Changes):</strong><br>
-                    • משתמשים חייבים להתחבר באופן מפורש בכל פעם<br>
-                    • אין יותר "remember me" functionality אוטומטית<br>
-                    • Token cookies לא מספיקים להתחברות אוטומטית
-                </div>
-
-                <div class="highlight-box" style="background: #f0fdf4; border-right-color: #10b981;">
-                    <strong>✅ יתרונות:</strong><br>
-                    • חוויית משתמש טובה יותר<br>
-                    • משתמשים יכולים להתנתק בצורה אפקטיבית<br>
-                    • אין loops של redirects<br>
-                    • התנהגות צפויה ועקבית
+                <div class="comparison-item">
+                    <div class="comparison-label new">After (Updated)</div>
+                    <div class="comparison-content">
+                        <div class="boardly-page">
+                            <h1>Boardly</h1>
+                            <p>Work management platform</p>
+                            <div class="button-group">
+                                <a href="#" class="btn btn-primary">Login</a>
+                                <a href="#" class="btn btn-secondary">Register</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="card" style="margin-top: 2rem; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-            <h2 style="color: white; margin-bottom: 1rem;">🎉 המיזוג הושלם בהצלחה!</h2>
-            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
-                כל השינויים מ-PR #6 נמזגו ל-main branch
+        <!-- Changes Summary -->
+        <div class="section">
+            <h2 class="section-title">📋 Changes Applied</h2>
+
+            <div class="changes-list">
+                <div class="change-item">
+                    <div class="change-target">Element 1: Link buttons (.px-6.py-2)</div>
+                    <div class="change-details">
+                        <div class="change-property">
+                            <span class="property-name">fontSize:</span>
+                            <span class="property-value">18px</span>
+                            <span class="tailwind-class">text-[18px]</span>
+                        </div>
+                        <div class="change-property">
+                            <span class="property-name">borderStyle:</span>
+                            <span class="property-value">dotted</span>
+                            <span class="tailwind-class">border border-dotted</span>
+                        </div>
+                        <div class="change-property">
+                            <span class="property-name">borderColor:</span>
+                            <span class="property-value">#3253b3</span>
+                            <span class="tailwind-class">border-[#3253b3]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="change-item">
+                    <div class="change-target">Element 2: Outer wrapper div (.flex.min-h-screen)</div>
+                    <div class="change-details">
+                        <div class="change-property">
+                            <span class="property-name">borderRadius:</span>
+                            <span class="property-value">1px</span>
+                            <span class="tailwind-class">rounded-[1px]</span>
+                        </div>
+                        <div class="change-property">
+                            <span class="property-name">borderWidth:</span>
+                            <span class="property-value">10px</span>
+                            <span class="tailwind-class">border-[10px]</span>
+                        </div>
+                        <div class="change-property">
+                            <span class="property-name">marginTop:</span>
+                            <span class="property-value">0px</span>
+                            <span class="tailwind-class">mt-0</span>
+                        </div>
+                        <div class="change-property">
+                            <span class="property-name">color:</span>
+                            <span class="property-value">#5f6895</span>
+                            <span class="tailwind-class">text-[#5f6895]</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="change-item">
+                    <div class="change-target">Element 3: Main heading (h1.text-4xl.font-bold)</div>
+                    <div class="change-details">
+                        <div class="change-property">
+                            <span class="property-name">fontSize:</span>
+                            <span class="property-value">45px</span>
+                            <span class="tailwind-class">text-[45px]</span>
+                            (replaced <code style="text-decoration: line-through; opacity: 0.6;">text-4xl</code>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Details -->
+        <div class="section">
+            <h2 class="section-title">⚙️ Technical Implementation</h2>
+
+            <h3 class="section-subtitle">File Modified</h3>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 14px;">
+                apps/web/src/app/page.tsx
+            </div>
+
+            <h3 class="section-subtitle">Tailwind CSS Approach</h3>
+            <p style="margin-bottom: 15px; color: #495057;">
+                All changes use Tailwind utility classes with arbitrary values where needed:
             </p>
-            <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                <strong>Git Commands שרצו:</strong><br>
-                <code style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem;">
-                    git checkout -b main 4f06a3c<br>
-                    git merge owla/remove-the-auto-login-mechanism-that-is-causing-is-a213e4<br>
-                    git push -u origin main
-                </code>
+            <ul style="list-style: none; padding-left: 0;">
+                <li style="padding: 10px; background: #f8f9fa; margin-bottom: 8px; border-radius: 4px;">
+                    ✅ <strong>Arbitrary values:</strong> <code>text-[45px]</code>, <code>rounded-[1px]</code>, <code>border-[10px]</code>, <code>text-[#5f6895]</code>, <code>border-[#3253b3]</code>
+                </li>
+                <li style="padding: 10px; background: #f8f9fa; margin-bottom: 8px; border-radius: 4px;">
+                    ✅ <strong>Standard utilities:</strong> <code>border</code>, <code>border-dotted</code>, <code>mt-0</code>
+                </li>
+                <li style="padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                    ✅ <strong>All existing classes preserved:</strong> Layout, spacing, and theme classes remain intact
+                </li>
+            </ul>
+
+            <h3 class="section-subtitle">Key Visual Changes</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
+                <div style="background: #e7f3ff; padding: 20px; border-radius: 8px; border-left: 4px solid #007bff;">
+                    <div style="font-weight: 700; color: #007bff; margin-bottom: 10px;">Typography</div>
+                    <div style="font-size: 14px; color: #495057;">
+                        • Heading increased to 45px<br>
+                        • Button text enlarged to 18px<br>
+                        • Main text color: #5f6895
+                    </div>
+                </div>
+                <div style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                    <div style="font-weight: 700; color: #856404; margin-bottom: 10px;">Borders</div>
+                    <div style="font-size: 14px; color: #495057;">
+                        • Container: 10px solid border<br>
+                        • Buttons: dotted blue borders<br>
+                        • Border color: #3253b3
+                    </div>
+                </div>
+                <div style="background: #d4edda; padding: 20px; border-radius: 8px; border-left: 4px solid #28a745;">
+                    <div style="font-weight: 700; color: #155724; margin-bottom: 10px;">Layout</div>
+                    <div style="font-size: 14px; color: #495057;">
+                        • Border radius: 1px (subtle)<br>
+                        • Margin top: 0px (reset)<br>
+                        • All spacing preserved
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 40px 20px; color: #6c757d; font-size: 14px;">
+            <p>✨ Visual style updates applied successfully</p>
+            <p style="margin-top: 10px;">Generated for Product Manager review • Next.js + Tailwind CSS Project</p>
         </div>
     </div>
-
-    <script>
-        function switchTab(tabId) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-
-            // Show selected tab content
-            document.getElementById(tabId).classList.add('active');
-
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-        }
-    </script>
 </body>
 </html>
