@@ -44,11 +44,11 @@ export default function AllBoardsPage() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <LayoutGrid className="h-8 w-8 text-monday-purple" />
-            <h1 className="text-3xl font-semibold text-[#323338]">
+            <h1 className="text-3xl font-semibold text-[#323338] dark:text-[#F0F0F5]">
               All Boards
             </h1>
           </div>
-          <p className="text-[#676879] text-base">
+          <p className="text-[#676879] dark:text-[#9090A8] text-base">
             {boards?.length || 0} {boards?.length === 1 ? 'board' : 'boards'} in your workspace
           </p>
         </div>

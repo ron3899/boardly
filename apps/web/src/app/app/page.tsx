@@ -53,10 +53,10 @@ export default function DashboardPage() {
       <div className="p-6 lg:p-8">
         {/* Greeting Section */}
         <div className="mb-8">
-          <h1 className="text-3xl font-semibold text-[#323338] mb-2">
+          <h1 className="text-3xl font-semibold text-[#323338] dark:text-[#F0F0F5] mb-2">
             {getGreeting()}, {user?.name?.split(' ')[0] || 'there'}! 👋
           </h1>
-          <p className="text-[#676879] text-base">
+          <p className="text-[#676879] dark:text-[#9090A8] text-base">
             Here's what's happening with your work today
           </p>
         </div>
@@ -72,7 +72,7 @@ export default function DashboardPage() {
           <EmptyState onCreateBoard={() => setCreateOpen(true)} />
         ) : (
           <>
-            <h2 className="text-lg font-semibold text-[#323338] mb-4">
+            <h2 className="text-lg font-semibold text-[#323338] dark:text-[#F0F0F5] mb-4">
               Your boards
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -83,12 +83,12 @@ export default function DashboardPage() {
               {/* Add New Board Card */}
               <button
                 onClick={() => setCreateOpen(true)}
-                className="group relative rounded-lg border-2 border-dashed border-[#E6E9EF] bg-white hover:border-monday-purple hover:bg-monday-purple/5 transition-all p-8 flex flex-col items-center justify-center min-h-[140px]"
+                className="group relative rounded-lg border-2 border-dashed border-[#E6E9EF] dark:border-[#2A2A38] bg-white dark:bg-[#17171F] hover:border-monday-purple hover:bg-monday-purple/5 dark:hover:bg-monday-purple/10 transition-all p-8 flex flex-col items-center justify-center min-h-[140px]"
               >
                 <div className="w-12 h-12 rounded-full bg-monday-purple/10 group-hover:bg-monday-purple/20 flex items-center justify-center mb-3 transition-colors">
                   <Plus className="h-6 w-6 text-monday-purple" />
                 </div>
-                <span className="text-sm font-medium text-[#676879] group-hover:text-monday-purple transition-colors">
+                <span className="text-sm font-medium text-[#676879] dark:text-[#9090A8] group-hover:text-monday-purple transition-colors">
                   New Board
                 </span>
               </button>
