@@ -8,12 +8,13 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(cuid())
-  email        String        @unique
+  id           String               @id @default(cuid())
+  email        String               @unique
   passwordHash String
   name         String
-  createdAt    DateTime      @default(now())
+  createdAt    DateTime             @default(now())
   memberships  BoardMember[]
+  resetTokens  PasswordResetToken[]
 }
 
 model Board {
@@ -77,4 +78,14 @@ model ColumnValue {
   column   Column @relation(fields: [columnId], references: [id], onDelete: Cascade)
 
   @@unique([itemId, columnId])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
