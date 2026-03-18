@@ -245,6 +245,25 @@ let boardDetails = new Map<string, BoardWithDetails>([['board-1', mockBoardWithD
 let currentUser = { ...mockUser }
 let isAuthenticated = false
 
+// Cookie helper functions for mock mode
+function setMockAuthCookie(token: string) {
+  if (typeof document !== 'undefined') {
+    document.cookie = `token=${token}; path=/; max-age=86400; SameSite=Lax`
+  }
+}
+
+function getMockAuthCookie(): string | null {
+  if (typeof document === 'undefined') return null
+  const match = document.cookie.match(/token=([^;]+)/)
+  return match ? match[1] : null
+}
+
+function clearMockAuthCookie() {
+  if (typeof document !== 'undefined') {
+    document.cookie = 'token=; path=/; max-age=0'
+  }
+}
+
 // Helper to generate IDs
 let idCounter = 100
 const generateId = (prefix: string) => `${prefix}-${idCounter++}`
@@ -255,25 +274,48 @@ export const mockApi = {
   auth: {
     me: async () => {
       await delay(300)
-      if (!isAuthenticated) {
+      const token = getMockAuthCookie()
+      if (!token || !isAuthenticated) {
         throw new Error('Not authenticated')
       }
       return { user: currentUser }
     },
     login: async (input: { email: string; password: string }) => {
       await delay(500)
+
+      // Accept both credential sets for sandbox/dev environments
+      const validCredentials = [
+        { email: 'demo@boardly.com', password: 'demo1234' },
+        { email: 'demo@example.com', password: 'demo' },
+      ]
+
+      const isValid = validCredentials.some(
+        cred => cred.email === input.email && cred.password === input.password
+      )
+
+      if (!isValid) {
+        throw new Error('Invalid credentials')
+      }
+
       isAuthenticated = true
-      return { user: currentUser, token: 'mock-token' }
+      const token = 'mock-token-' + Date.now()
+      setMockAuthCookie(token)
+
+      return { user: currentUser, token }
     },
     register: async (input: { email: string; password: string; name: string }) => {
       await delay(500)
       currentUser = { ...mockUser, name: input.name, email: input.email }
       isAuthenticated = true
-      return { user: currentUser, token: 'mock-token' }
+      const token = 'mock-token-' + Date.now()
+      setMockAuthCookie(token)
+
+      return { user: currentUser, token }
     },
     logout: async () => {
       await delay(300)
       isAuthenticated = false
+      clearMockAuthCookie()
       return {}
     },
   },
