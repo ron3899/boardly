@@ -14,7 +14,7 @@ const cookieOptions = {
 }
 
 export default async function authRoutes(app: FastifyInstance) {
-  const service = new AuthService(app.prisma)
+  const service = new AuthService(app.prisma || null)
 
   app.post('/auth/register', async (request, reply) => {
     const input = registerSchema.parse(request.body)

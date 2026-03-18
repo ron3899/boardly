@@ -4,7 +4,7 @@ import { ColumnType, DEFAULT_STATUS_LABELS } from '@boardly/shared'
 // Mock User
 export const mockUser: User = {
   id: 'user-1',
-  email: 'demo@example.com',
+  email: 'demo@boardly.com',
   name: 'Demo User',
   createdAt: new Date().toISOString(),
 }
@@ -243,7 +243,27 @@ export const mockBoardWithDetails: BoardWithDetails = {
 let boards = [...mockBoards]
 let boardDetails = new Map<string, BoardWithDetails>([['board-1', mockBoardWithDetails]])
 let currentUser = { ...mockUser }
-let isAuthenticated = false
+
+// Helper to check if authenticated via cookie
+function isAuthenticated(): boolean {
+  if (typeof document === 'undefined') return false
+  return document.cookie.includes('mock_token=')
+}
+
+// Helper to set mock auth cookie
+function setMockAuthCookie() {
+  if (typeof document === 'undefined') return
+  // Set cookie that expires in 7 days
+  const expires = new Date()
+  expires.setDate(expires.getDate() + 7)
+  document.cookie = `mock_token=mock-jwt-token; path=/; expires=${expires.toUTCString()}; SameSite=Lax`
+}
+
+// Helper to clear mock auth cookie
+function clearMockAuthCookie() {
+  if (typeof document === 'undefined') return
+  document.cookie = 'mock_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
+}
 
 // Helper to generate IDs
 let idCounter = 100
@@ -255,25 +275,29 @@ export const mockApi = {
   auth: {
     me: async () => {
       await delay(300)
-      if (!isAuthenticated) {
+      if (!isAuthenticated()) {
         throw new Error('Not authenticated')
       }
       return { user: currentUser }
     },
     login: async (input: { email: string; password: string }) => {
       await delay(500)
-      isAuthenticated = true
-      return { user: currentUser, token: 'mock-token' }
+      // Check credentials
+      if (input.email !== 'demo@boardly.com' || input.password !== 'demo1234') {
+        throw Object.assign(new Error('Invalid credentials'), { statusCode: 401 })
+      }
+      setMockAuthCookie()
+      return { user: currentUser, token: 'mock-jwt-token' }
     },
     register: async (input: { email: string; password: string; name: string }) => {
       await delay(500)
       currentUser = { ...mockUser, name: input.name, email: input.email }
-      isAuthenticated = true
-      return { user: currentUser, token: 'mock-token' }
+      setMockAuthCookie()
+      return { user: currentUser, token: 'mock-jwt-token' }
     },
     logout: async () => {
       await delay(300)
-      isAuthenticated = false
+      clearMockAuthCookie()
       return {}
     },
   },
@@ -581,6 +605,6 @@ export function resetMockData() {
   boards = [...mockBoards]
   boardDetails = new Map([['board-1', mockBoardWithDetails]])
   currentUser = { ...mockUser }
-  isAuthenticated = false
+  clearMockAuthCookie()
   idCounter = 100
 }
