@@ -43,15 +43,39 @@ async function handleMockRequest<T>(path: string, options: RequestInit = {}): Pr
   try {
     // Auth routes
     if (path === '/auth/me' && method === 'GET') {
+      // Check if we have a mock auth token in localStorage
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null
+      if (!token) {
+        throw new ApiError(401, 'Not authenticated')
+      }
       return (await mockApi.auth.me()) as T
     }
     if (path === '/auth/login' && method === 'POST') {
-      return (await mockApi.auth.login(body)) as T
+      const result = await mockApi.auth.login(body)
+      // Set auth token in localStorage and cookie for mock mode
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('auth_token', 'mock-token-123')
+        // Set cookie for middleware to read
+        document.cookie = 'mock_auth=true; path=/; max-age=86400' // 24 hours
+      }
+      return result as T
     }
     if (path === '/auth/register' && method === 'POST') {
-      return (await mockApi.auth.register(body)) as T
+      const result = await mockApi.auth.register(body)
+      // Set auth token in localStorage and cookie for mock mode
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('auth_token', 'mock-token-123')
+        // Set cookie for middleware to read
+        document.cookie = 'mock_auth=true; path=/; max-age=86400' // 24 hours
+      }
+      return result as T
     }
     if (path === '/auth/logout' && method === 'POST') {
+      // Clear auth token and cookie on logout
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('auth_token')
+        document.cookie = 'mock_auth=; path=/; max-age=0' // Delete cookie
+      }
       return (await mockApi.auth.logout()) as T
     }
 

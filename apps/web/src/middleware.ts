@@ -2,10 +2,17 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  // In mock API mode, skip auth checks (auth will be handled client-side)
+  // In mock API mode, check for mock_auth cookie
   const useMockApi = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
 
   if (useMockApi) {
+    const mockAuth = request.cookies.get('mock_auth')?.value
+
+    // Only protect /app routes when in mock mode - redirect to login if no mock_auth cookie
+    if (request.nextUrl.pathname.startsWith('/app') && !mockAuth) {
+      return NextResponse.redirect(new URL('/login', request.url))
+    }
+
     return NextResponse.next()
   }
 

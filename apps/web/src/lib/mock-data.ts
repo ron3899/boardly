@@ -262,8 +262,19 @@ export const mockApi = {
     },
     login: async (input: { email: string; password: string }) => {
       await delay(500)
+      // Accept any credentials with @ in email (for demo purposes)
+      // Or specifically demo@boardly.com / demo1234
+      if (!input.email || !input.email.includes('@')) {
+        throw new Error('Invalid email address')
+      }
+      // Update current user with the login email
+      currentUser = {
+        ...mockUser,
+        email: input.email,
+        name: input.email === 'demo@boardly.com' ? 'Demo User' : input.email.split('@')[0],
+      }
       isAuthenticated = true
-      return { user: currentUser, token: 'mock-token' }
+      return { user: currentUser, token: 'mock-token-123' }
     },
     register: async (input: { email: string; password: string; name: string }) => {
       await delay(500)
