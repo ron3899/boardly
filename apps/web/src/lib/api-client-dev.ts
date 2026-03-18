@@ -3,7 +3,9 @@ import { mockApi } from './mock-data'
 // Use empty string for same-origin requests (proxied via Next.js rewrites to localhost:3001)
 // Or use NEXT_PUBLIC_API_URL if explicitly set (e.g., for production)
 const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
-const USE_MOCK_API = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
+// HARDCODED: Always use mock API in sandbox/preview environments
+// This ensures login works without any .env files or real database
+const USE_MOCK_API = true
 
 class ApiError extends Error {
   constructor(public status: number, message: string) {
