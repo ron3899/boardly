@@ -1,6 +1,8 @@
 import { mockApi } from './mock-data'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+// Use empty string for same-origin requests (proxied via Next.js rewrites to localhost:3001)
+// Or use NEXT_PUBLIC_API_URL if explicitly set (e.g., for production)
+const API_URL = process.env.NEXT_PUBLIC_API_URL || ''
 const USE_MOCK_API = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
 
 class ApiError extends Error {
