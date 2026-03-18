@@ -1,9 +1,11 @@
 import type { FastifyInstance } from 'fastify'
 import { registerSchema, loginSchema } from '@boardly/shared'
 import { AuthService } from './auth.service.js'
+import { MockAuthService } from './auth.service.mock.js'
 import { authenticate } from '../../hooks/authenticate.js'
 
 const isProd = process.env.NODE_ENV === 'production'
+const useMockAuth = process.env.MOCK_AUTH === 'true'
 
 const cookieOptions = {
   path: '/',
@@ -14,7 +16,11 @@ const cookieOptions = {
 }
 
 export default async function authRoutes(app: FastifyInstance) {
-  const service = new AuthService(app.prisma)
+  const service = useMockAuth ? new MockAuthService() : new AuthService(app.prisma)
+
+  if (useMockAuth) {
+    console.log('🔓 [Auth] Running in MOCK AUTH mode - using in-memory user store')
+  }
 
   app.post('/auth/register', async (request, reply) => {
     const input = registerSchema.parse(request.body)

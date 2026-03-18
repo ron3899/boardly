@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 
 const IS_DEV_MODE = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
+const IS_MOCK_AUTH = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -91,6 +92,13 @@ export default function LoginPage() {
               >
                 🚀 Auto Login (Dev)
               </Button>
+            </div>
+          )}
+          {IS_MOCK_AUTH && (
+            <div className="mt-4 rounded-md border border-muted bg-muted/20 p-3">
+              <p className="text-xs text-muted-foreground text-center">
+                <span className="font-medium">Dev mode:</span> use <code className="px-1.5 py-0.5 rounded bg-muted text-foreground">demo@boardly.com</code> / <code className="px-1.5 py-0.5 rounded bg-muted text-foreground">demo1234</code>
+              </p>
             </div>
           )}
           <p className="mt-4 text-center text-sm text-muted-foreground">
