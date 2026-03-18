@@ -2,10 +2,13 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  // In mock API mode, skip auth checks (auth will be handled client-side)
-  const useMockApi = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
+  // HARDCODED: Always use mock API mode in sandbox/preview environments
+  // This ensures the app works without any .env files or real database
+  // Auth is handled client-side via localStorage
+  const useMockApi = true
 
   if (useMockApi) {
+    // In mock mode, always allow access - auth is handled client-side
     return NextResponse.next()
   }
 

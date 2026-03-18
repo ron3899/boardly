@@ -4,10 +4,15 @@ import { ColumnType, DEFAULT_STATUS_LABELS } from '@boardly/shared'
 // Mock User
 export const mockUser: User = {
   id: 'user-1',
-  email: 'demo@example.com',
+  email: 'demo@boardly.com',
   name: 'Demo User',
   createdAt: new Date().toISOString(),
 }
+
+// Mock credentials for sandbox/preview environments
+const MOCK_EMAIL = 'demo@boardly.com'
+const MOCK_PASSWORD = 'demo1234'
+const MOCK_TOKEN = 'mock-auth-token-boardly'
 
 // Mock Boards
 export const mockBoards: Board[] = [
@@ -255,6 +260,15 @@ export const mockApi = {
   auth: {
     me: async () => {
       await delay(300)
+      // Check for mock token in localStorage (client-side)
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('mock-auth-token')
+        if (token === MOCK_TOKEN) {
+          isAuthenticated = true
+          return { user: currentUser }
+        }
+      }
+      // Fall back to in-memory auth state (for SSR)
       if (!isAuthenticated) {
         throw new Error('Not authenticated')
       }
@@ -262,18 +276,34 @@ export const mockApi = {
     },
     login: async (input: { email: string; password: string }) => {
       await delay(500)
-      isAuthenticated = true
-      return { user: currentUser, token: 'mock-token' }
+      // Validate mock credentials
+      if (input.email === MOCK_EMAIL && input.password === MOCK_PASSWORD) {
+        isAuthenticated = true
+        // Store token in localStorage for client-side persistence
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('mock-auth-token', MOCK_TOKEN)
+        }
+        return { user: currentUser, token: MOCK_TOKEN }
+      }
+      throw new Error('Invalid email or password')
     },
     register: async (input: { email: string; password: string; name: string }) => {
       await delay(500)
       currentUser = { ...mockUser, name: input.name, email: input.email }
       isAuthenticated = true
-      return { user: currentUser, token: 'mock-token' }
+      // Store token in localStorage for client-side persistence
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('mock-auth-token', MOCK_TOKEN)
+      }
+      return { user: currentUser, token: MOCK_TOKEN }
     },
     logout: async () => {
       await delay(300)
       isAuthenticated = false
+      // Clear token from localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('mock-auth-token')
+      }
       return {}
     },
   },
