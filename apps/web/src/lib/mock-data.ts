@@ -255,15 +255,17 @@ export const mockApi = {
   auth: {
     me: async () => {
       await delay(300)
-      if (!isAuthenticated) {
-        throw new Error('Not authenticated')
-      }
+      // In mock mode, always return demo user without requiring authentication
       return { user: currentUser }
     },
     login: async (input: { email: string; password: string }) => {
       await delay(500)
       isAuthenticated = true
-      return { user: currentUser, token: 'mock-token' }
+      // Set cookie for middleware compatibility
+      if (typeof document !== 'undefined') {
+        document.cookie = 'token=mock-token-demo; path=/; max-age=86400'
+      }
+      return { user: currentUser, token: 'mock-token-demo' }
     },
     register: async (input: { email: string; password: string; name: string }) => {
       await delay(500)

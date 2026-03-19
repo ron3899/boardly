@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/use-auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,10 +11,18 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 const IS_DEV_MODE = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
 
 export default function LoginPage() {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { login, loginError } = useAuth()
   const [loading, setLoading] = useState(false)
+
+  // In mock mode, immediately redirect to /app
+  useEffect(() => {
+    if (IS_DEV_MODE) {
+      router.push('/app')
+    }
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
