@@ -255,9 +255,7 @@ export const mockApi = {
   auth: {
     me: async () => {
       await delay(300)
-      if (!isAuthenticated) {
-        throw new Error('Not authenticated')
-      }
+      // Always return demo user - no authentication required
       return { user: currentUser }
     },
     login: async (input: { email: string; password: string }) => {
