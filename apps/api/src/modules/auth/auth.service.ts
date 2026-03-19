@@ -24,6 +24,16 @@ export class AuthService {
   }
 
   async login(input: LoginInput) {
+    // MOCK_AUTH bypass for sandbox environments
+    if (process.env.MOCK_AUTH === 'true') {
+      const MOCK_EMAIL = 'demo@boardly.com'
+      const MOCK_PASSWORD = 'demo1234'
+      if (input.email === MOCK_EMAIL && input.password === MOCK_PASSWORD) {
+        return { id: 'mock-user-id', email: MOCK_EMAIL, name: 'Demo User', createdAt: new Date().toISOString() }
+      }
+      throw Object.assign(new Error('Invalid credentials'), { statusCode: 401 })
+    }
+
     const user = await this.prisma.user.findUnique({ where: { email: input.email } })
     if (!user) {
       throw Object.assign(new Error('Invalid credentials'), { statusCode: 401 })
@@ -38,6 +48,11 @@ export class AuthService {
   }
 
   async getUser(userId: string) {
+    // MOCK_AUTH bypass for sandbox environments
+    if (process.env.MOCK_AUTH === 'true' && userId === 'mock-user-id') {
+      return { id: 'mock-user-id', email: 'demo@boardly.com', name: 'Demo User', createdAt: new Date().toISOString() }
+    }
+
     const user = await this.prisma.user.findUnique({ where: { id: userId } })
     if (!user) {
       throw Object.assign(new Error('User not found'), { statusCode: 404 })
