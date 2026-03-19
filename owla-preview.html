@@ -1,547 +1,739 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boardly - הסרת Auto-Login | Demo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boardly - Multi-Step Board Creation Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: 'Heebo', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 2rem;
-        }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #323338;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+    .container {
+      max-width: 1200px;
+      width: 100%;
+    }
 
-        .header {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            text-align: center;
-        }
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
 
-        .header h1 {
-            color: #667eea;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
 
-        .header .subtitle {
-            color: #666;
-            font-size: 1.1rem;
-        }
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
 
-        .badge {
-            display: inline-block;
-            background: #10b981;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-top: 1rem;
-        }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
+      margin-bottom: 30px;
+    }
 
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
+    .step-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+    }
 
-        .card h2 {
-            color: #667eea;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+    .step-header {
+      background: linear-gradient(135deg, #6161FF 0%, #7B7BFF 100%);
+      color: white;
+      padding: 20px 24px;
+    }
 
-        .icon {
-            width: 24px;
-            height: 24px;
-        }
+    .step-number {
+      font-size: 0.875rem;
+      font-weight: 600;
+      opacity: 0.9;
+      margin-bottom: 4px;
+    }
 
-        .change-list {
-            list-style: none;
-            margin-bottom: 1rem;
-        }
+    .step-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
 
-        .change-list li {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
-            display: flex;
-            align-items: start;
-            gap: 0.5rem;
-        }
+    .step-content {
+      padding: 24px;
+    }
 
-        .change-list li.removed {
-            background: #fee;
-            border-right: 3px solid #ef4444;
-        }
+    /* Step 1: Template Selection */
+    .template-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
 
-        .change-list li.added {
-            background: #efe;
-            border-right: 3px solid #10b981;
-        }
+    .template-card {
+      border: 2px solid #E6E9EF;
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
 
-        .change-list li.modified {
-            background: #fef3c7;
-            border-right: 3px solid #f59e0b;
-        }
+    .template-card:hover {
+      border-color: #6161FF;
+      transform: scale(1.02);
+    }
 
-        .change-icon {
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
+    .template-card.selected {
+      border-color: #6161FF;
+      background: rgba(97, 97, 255, 0.05);
+      box-shadow: 0 4px 12px rgba(97, 97, 255, 0.15);
+    }
 
-        .code-block {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 1rem;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
+    .template-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      font-size: 24px;
+    }
 
-        .code-block .comment {
-            color: #6a9955;
-        }
+    .template-name {
+      font-weight: 600;
+      font-size: 0.9375rem;
+      margin-bottom: 4px;
+    }
 
-        .code-block .keyword {
-            color: #569cd6;
-        }
+    .template-desc {
+      font-size: 0.875rem;
+      color: #676879;
+    }
 
-        .code-block .string {
-            color: #ce9178;
-        }
+    .check-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 24px;
+      height: 24px;
+      background: #6161FF;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+    }
 
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #e5e7eb;
-        }
+    /* Step 2: Board Details */
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-        .tab {
-            padding: 0.75rem 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: 'Heebo', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #666;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.3s;
-        }
+    .form-label {
+      display: block;
+      font-weight: 500;
+      font-size: 0.875rem;
+      margin-bottom: 8px;
+    }
 
-        .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
+    .required {
+      color: #E2445C;
+    }
 
-        .tab:hover {
-            color: #667eea;
-        }
+    .optional {
+      color: #9699A6;
+      font-weight: 400;
+      font-size: 0.75rem;
+    }
 
-        .tab-content {
-            display: none;
-        }
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #E6E9EF;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      transition: border-color 0.2s ease;
+    }
 
-        .tab-content.active {
-            display: block;
-        }
+    .form-input:focus {
+      outline: none;
+      border-color: #6161FF;
+      box-shadow: 0 0 0 3px rgba(97, 97, 255, 0.1);
+    }
 
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
+    .form-textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #E6E9EF;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      resize: none;
+      min-height: 80px;
+    }
 
-        .comparison-side {
-            padding: 1rem;
-            border-radius: 8px;
-        }
+    .form-textarea:focus {
+      outline: none;
+      border-color: #6161FF;
+      box-shadow: 0 0 0 3px rgba(97, 97, 255, 0.1);
+    }
 
-        .comparison-side h3 {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
+    .char-counter {
+      text-align: right;
+      font-size: 0.75rem;
+      color: #9699A6;
+      margin-top: 4px;
+    }
 
-        .comparison-side.before {
-            background: #fef2f2;
-            border: 2px solid #ef4444;
-        }
+    .color-swatches {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-        .comparison-side.after {
-            background: #f0fdf4;
-            border: 2px solid #10b981;
-        }
+    .color-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.2s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .flow-diagram {
-            background: #f9fafb;
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 1rem;
-        }
+    .color-swatch:hover {
+      transform: scale(1.15);
+    }
 
-        .flow-step {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
+    .color-swatch.selected {
+      border-color: white;
+      box-shadow: 0 0 0 2px #6161FF;
+    }
 
-        .flow-arrow {
-            color: #667eea;
-            font-size: 2rem;
-            margin: 0.5rem 0;
-        }
+    .icon-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-        .highlight-box {
-            background: #eff6ff;
-            border-right: 4px solid #3b82f6;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
+    .icon-button {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      background: #F6F7FB;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
 
-        .highlight-box strong {
-            color: #3b82f6;
-        }
+    .icon-button:hover {
+      transform: scale(1.1);
+      border-color: #E6E9EF;
+    }
 
-        @media (max-width: 768px) {
-            .comparison {
-                grid-template-columns: 1fr;
-            }
+    .icon-button.selected {
+      background: rgba(97, 97, 255, 0.15);
+      border-color: #6161FF;
+    }
 
-            .header h1 {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+    /* Step 3: Preview */
+    .preview-card {
+      border: 1px solid #E6E9EF;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      position: relative;
+      background: white;
+    }
+
+    .preview-strip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .preview-content {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .preview-icon {
+      font-size: 40px;
+      flex-shrink: 0;
+    }
+
+    .preview-info {
+      flex: 1;
+    }
+
+    .preview-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .preview-desc {
+      font-size: 0.875rem;
+      color: #676879;
+      margin-bottom: 12px;
+    }
+
+    .preview-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 0.75rem;
+      color: #9699A6;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .color-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .summary-box {
+      background: #F6F7FB;
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.875rem;
+    }
+
+    .summary-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .summary-label {
+      color: #676879;
+    }
+
+    .summary-value {
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* Progress Indicator */
+    .progress-bar {
+      height: 4px;
+      background: #E6E9EF;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #6161FF;
+      transition: width 0.3s ease;
+    }
+
+    .step-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 4px;
+      background: #E6E9EF;
+      transition: all 0.3s ease;
+    }
+
+    .step-dot.active {
+      width: 24px;
+      background: #6161FF;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #E6E9EF;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #676879;
+    }
+
+    .btn-ghost:hover {
+      background: #F6F7FB;
+    }
+
+    .btn-primary {
+      background: #6161FF;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5050EF;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(97, 97, 255, 0.3);
+    }
+
+    .footer {
+      text-align: center;
+      color: white;
+      margin-top: 40px;
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .step-card {
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .step-card:nth-child(1) { animation-delay: 0.1s; }
+    .step-card:nth-child(2) { animation-delay: 0.2s; }
+    .step-card:nth-child(3) { animation-delay: 0.3s; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎯 Boardly - הסרת מנגנון Auto-Login</h1>
-            <p class="subtitle">מיזוג מוצלח של השינויים מ-PR #6 ל-main branch</p>
-            <span class="badge">✅ Merged Successfully</span>
-        </div>
-
-        <div class="content-grid">
-            <div class="card">
-                <h2>
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    סיכום השינויים
-                </h2>
-                <ul class="change-list">
-                    <li class="removed">
-                        <span class="change-icon">−</span>
-                        <div>
-                            <strong>הסרת Auto-Login Mechanism</strong>
-                            <div>הסרנו את המנגנון שבדק אימות אוטומטי בטעינת הדף</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">~</span>
-                        <div>
-                            <strong>שינוי ב-useAuth Hook</strong>
-                            <div>הגדרת <code>enabled: false</code> ב-query של האימות</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">~</span>
-                        <div>
-                            <strong>עדכון Middleware</strong>
-                            <div>הסרת redirect אוטומטי מדפי login/register</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">+</span>
-                        <div>
-                            <strong>הוספת checkAuth Method</strong>
-                            <div>שיטה ידנית לבדיקת סטטוס אימות</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h2>
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                    קבצים ששונו
-                </h2>
-                <ul class="change-list">
-                    <li class="modified">
-                        <span class="change-icon">📝</span>
-                        <div>
-                            <strong>apps/web/src/hooks/use-auth.ts</strong>
-                            <div style="font-size: 0.9rem; color: #666;">4 שורות שונו</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">📝</span>
-                        <div>
-                            <strong>apps/web/src/middleware.ts</strong>
-                            <div style="font-size: 0.9rem; color: #666;">6 שורות שונו</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">➕</span>
-                        <div>
-                            <strong>vercel.json</strong>
-                            <div style="font-size: 0.9rem; color: #666;">הוסף עבור deployment</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">➕</span>
-                        <div>
-                            <strong>render.yaml</strong>
-                            <div style="font-size: 0.9rem; color: #666;">עודכן עבור deployment</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="tabs">
-                <button class="tab active" onclick="switchTab('before-after')">לפני ואחרי</button>
-                <button class="tab" onclick="switchTab('code-changes')">שינויי קוד</button>
-                <button class="tab" onclick="switchTab('flow')">תרשים זרימה</button>
-            </div>
-
-            <div id="before-after" class="tab-content active">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">השוואה: לפני ואחרי</h2>
-                <div class="comparison">
-                    <div class="comparison-side before">
-                        <h3>❌ לפני - עם Auto-Login</h3>
-                        <ul style="list-style: none;">
-                            <li style="margin: 0.5rem 0;">🔄 בדיקה אוטומטית בכל טעינת דף</li>
-                            <li style="margin: 0.5rem 0;">🔄 Redirect אוטומטי ל-/app אם יש token</li>
-                            <li style="margin: 0.5rem 0;">⚠️ גורם לבעיות UX</li>
-                            <li style="margin: 0.5rem 0;">⚠️ משתמשים לא יכלו להתנתק באופן אפקטיבי</li>
-                        </ul>
-                    </div>
-                    <div class="comparison-side after">
-                        <h3>✅ אחרי - בלי Auto-Login</h3>
-                        <ul style="list-style: none;">
-                            <li style="margin: 0.5rem 0;">✋ אין בדיקה אוטומטית</li>
-                            <li style="margin: 0.5rem 0;">👤 משתמשים חייבים להתחבר באופן מפורש</li>
-                            <li style="margin: 0.5rem 0;">✨ חוויית משתמש משופרת</li>
-                            <li style="margin: 0.5rem 0;">✨ התנתקות עובדת כראוי</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="code-changes" class="tab-content">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">שינויי קוד מפתח</h2>
-
-                <h3 style="margin: 1.5rem 0 1rem;">1. apps/web/src/hooks/use-auth.ts</h3>
-                <div class="code-block">
-<span class="keyword">const</span> { data, isLoading, refetch } = <span class="keyword">useQuery</span>({
-  queryKey: [<span class="string">'auth'</span>, <span class="string">'me'</span>],
-  queryFn: () => api.get&lt;{ user: User }&gt;(<span class="string">'/auth/me'</span>),
-  retry: <span class="keyword">false</span>,
-  enabled: <span class="keyword">false</span>, <span class="comment">// Disable automatic authentication check</span>
-})
-
-<span class="comment">// Added manual authentication check method:</span>
-checkAuth: refetch, <span class="comment">// Manual method to check authentication status</span>
-                </div>
-
-                <h3 style="margin: 1.5rem 0 1rem;">2. apps/web/src/middleware.ts</h3>
-                <div class="code-block">
-<span class="comment">// Only protect /app routes - redirect to login if no token</span>
-<span class="keyword">if</span> (request.nextUrl.pathname.startsWith(<span class="string">'/app'</span>) && !token) {
-  <span class="keyword">return</span> NextResponse.redirect(<span class="keyword">new</span> URL(<span class="string">'/login'</span>, request.url))
-}
-
-<span class="comment">// Removed: Auto-redirect from login/register pages when token exists</span>
-<span class="comment">// Users must explicitly login even if they have a token cookie</span>
-                </div>
-
-                <div class="highlight-box">
-                    <strong>💡 מה זה אומר?</strong><br>
-                    משתמשים חייבים ללחוץ על כפתור "התחבר" בכל פעם שהם רוצים לגשת לאפליקציה,
-                    גם אם הם מחוברים. זה פותר את הבעיה שבה משתמשים לא יכלו להתנתק או לעבור
-                    בין חשבונות שונים.
-                </div>
-            </div>
-
-            <div id="flow" class="tab-content">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">תרשים זרימת אימות</h2>
-
-                <div class="flow-diagram">
-                    <h3 style="color: #667eea; margin-bottom: 1rem;">זרימת אימות חדשה</h3>
-
-                    <div class="flow-step">
-                        <strong>1️⃣ משתמש נכנס לדף /login</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">הדף נטען ללא בדיקות אימות אוטומטיות</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>2️⃣ משתמש מזין פרטי התחברות</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">מייל וסיסמה</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>3️⃣ לחיצה על כפתור "התחבר"</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">שליחת בקשת POST ל-/auth/login</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>4️⃣ שרת מאמת ומחזיר token</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">Token נשמר ב-cookie</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step" style="background: #f0fdf4; border: 2px solid #10b981;">
-                        <strong>5️⃣ ניווט ל-/app</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">משתמש מחובר בהצלחה!</div>
-                    </div>
-                </div>
-
-                <div class="flow-diagram" style="margin-top: 2rem;">
-                    <h3 style="color: #667eea; margin-bottom: 1rem;">הגנת נתיבים (Route Protection)</h3>
-
-                    <div class="flow-step">
-                        <strong>משתמש מנסה לגשת ל-/app</strong>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step" style="background: #fef3c7;">
-                        <strong>Middleware בודק אם יש token</strong>
-                    </div>
-
-                    <div class="flow-arrow">↙ ↘</div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-                        <div class="flow-step" style="background: #fee; border: 2px solid #ef4444;">
-                            <strong>❌ אין token</strong>
-                            <div style="color: #666; margin-top: 0.5rem;">Redirect ל-/login</div>
-                        </div>
-                        <div class="flow-step" style="background: #f0fdf4; border: 2px solid #10b981;">
-                            <strong>✅ יש token</strong>
-                            <div style="color: #666; margin-top: 0.5rem;">גישה לאפליקציה</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="margin-top: 2rem;">
-            <h2 style="color: #667eea; margin-bottom: 1rem;">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                </svg>
-                סיכום טכני
-            </h2>
-
-            <div style="display: grid; gap: 1rem;">
-                <div class="highlight-box">
-                    <strong>📊 סטטיסטיקות:</strong><br>
-                    • 2 קבצים שונו<br>
-                    • 6 שורות הוספו, 4 שורות הוסרו<br>
-                    • 4 commits נוספים (deployment configs)<br>
-                    • Fast-forward merge (ללא conflicts)
-                </div>
-
-                <div class="highlight-box" style="background: #fef3c7; border-right-color: #f59e0b;">
-                    <strong>⚠️ שינויים פורצי תאימות (Breaking Changes):</strong><br>
-                    • משתמשים חייבים להתחבר באופן מפורש בכל פעם<br>
-                    • אין יותר "remember me" functionality אוטומטית<br>
-                    • Token cookies לא מספיקים להתחברות אוטומטית
-                </div>
-
-                <div class="highlight-box" style="background: #f0fdf4; border-right-color: #10b981;">
-                    <strong>✅ יתרונות:</strong><br>
-                    • חוויית משתמש טובה יותר<br>
-                    • משתמשים יכולים להתנתק בצורה אפקטיבית<br>
-                    • אין loops של redirects<br>
-                    • התנהגות צפויה ועקבית
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="margin-top: 2rem; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-            <h2 style="color: white; margin-bottom: 1rem;">🎉 המיזוג הושלם בהצלחה!</h2>
-            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
-                כל השינויים מ-PR #6 נמזגו ל-main branch
-            </p>
-            <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                <strong>Git Commands שרצו:</strong><br>
-                <code style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem;">
-                    git checkout -b main 4f06a3c<br>
-                    git merge owla/remove-the-auto-login-mechanism-that-is-causing-is-a213e4<br>
-                    git push -u origin main
-                </code>
-            </div>
-        </div>
+  <div class="container">
+    <div class="header">
+      <h1>🎯 Multi-Step Board Creation</h1>
+      <p>A polished, intuitive wizard for creating Boardly boards</p>
     </div>
 
-    <script>
-        function switchTab(tabId) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
+    <div class="demo-grid">
+      <!-- Step 1: Choose Template -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">STEP 1 OF 3</div>
+          <div class="step-title">Choose a template</div>
+        </div>
+        <div class="step-content">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 33%;"></div>
+          </div>
+          <div class="step-dots">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+          </div>
 
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
+          <div class="template-grid">
+            <div class="template-card selected" onclick="selectTemplate(this)">
+              <div class="template-icon" style="background: rgba(97, 97, 255, 0.1);">
+                <span style="color: #6161FF;">📋</span>
+              </div>
+              <div class="template-name">Blank Board</div>
+              <div class="template-desc">Start from scratch</div>
+              <div class="check-badge">✓</div>
+            </div>
 
-            // Show selected tab content
-            document.getElementById(tabId).classList.add('active');
+            <div class="template-card" onclick="selectTemplate(this)">
+              <div class="template-icon" style="background: rgba(0, 200, 117, 0.1);">
+                <span style="color: #00C875;">📊</span>
+              </div>
+              <div class="template-name">Project Tracker</div>
+              <div class="template-desc">Track tasks and milestones</div>
+            </div>
 
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-        }
-    </script>
+            <div class="template-card" onclick="selectTemplate(this)">
+              <div class="template-icon" style="background: rgba(253, 171, 61, 0.1);">
+                <span style="color: #FDAB3D;">🏃</span>
+              </div>
+              <div class="template-name">Sprint Planning</div>
+              <div class="template-desc">Manage sprints and backlogs</div>
+            </div>
+
+            <div class="template-card" onclick="selectTemplate(this)">
+              <div class="template-icon" style="background: rgba(226, 68, 92, 0.1);">
+                <span style="color: #E2445C;">🐛</span>
+              </div>
+              <div class="template-name">Bug Tracker</div>
+              <div class="template-desc">Log and prioritize issues</div>
+            </div>
+
+            <div class="template-card" onclick="selectTemplate(this)">
+              <div class="template-icon" style="background: rgba(87, 155, 252, 0.1);">
+                <span style="color: #579BFC;">🗺️</span>
+              </div>
+              <div class="template-name">Roadmap</div>
+              <div class="template-desc">Plan features and releases</div>
+            </div>
+
+            <div class="template-card" onclick="selectTemplate(this)">
+              <div class="template-icon" style="background: rgba(162, 93, 220, 0.1);">
+                <span style="color: #A25DDC;">📅</span>
+              </div>
+              <div class="template-name">Meeting Agenda</div>
+              <div class="template-desc">Structure meeting topics</div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <div></div>
+            <div>
+              <button class="btn btn-ghost">Cancel</button>
+              <button class="btn btn-primary">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Board Details -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">STEP 2 OF 3</div>
+          <div class="step-title">Board details</div>
+        </div>
+        <div class="step-content">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 66%;"></div>
+          </div>
+          <div class="step-dots">
+            <div class="step-dot active"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Board name <span class="required">*</span></label>
+            <input type="text" class="form-input" value="My Project Tracker" placeholder="e.g., Marketing Campaign">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description <span class="optional">(optional)</span></label>
+            <textarea class="form-textarea" placeholder="What's this board for?" oninput="updateCharCount(this)">Track all our Q2 product initiatives and milestones</textarea>
+            <div class="char-counter">56/200</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Board color</label>
+            <div class="color-swatches">
+              <div class="color-swatch" style="background: #6161FF;" onclick="selectColor(this)">
+                <span style="color: white; font-size: 14px;">✓</span>
+              </div>
+              <div class="color-swatch selected" style="background: #00C875;" onclick="selectColor(this)"></div>
+              <div class="color-swatch" style="background: #FDAB3D;" onclick="selectColor(this)"></div>
+              <div class="color-swatch" style="background: #E2445C;" onclick="selectColor(this)"></div>
+              <div class="color-swatch" style="background: #579BFC;" onclick="selectColor(this)"></div>
+              <div class="color-swatch" style="background: #FF7575;" onclick="selectColor(this)"></div>
+              <div class="color-swatch" style="background: #A25DDC;" onclick="selectColor(this)"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Board icon</label>
+            <div class="icon-grid">
+              <div class="icon-button" onclick="selectIcon(this)">📊</div>
+              <div class="icon-button selected" onclick="selectIcon(this)">🎯</div>
+              <div class="icon-button" onclick="selectIcon(this)">📝</div>
+              <div class="icon-button" onclick="selectIcon(this)">💼</div>
+              <div class="icon-button" onclick="selectIcon(this)">🚀</div>
+              <div class="icon-button" onclick="selectIcon(this)">📈</div>
+              <div class="icon-button" onclick="selectIcon(this)">✨</div>
+              <div class="icon-button" onclick="selectIcon(this)">🎨</div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-ghost">Back</button>
+            <div>
+              <button class="btn btn-ghost">Cancel</button>
+              <button class="btn btn-primary">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Review & Create -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">STEP 3 OF 3</div>
+          <div class="step-title">Review & create</div>
+        </div>
+        <div class="step-content">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%;"></div>
+          </div>
+          <div class="step-dots">
+            <div class="step-dot active"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot active"></div>
+          </div>
+
+          <p style="color: #676879; font-size: 0.875rem; margin-bottom: 20px;">
+            Review your board before creating
+          </p>
+
+          <div class="preview-card">
+            <div class="preview-strip" style="background: #00C875;"></div>
+            <div class="preview-content">
+              <div class="preview-icon">🎯</div>
+              <div class="preview-info">
+                <div class="preview-title">My Project Tracker</div>
+                <div class="preview-desc">Track all our Q2 product initiatives and milestones</div>
+                <div class="preview-meta">
+                  <div class="meta-item">
+                    <div class="color-dot" style="background: #00C875;"></div>
+                    <span>Green board</span>
+                  </div>
+                  <div class="meta-item">
+                    <span>Template: Project Tracker</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-row">
+              <span class="summary-label">Board name:</span>
+              <span class="summary-value">My Project Tracker</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Description:</span>
+              <span class="summary-value">Track all our Q2 product initiatives and milestones</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Template:</span>
+              <span class="summary-value">Project Tracker</span>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-ghost">Back</button>
+            <div>
+              <button class="btn btn-ghost">Cancel</button>
+              <button class="btn btn-primary">Create Board</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p><strong>Boardly Board Creation Wizard</strong> • Built with React, Next.js & Tailwind CSS</p>
+      <p style="margin-top: 8px;">Features: Multi-step wizard • Template selection • Live preview • Character counter • Emoji icons</p>
+    </div>
+  </div>
+
+  <script>
+    function selectTemplate(card) {
+      document.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+
+      // Remove all existing check badges
+      document.querySelectorAll('.check-badge').forEach(b => b.remove());
+
+      // Add check badge to selected card
+      const badge = document.createElement('div');
+      badge.className = 'check-badge';
+      badge.textContent = '✓';
+      card.appendChild(badge);
+    }
+
+    function selectColor(swatch) {
+      document.querySelectorAll('.color-swatch').forEach(s => {
+        s.classList.remove('selected');
+        s.innerHTML = '';
+      });
+      swatch.classList.add('selected');
+      swatch.innerHTML = '<span style="color: white; font-size: 14px;">✓</span>';
+    }
+
+    function selectIcon(icon) {
+      document.querySelectorAll('.icon-button').forEach(i => i.classList.remove('selected'));
+      icon.classList.add('selected');
+    }
+
+    function updateCharCount(textarea) {
+      const counter = textarea.nextElementSibling;
+      counter.textContent = `${textarea.value.length}/200`;
+    }
+  </script>
 </body>
 </html>
