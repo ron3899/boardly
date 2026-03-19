@@ -1,47 +1,51 @@
-import type { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcrypt'
-import type { RegisterInput, LoginInput } from '@boardly/shared'
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+import { LoginInput, RegisterInput } from '@boardly/shared';
+
+const MOCK_USER = {
+  id: 'mock-user-1',
+  email: 'demo@boardly.com',
+  name: 'Demo User',
+  createdAt: new Date(),
+};
 
 export class AuthService {
   constructor(private prisma: PrismaClient) {}
 
   async register(input: RegisterInput) {
-    const existing = await this.prisma.user.findUnique({ where: { email: input.email } })
-    if (existing) {
-      throw Object.assign(new Error('Email already registered'), { statusCode: 409 })
+    if (process.env.MOCK_AUTH === 'true') {
+      return { id: 'mock-user-2', email: input.email, name: input.name, createdAt: new Date() };
     }
-
-    const passwordHash = await bcrypt.hash(input.password, 12)
+    const existing = await this.prisma.user.findUnique({ where: { email: input.email } });
+    if (existing) throw { statusCode: 409, message: 'Email already in use' };
+    const hashed = await bcrypt.hash(input.password, 12);
     const user = await this.prisma.user.create({
-      data: {
-        email: input.email,
-        name: input.name,
-        passwordHash,
-      },
-    })
-
-    return { id: user.id, email: user.email, name: user.name, createdAt: user.createdAt.toISOString() }
+      data: { email: input.email, name: input.name, password: hashed },
+      select: { id: true, email: true, name: true, createdAt: true },
+    });
+    return user;
   }
 
   async login(input: LoginInput) {
-    const user = await this.prisma.user.findUnique({ where: { email: input.email } })
-    if (!user) {
-      throw Object.assign(new Error('Invalid credentials'), { statusCode: 401 })
+    if (process.env.MOCK_AUTH === 'true') {
+      return { id: MOCK_USER.id, email: input.email, name: MOCK_USER.name, createdAt: MOCK_USER.createdAt };
     }
-
-    const valid = await bcrypt.compare(input.password, user.passwordHash)
-    if (!valid) {
-      throw Object.assign(new Error('Invalid credentials'), { statusCode: 401 })
-    }
-
-    return { id: user.id, email: user.email, name: user.name, createdAt: user.createdAt.toISOString() }
+    const user = await this.prisma.user.findUnique({ where: { email: input.email } });
+    if (!user) throw { statusCode: 401, message: 'Invalid credentials' };
+    const valid = await bcrypt.compare(input.password, user.password);
+    if (!valid) throw { statusCode: 401, message: 'Invalid credentials' };
+    return { id: user.id, email: user.email, name: user.name, createdAt: user.createdAt };
   }
 
   async getUser(userId: string) {
-    const user = await this.prisma.user.findUnique({ where: { id: userId } })
-    if (!user) {
-      throw Object.assign(new Error('User not found'), { statusCode: 404 })
+    if (process.env.MOCK_AUTH === 'true') {
+      return { id: userId, email: MOCK_USER.email, name: MOCK_USER.name, createdAt: MOCK_USER.createdAt };
     }
-    return { id: user.id, email: user.email, name: user.name, createdAt: user.createdAt.toISOString() }
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true, name: true, createdAt: true },
+    });
+    if (!user) throw { statusCode: 404, message: 'User not found' };
+    return user;
   }
 }

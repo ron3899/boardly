@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boardly - הסרת Auto-Login | Demo</title>
+    <title>Mock Auth Feature - Preview</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,122 +15,196 @@
         }
 
         body {
-            font-family: 'Heebo', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            color: #333;
         }
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
         }
 
         .header {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
             text-align: center;
+            color: white;
+            margin-bottom: 40px;
         }
 
         .header h1 {
-            color: #667eea;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        .header .subtitle {
-            color: #666;
-            font-size: 1.1rem;
+        .header p {
+            font-size: 18px;
+            opacity: 0.95;
         }
 
         .badge {
             display: inline-block;
-            background: #10b981;
-            color: white;
-            padding: 0.5rem 1rem;
+            padding: 6px 14px;
+            background: rgba(255,255,255,0.2);
             border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-top: 1rem;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
         }
 
-        .content-grid {
+        .main-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
         }
 
         .card {
             background: white;
-            padding: 2rem;
             border-radius: 16px;
+            padding: 30px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
 
         .card h2 {
-            color: #667eea;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a1a1a;
         }
 
-        .icon {
-            width: 24px;
-            height: 24px;
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        .change-list {
-            list-style: none;
-            margin-bottom: 1rem;
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #555;
         }
 
-        .change-list li {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-            display: flex;
-            align-items: start;
-            gap: 0.5rem;
+            font-size: 15px;
+            transition: border-color 0.2s;
+            font-family: 'Inter', sans-serif;
         }
 
-        .change-list li.removed {
-            background: #fee;
-            border-right: 3px solid #ef4444;
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
         }
 
-        .change-list li.added {
-            background: #efe;
-            border-right: 3px solid #10b981;
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Inter', sans-serif;
         }
 
-        .change-list li.modified {
-            background: #fef3c7;
-            border-right: 3px solid #f59e0b;
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
 
-        .change-icon {
-            font-weight: bold;
-            font-size: 1.2rem;
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .response-area {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 120px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            color: #333;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border: 2px solid #e0e0e0;
+        }
+
+        .response-area.success {
+            border-color: #4caf50;
+            background: #f1f8f4;
+        }
+
+        .response-area.error {
+            border-color: #f44336;
+            background: #fef1f0;
+        }
+
+        .feature-list {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            grid-column: 1 / -1;
+        }
+
+        .feature-list h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-item h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .feature-item p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
         }
 
         .code-block {
             background: #1e1e1e;
             color: #d4d4d4;
-            padding: 1rem;
+            padding: 20px;
             border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
             overflow-x: auto;
-            margin: 1rem 0;
-        }
-
-        .code-block .comment {
-            color: #6a9955;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-top: 20px;
         }
 
         .code-block .keyword {
@@ -141,112 +215,34 @@
             color: #ce9178;
         }
 
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #e5e7eb;
+        .code-block .comment {
+            color: #6a9955;
         }
 
-        .tab {
-            padding: 0.75rem 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: 'Heebo', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #666;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.3s;
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
         }
 
-        .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-
-        .tab:hover {
-            color: #667eea;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .comparison-side {
-            padding: 1rem;
-            border-radius: 8px;
-        }
-
-        .comparison-side h3 {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .comparison-side.before {
-            background: #fef2f2;
-            border: 2px solid #ef4444;
-        }
-
-        .comparison-side.after {
-            background: #f0fdf4;
-            border: 2px solid #10b981;
-        }
-
-        .flow-diagram {
-            background: #f9fafb;
-            padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .flow-step {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .flow-arrow {
-            color: #667eea;
-            font-size: 2rem;
-            margin: 0.5rem 0;
-        }
-
-        .highlight-box {
-            background: #eff6ff;
-            border-right: 4px solid #3b82f6;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        .highlight-box strong {
-            color: #3b82f6;
+        .status-indicator.active {
+            background: #4caf50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
         }
 
         @media (max-width: 768px) {
-            .comparison {
+            .main-content {
                 grid-template-columns: 1fr;
             }
 
             .header h1 {
-                font-size: 1.8rem;
+                font-size: 32px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -254,294 +250,161 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎯 Boardly - הסרת מנגנון Auto-Login</h1>
-            <p class="subtitle">מיזוג מוצלח של השינויים מ-PR #6 ל-main branch</p>
-            <span class="badge">✅ Merged Successfully</span>
+            <div class="badge">
+                <span class="status-indicator active"></span>
+                Mock Auth Enabled
+            </div>
+            <h1>🔐 Mock Authentication System</h1>
+            <p>Complete sandbox authentication without a database</p>
         </div>
 
-        <div class="content-grid">
+        <div class="main-content">
             <div class="card">
-                <h2>
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    סיכום השינויים
-                </h2>
-                <ul class="change-list">
-                    <li class="removed">
-                        <span class="change-icon">−</span>
-                        <div>
-                            <strong>הסרת Auto-Login Mechanism</strong>
-                            <div>הסרנו את המנגנון שבדק אימות אוטומטי בטעינת הדף</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">~</span>
-                        <div>
-                            <strong>שינוי ב-useAuth Hook</strong>
-                            <div>הגדרת <code>enabled: false</code> ב-query של האימות</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">~</span>
-                        <div>
-                            <strong>עדכון Middleware</strong>
-                            <div>הסרת redirect אוטומטי מדפי login/register</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">+</span>
-                        <div>
-                            <strong>הוספת checkAuth Method</strong>
-                            <div>שיטה ידנית לבדיקת סטטוס אימות</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h2>
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                    קבצים ששונו
-                </h2>
-                <ul class="change-list">
-                    <li class="modified">
-                        <span class="change-icon">📝</span>
-                        <div>
-                            <strong>apps/web/src/hooks/use-auth.ts</strong>
-                            <div style="font-size: 0.9rem; color: #666;">4 שורות שונו</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">📝</span>
-                        <div>
-                            <strong>apps/web/src/middleware.ts</strong>
-                            <div style="font-size: 0.9rem; color: #666;">6 שורות שונו</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">➕</span>
-                        <div>
-                            <strong>vercel.json</strong>
-                            <div style="font-size: 0.9rem; color: #666;">הוסף עבור deployment</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">➕</span>
-                        <div>
-                            <strong>render.yaml</strong>
-                            <div style="font-size: 0.9rem; color: #666;">עודכן עבור deployment</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="tabs">
-                <button class="tab active" onclick="switchTab('before-after')">לפני ואחרי</button>
-                <button class="tab" onclick="switchTab('code-changes')">שינויי קוד</button>
-                <button class="tab" onclick="switchTab('flow')">תרשים זרימה</button>
-            </div>
-
-            <div id="before-after" class="tab-content active">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">השוואה: לפני ואחרי</h2>
-                <div class="comparison">
-                    <div class="comparison-side before">
-                        <h3>❌ לפני - עם Auto-Login</h3>
-                        <ul style="list-style: none;">
-                            <li style="margin: 0.5rem 0;">🔄 בדיקה אוטומטית בכל טעינת דף</li>
-                            <li style="margin: 0.5rem 0;">🔄 Redirect אוטומטי ל-/app אם יש token</li>
-                            <li style="margin: 0.5rem 0;">⚠️ גורם לבעיות UX</li>
-                            <li style="margin: 0.5rem 0;">⚠️ משתמשים לא יכלו להתנתק באופן אפקטיבי</li>
-                        </ul>
+                <h2>Login Simulation</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" value="demo@boardly.com" placeholder="demo@boardly.com">
                     </div>
-                    <div class="comparison-side after">
-                        <h3>✅ אחרי - בלי Auto-Login</h3>
-                        <ul style="list-style: none;">
-                            <li style="margin: 0.5rem 0;">✋ אין בדיקה אוטומטית</li>
-                            <li style="margin: 0.5rem 0;">👤 משתמשים חייבים להתחבר באופן מפורש</li>
-                            <li style="margin: 0.5rem 0;">✨ חוויית משתמש משופרת</li>
-                            <li style="margin: 0.5rem 0;">✨ התנתקות עובדת כראוי</li>
-                        </ul>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" value="anypassword" placeholder="Any password works">
                     </div>
+                    <button type="submit" class="btn">Login (Mock Mode)</button>
+                </form>
+                <div id="loginResponse" class="response-area">
+Response will appear here...
                 </div>
             </div>
 
-            <div id="code-changes" class="tab-content">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">שינויי קוד מפתח</h2>
-
-                <h3 style="margin: 1.5rem 0 1rem;">1. apps/web/src/hooks/use-auth.ts</h3>
-                <div class="code-block">
-<span class="keyword">const</span> { data, isLoading, refetch } = <span class="keyword">useQuery</span>({
-  queryKey: [<span class="string">'auth'</span>, <span class="string">'me'</span>],
-  queryFn: () => api.get&lt;{ user: User }&gt;(<span class="string">'/auth/me'</span>),
-  retry: <span class="keyword">false</span>,
-  enabled: <span class="keyword">false</span>, <span class="comment">// Disable automatic authentication check</span>
-})
-
-<span class="comment">// Added manual authentication check method:</span>
-checkAuth: refetch, <span class="comment">// Manual method to check authentication status</span>
+            <div class="card">
+                <h2>Register Simulation</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">Name</label>
+                        <input type="text" id="registerName" value="Test User" placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" value="test@example.com" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" value="password123" placeholder="Any password">
+                    </div>
+                    <button type="submit" class="btn">Register (Mock Mode)</button>
+                </form>
+                <div id="registerResponse" class="response-area">
+Response will appear here...
                 </div>
+            </div>
+        </div>
 
-                <h3 style="margin: 1.5rem 0 1rem;">2. apps/web/src/middleware.ts</h3>
-                <div class="code-block">
-<span class="comment">// Only protect /app routes - redirect to login if no token</span>
-<span class="keyword">if</span> (request.nextUrl.pathname.startsWith(<span class="string">'/app'</span>) && !token) {
-  <span class="keyword">return</span> NextResponse.redirect(<span class="keyword">new</span> URL(<span class="string">'/login'</span>, request.url))
+        <div class="feature-list">
+            <h2>✨ Key Features of the Fix</h2>
+            <div class="features">
+                <div class="feature-item">
+                    <h3>🚀 No Database Required</h3>
+                    <p>When MOCK_AUTH=true, the system bypasses all Prisma database calls and returns mock user data immediately.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🔄 Seamless Fallback</h3>
+                    <p>In production (MOCK_AUTH=false), the system automatically uses the real PostgreSQL database with full authentication.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>⚡ Instant Response</h3>
+                    <p>Preview sandbox login requests now succeed instantly with a 200 OK status instead of failing with 401 errors.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🛡️ Proxy Protection</h3>
+                    <p>Prisma client is wrapped in a no-op proxy when in mock mode, preventing any connection attempts to the database.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🎯 Surgical Changes</h3>
+                    <p>Only two files modified: auth.service.ts and prisma.ts. No changes to the API routes or frontend code required.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📝 Environment Driven</h3>
+                    <p>Simple .env configuration controls behavior. Set MOCK_AUTH=true for sandbox, false for production.</p>
+                </div>
+            </div>
+
+            <div class="code-block">
+<span class="comment">// Environment Configuration</span>
+<span class="keyword">MOCK_AUTH</span>=<span class="string">"true"</span>  <span class="comment">// Enable mock mode</span>
+<span class="keyword">JWT_SECRET</span>=<span class="string">"local-dev-secret-boardly-123"</span>
+<span class="keyword">PORT</span>=<span class="string">"4001"</span>
+<span class="keyword">DATABASE_URL</span>=<span class="string">"postgresql://placeholder:placeholder@localhost:5432/boardly"</span>
+
+<span class="comment">// Mock user returned on every login</span>
+<span class="keyword">const</span> MOCK_USER = {
+  id: <span class="string">'mock-user-1'</span>,
+  email: <span class="string">'demo@boardly.com'</span>,
+  name: <span class="string">'Demo User'</span>,
+  createdAt: <span class="keyword">new</span> Date()
 }
-
-<span class="comment">// Removed: Auto-redirect from login/register pages when token exists</span>
-<span class="comment">// Users must explicitly login even if they have a token cookie</span>
-                </div>
-
-                <div class="highlight-box">
-                    <strong>💡 מה זה אומר?</strong><br>
-                    משתמשים חייבים ללחוץ על כפתור "התחבר" בכל פעם שהם רוצים לגשת לאפליקציה,
-                    גם אם הם מחוברים. זה פותר את הבעיה שבה משתמשים לא יכלו להתנתק או לעבור
-                    בין חשבונות שונים.
-                </div>
-            </div>
-
-            <div id="flow" class="tab-content">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">תרשים זרימת אימות</h2>
-
-                <div class="flow-diagram">
-                    <h3 style="color: #667eea; margin-bottom: 1rem;">זרימת אימות חדשה</h3>
-
-                    <div class="flow-step">
-                        <strong>1️⃣ משתמש נכנס לדף /login</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">הדף נטען ללא בדיקות אימות אוטומטיות</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>2️⃣ משתמש מזין פרטי התחברות</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">מייל וסיסמה</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>3️⃣ לחיצה על כפתור "התחבר"</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">שליחת בקשת POST ל-/auth/login</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>4️⃣ שרת מאמת ומחזיר token</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">Token נשמר ב-cookie</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step" style="background: #f0fdf4; border: 2px solid #10b981;">
-                        <strong>5️⃣ ניווט ל-/app</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">משתמש מחובר בהצלחה!</div>
-                    </div>
-                </div>
-
-                <div class="flow-diagram" style="margin-top: 2rem;">
-                    <h3 style="color: #667eea; margin-bottom: 1rem;">הגנת נתיבים (Route Protection)</h3>
-
-                    <div class="flow-step">
-                        <strong>משתמש מנסה לגשת ל-/app</strong>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step" style="background: #fef3c7;">
-                        <strong>Middleware בודק אם יש token</strong>
-                    </div>
-
-                    <div class="flow-arrow">↙ ↘</div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-                        <div class="flow-step" style="background: #fee; border: 2px solid #ef4444;">
-                            <strong>❌ אין token</strong>
-                            <div style="color: #666; margin-top: 0.5rem;">Redirect ל-/login</div>
-                        </div>
-                        <div class="flow-step" style="background: #f0fdf4; border: 2px solid #10b981;">
-                            <strong>✅ יש token</strong>
-                            <div style="color: #666; margin-top: 0.5rem;">גישה לאפליקציה</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="margin-top: 2rem;">
-            <h2 style="color: #667eea; margin-bottom: 1rem;">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                </svg>
-                סיכום טכני
-            </h2>
-
-            <div style="display: grid; gap: 1rem;">
-                <div class="highlight-box">
-                    <strong>📊 סטטיסטיקות:</strong><br>
-                    • 2 קבצים שונו<br>
-                    • 6 שורות הוספו, 4 שורות הוסרו<br>
-                    • 4 commits נוספים (deployment configs)<br>
-                    • Fast-forward merge (ללא conflicts)
-                </div>
-
-                <div class="highlight-box" style="background: #fef3c7; border-right-color: #f59e0b;">
-                    <strong>⚠️ שינויים פורצי תאימות (Breaking Changes):</strong><br>
-                    • משתמשים חייבים להתחבר באופן מפורש בכל פעם<br>
-                    • אין יותר "remember me" functionality אוטומטית<br>
-                    • Token cookies לא מספיקים להתחברות אוטומטית
-                </div>
-
-                <div class="highlight-box" style="background: #f0fdf4; border-right-color: #10b981;">
-                    <strong>✅ יתרונות:</strong><br>
-                    • חוויית משתמש טובה יותר<br>
-                    • משתמשים יכולים להתנתק בצורה אפקטיבית<br>
-                    • אין loops של redirects<br>
-                    • התנהגות צפויה ועקבית
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="margin-top: 2rem; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-            <h2 style="color: white; margin-bottom: 1rem;">🎉 המיזוג הושלם בהצלחה!</h2>
-            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
-                כל השינויים מ-PR #6 נמזגו ל-main branch
-            </p>
-            <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                <strong>Git Commands שרצו:</strong><br>
-                <code style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem;">
-                    git checkout -b main 4f06a3c<br>
-                    git merge owla/remove-the-auto-login-mechanism-that-is-causing-is-a213e4<br>
-                    git push -u origin main
-                </code>
             </div>
         </div>
     </div>
 
     <script>
-        function switchTab(tabId) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
+        // Simulate login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const responseDiv = document.getElementById('loginResponse');
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
 
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
+            responseDiv.textContent = 'Processing login...';
+            responseDiv.className = 'response-area';
 
-            // Show selected tab content
-            document.getElementById(tabId).classList.add('active');
+            // Simulate API call
+            setTimeout(() => {
+                const mockResponse = {
+                    success: true,
+                    user: {
+                        id: 'mock-user-1',
+                        email: email,
+                        name: 'Demo User',
+                        createdAt: new Date().toISOString()
+                    },
+                    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.token',
+                    timestamp: new Date().toISOString()
+                };
 
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-        }
+                responseDiv.className = 'response-area success';
+                responseDiv.textContent = JSON.stringify(mockResponse, null, 2);
+            }, 500);
+        });
+
+        // Simulate registration
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const responseDiv = document.getElementById('registerResponse');
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+
+            responseDiv.textContent = 'Processing registration...';
+            responseDiv.className = 'response-area';
+
+            // Simulate API call
+            setTimeout(() => {
+                const mockResponse = {
+                    success: true,
+                    user: {
+                        id: 'mock-user-2',
+                        email: email,
+                        name: name,
+                        createdAt: new Date().toISOString()
+                    },
+                    message: 'User registered successfully (mock mode)',
+                    timestamp: new Date().toISOString()
+                };
+
+                responseDiv.className = 'response-area success';
+                responseDiv.textContent = JSON.stringify(mockResponse, null, 2);
+            }, 500);
+        });
     </script>
 </body>
 </html>
