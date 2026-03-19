@@ -2,10 +2,11 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  // In mock API mode, skip auth checks (auth will be handled client-side)
+  // In mock API mode OR development, completely bypass all auth checks
   const useMockApi = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
+  const isDevelopment = process.env.NODE_ENV === 'development'
 
-  if (useMockApi) {
+  if (useMockApi || isDevelopment) {
     return NextResponse.next()
   }
 
@@ -15,9 +16,6 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/app') && !token) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
-
-  // Removed: Auto-redirect from login/register pages when token exists
-  // Users must explicitly login even if they have a token cookie
 
   return NextResponse.next()
 }

@@ -5,9 +5,36 @@ import { api } from '@/lib/api-client'
 import { useRouter } from 'next/navigation'
 import type { User, AuthResponse } from '@boardly/shared'
 
+// Mock user for development/demo mode
+const MOCK_USER: User = {
+  id: '1',
+  name: 'Demo User',
+  email: 'demo@boardly.com',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+}
+
 export function useAuth() {
   const router = useRouter()
   const queryClient = useQueryClient()
+  const useMockApi = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
+
+  // In mock mode, return a pre-authenticated mock user
+  if (useMockApi) {
+    return {
+      user: MOCK_USER,
+      isLoading: false,
+      isAuthenticated: true,
+      login: async () => ({ user: MOCK_USER, token: 'mock-token' }),
+      register: async () => ({ user: MOCK_USER, token: 'mock-token' }),
+      logout: async () => {
+        router.push('/login')
+      },
+      checkAuth: async () => ({ data: { user: MOCK_USER } }),
+      loginError: null,
+      registerError: null,
+    }
+  }
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['auth', 'me'],
