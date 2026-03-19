@@ -255,7 +255,11 @@ export const mockApi = {
   auth: {
     me: async () => {
       await delay(300)
-      if (!isAuthenticated) {
+      // In mock mode, always return the user if they have a token cookie OR if mock API is enabled
+      const hasMockToken = typeof document !== 'undefined' && document.cookie.includes('token=mock-token')
+      const useMockApi = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
+
+      if (!isAuthenticated && !hasMockToken && !useMockApi) {
         throw new Error('Not authenticated')
       }
       return { user: currentUser }
@@ -263,6 +267,12 @@ export const mockApi = {
     login: async (input: { email: string; password: string }) => {
       await delay(500)
       isAuthenticated = true
+
+      // Set token cookie on the client side for middleware
+      if (typeof document !== 'undefined') {
+        document.cookie = 'token=mock-token; path=/; max-age=86400' // 24 hours
+      }
+
       return { user: currentUser, token: 'mock-token' }
     },
     register: async (input: { email: string; password: string; name: string }) => {
@@ -274,6 +284,12 @@ export const mockApi = {
     logout: async () => {
       await delay(300)
       isAuthenticated = false
+
+      // Clear token cookie on the client side
+      if (typeof document !== 'undefined') {
+        document.cookie = 'token=; path=/; max-age=0'
+      }
+
       return {}
     },
   },

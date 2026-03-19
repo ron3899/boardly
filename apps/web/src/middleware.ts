@@ -2,10 +2,12 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  // In mock API mode, skip auth checks (auth will be handled client-side)
+  // In mock API mode, skip ALL auth checks completely
+  // This allows direct access to /app routes without needing a token cookie
   const useMockApi = process.env.NEXT_PUBLIC_USE_MOCK_API === 'true'
 
   if (useMockApi) {
+    // Allow all requests to pass through without any auth checks or redirects
     return NextResponse.next()
   }
 
