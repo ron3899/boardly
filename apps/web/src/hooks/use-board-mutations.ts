@@ -8,7 +8,10 @@ export function useBoardMutations(boardId: string) {
   const queryClient = useQueryClient()
   const queryKey = ['board', boardId]
 
-  const invalidate = () => queryClient.invalidateQueries({ queryKey })
+  const invalidate = () => {
+    queryClient.invalidateQueries({ queryKey })
+    queryClient.invalidateQueries({ queryKey: ['boards'] })
+  }
 
   const updateBoardName = useMutation({
     mutationFn: (name: string) => api.patch(`/boards/${boardId}`, { name }),
