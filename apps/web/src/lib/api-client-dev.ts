@@ -124,6 +124,10 @@ async function handleMockRequest<T>(path: string, options: RequestInit = {}): Pr
     }
 
     // Column routes
+    if (path.startsWith('/columns/') && method === 'PATCH') {
+      const id = path.split('/')[2]
+      return (await mockApi.columns.update(id, body)) as T
+    }
     if (path.startsWith('/columns/') && method === 'DELETE') {
       const id = path.split('/')[2]
       return (await mockApi.columns.delete(id)) as T
