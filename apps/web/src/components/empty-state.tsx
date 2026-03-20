@@ -14,12 +14,12 @@ export function EmptyState({ onCreateBoard }: EmptyStateProps) {
       </div>
 
       {/* Heading */}
-      <h3 className="text-2xl font-semibold text-[#323338] mb-2">
+      <h3 className="text-2xl font-semibold text-[#323338] dark:text-[#F0F0F5] mb-2">
         Create your first board
       </h3>
 
       {/* Subtext */}
-      <p className="text-[#676879] text-center max-w-md mb-8">
+      <p className="text-[#676879] dark:text-[#9090A8] text-center max-w-md mb-8">
         Boards help you manage your work visually. Get started by creating your first board and invite your team to collaborate.
       </p>
 
@@ -37,24 +37,24 @@ export function EmptyState({ onCreateBoard }: EmptyStateProps) {
           <div className="w-12 h-12 rounded-lg bg-monday-success/10 flex items-center justify-center mx-auto mb-3">
             <span className="text-2xl">✨</span>
           </div>
-          <h4 className="text-sm font-semibold text-[#323338] mb-1">Easy to use</h4>
-          <p className="text-xs text-[#9699A6]">Intuitive drag-and-drop interface</p>
+          <h4 className="text-sm font-semibold text-[#323338] dark:text-[#F0F0F5] mb-1">Easy to use</h4>
+          <p className="text-xs text-[#9699A6] dark:text-[#5A5A70]">Intuitive drag-and-drop interface</p>
         </div>
 
         <div className="text-center">
           <div className="w-12 h-12 rounded-lg bg-monday-info/10 flex items-center justify-center mx-auto mb-3">
             <span className="text-2xl">🤝</span>
           </div>
-          <h4 className="text-sm font-semibold text-[#323338] mb-1">Collaborate</h4>
-          <p className="text-xs text-[#9699A6]">Work together in real-time</p>
+          <h4 className="text-sm font-semibold text-[#323338] dark:text-[#F0F0F5] mb-1">Collaborate</h4>
+          <p className="text-xs text-[#9699A6] dark:text-[#5A5A70]">Work together in real-time</p>
         </div>
 
         <div className="text-center">
           <div className="w-12 h-12 rounded-lg bg-monday-warning/10 flex items-center justify-center mx-auto mb-3">
             <span className="text-2xl">📊</span>
           </div>
-          <h4 className="text-sm font-semibold text-[#323338] mb-1">Track progress</h4>
-          <p className="text-xs text-[#9699A6]">Visualize your workflow</p>
+          <h4 className="text-sm font-semibold text-[#323338] dark:text-[#F0F0F5] mb-1">Track progress</h4>
+          <p className="text-xs text-[#9699A6] dark:text-[#5A5A70]">Visualize your workflow</p>
         </div>
       </div>
     </div>

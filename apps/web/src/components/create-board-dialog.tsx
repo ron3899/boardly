@@ -53,7 +53,7 @@ export function CreateBoardDialog({ open, onOpenChange }: CreateBoardDialogProps
       <DialogContent className="sm:max-w-md rounded-xl border-0 shadow-xl p-0">
         <div className="p-6">
           <DialogHeader className="mb-6">
-            <DialogTitle className="text-xl font-semibold text-[#323338]">
+            <DialogTitle className="text-xl font-semibold text-[#323338] dark:text-[#F0F0F5]">
               Create new board
             </DialogTitle>
           </DialogHeader>
@@ -61,7 +61,7 @@ export function CreateBoardDialog({ open, onOpenChange }: CreateBoardDialogProps
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Board Name Input */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-[#323338]">
+              <label className="text-sm font-medium text-[#323338] dark:text-[#F0F0F5]">
                 Board name
               </label>
               <Input
@@ -69,13 +69,13 @@ export function CreateBoardDialog({ open, onOpenChange }: CreateBoardDialogProps
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 autoFocus
-                className="h-10 border-[#E6E9EF] focus:border-monday-purple focus:ring-monday-purple/20"
+                className="h-10 border-[#E6E9EF] dark:border-[#2A2A38] focus:border-monday-purple focus:ring-monday-purple/20 dark:bg-[#1E1E2A] dark:text-[#F0F0F5]"
               />
             </div>
 
             {/* Color Picker */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-[#323338]">
+              <label className="text-sm font-medium text-[#323338] dark:text-[#F0F0F5]">
                 Choose a color
               </label>
               <div className="flex gap-2 flex-wrap">
@@ -102,7 +102,7 @@ export function CreateBoardDialog({ open, onOpenChange }: CreateBoardDialogProps
                 type="button"
                 variant="ghost"
                 onClick={() => onOpenChange(false)}
-                className="text-[#676879] hover:bg-[#F6F7FB]"
+                className="text-[#676879] dark:text-[#9090A8] hover:bg-[#F6F7FB] dark:hover:bg-white/10"
               >
                 Cancel
               </Button>
