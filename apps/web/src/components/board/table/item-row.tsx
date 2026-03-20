@@ -58,7 +58,7 @@ export function ItemRow({ item, columns, mutations, members, groupColor }: ItemR
   }, [item.id, mutations])
 
   return (
-    <div className="flex items-center border-b last:border-b-0 hover:bg-muted/30 group/row">
+    <div className="flex items-center border-b border-border last:border-b-0 hover:bg-muted/30 group/row">
       <div className="w-10 px-2 py-2 flex-shrink-0 flex items-center justify-center">
         <div className="w-1 h-8 rounded-full mr-1" style={{ backgroundColor: groupColor }} />
         <GripVertical className="h-3 w-3 text-muted-foreground opacity-0 group-hover/row:opacity-100 cursor-grab" />
@@ -77,12 +77,12 @@ export function ItemRow({ item, columns, mutations, members, groupColor }: ItemR
                 setEditing(false)
               }
             }}
-            className="flex-1 bg-transparent border-b border-primary outline-none text-sm"
+            className="flex-1 bg-background text-foreground border-b border-primary outline-none text-sm"
             autoFocus
           />
         ) : (
           <span
-            className="flex-1 text-sm cursor-pointer hover:text-primary truncate"
+            className="flex-1 text-sm text-foreground cursor-pointer hover:text-primary truncate"
             onClick={openDetail}
             onDoubleClick={() => setEditing(true)}
           >
@@ -91,7 +91,7 @@ export function ItemRow({ item, columns, mutations, members, groupColor }: ItemR
         )}
         <button
           onClick={handleDelete}
-          className="p-1 rounded hover:bg-accent text-muted-foreground opacity-0 group-hover/row:opacity-100"
+          className="p-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground opacity-0 group-hover/row:opacity-100 transition-colors"
         >
           <Trash2 className="h-3 w-3" />
         </button>

@@ -40,7 +40,7 @@ export function KanbanView({ board, mutations }: KanbanViewProps) {
   const unassigned = getItemsForStatus(null)
 
   return (
-    <div className="flex-1 overflow-x-auto p-6">
+    <div className="flex-1 overflow-x-auto p-6 bg-background">
       <div className="flex gap-4 min-h-[400px]">
         {Object.entries(labels).map(([key, label]) => (
           <KanbanColumn

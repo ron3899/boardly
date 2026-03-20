@@ -25,7 +25,7 @@ function SheetContent({ className, children, ...props }: React.HTMLAttributes<HT
   return (
     <div
       className={cn(
-        'fixed right-0 top-0 h-full w-[500px] max-w-full bg-background border-l shadow-lg p-6 overflow-y-auto animate-in slide-in-from-right',
+        'fixed right-0 top-0 h-full w-[500px] max-w-full bg-background border-l border-border text-foreground shadow-lg p-6 overflow-y-auto animate-in slide-in-from-right',
         className
       )}
       {...props}

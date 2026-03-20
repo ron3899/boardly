@@ -33,7 +33,7 @@ export function BoardHeader({ board, mutations, children }: BoardHeaderProps) {
   }
 
   return (
-    <header className="flex items-center justify-between border-b px-6 py-4">
+    <header className="flex items-center justify-between border-b border-border px-6 py-4 bg-background">
       <div>
         {editing ? (
           <input
@@ -48,11 +48,11 @@ export function BoardHeader({ board, mutations, children }: BoardHeaderProps) {
                 setEditing(false)
               }
             }}
-            className="text-lg font-semibold bg-transparent border-b-2 border-primary outline-none"
+            className="text-lg font-semibold bg-background text-foreground border-b-2 border-primary outline-none"
           />
         ) : (
           <h2
-            className="text-lg font-semibold cursor-pointer hover:text-primary"
+            className="text-lg font-semibold text-foreground cursor-pointer hover:text-primary"
             onClick={() => setEditing(true)}
           >
             {board.name}

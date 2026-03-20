@@ -24,7 +24,7 @@ export function KanbanCard({ item }: KanbanCardProps) {
       draggable
       onDragStart={(e) => e.dataTransfer.setData('text/plain', item.id)}
       onClick={openDetail}
-      className="bg-background border rounded-lg p-3 cursor-pointer hover:shadow-md transition-shadow"
+      className="bg-card text-card-foreground border border-border rounded-lg p-3 cursor-pointer hover:shadow-md dark:shadow-black/20 transition-shadow"
     >
       <p className="text-sm font-medium">{item.name}</p>
     </div>

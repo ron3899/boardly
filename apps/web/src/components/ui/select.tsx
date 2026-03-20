@@ -70,7 +70,7 @@ function SelectContent({ className, children, ...props }: React.HTMLAttributes<H
   return (
     <div
       ref={ref}
-      className={cn('absolute z-50 w-full mt-1 rounded-md border bg-popover p-1 shadow-md', className)}
+      className={cn('absolute z-50 w-full mt-1 rounded-md border border-border bg-popover text-popover-foreground p-1 shadow-md dark:shadow-black/30', className)}
       {...props}
     >
       {children}

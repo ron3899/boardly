@@ -28,7 +28,7 @@ export function PersonCell({ value, onChange, members }: PersonCellProps) {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
-        className="w-full h-8 px-2 flex items-center text-sm rounded hover:bg-accent"
+        className="w-full h-8 px-2 flex items-center text-sm text-foreground rounded hover:bg-muted/50"
       >
         {selectedMember ? (
           <div className="flex items-center gap-2">
@@ -42,7 +42,7 @@ export function PersonCell({ value, onChange, members }: PersonCellProps) {
         )}
       </button>
       {open && (
-        <div className="absolute z-50 top-full mt-1 left-0 bg-popover border rounded-md shadow-md p-1 min-w-[160px]">
+        <div className="absolute z-50 top-full mt-1 left-0 bg-popover border border-border text-popover-foreground rounded-md shadow-md dark:shadow-black/30 p-1 min-w-[160px]">
           {members.map((m) => (
             <button
               key={m.user.id}
@@ -50,7 +50,7 @@ export function PersonCell({ value, onChange, members }: PersonCellProps) {
                 onChange(m.user.id)
                 setOpen(false)
               }}
-              className="w-full px-2 py-1.5 flex items-center gap-2 text-sm rounded hover:bg-accent"
+              className="w-full px-2 py-1.5 flex items-center gap-2 text-sm rounded hover:bg-muted"
             >
               <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs">
                 {m.user.name.charAt(0).toUpperCase()}
@@ -63,7 +63,7 @@ export function PersonCell({ value, onChange, members }: PersonCellProps) {
               onChange(null)
               setOpen(false)
             }}
-            className="w-full px-2 py-1.5 text-sm text-muted-foreground rounded hover:bg-accent"
+            className="w-full px-2 py-1.5 text-sm text-muted-foreground rounded hover:bg-muted"
           >
             Clear
           </button>

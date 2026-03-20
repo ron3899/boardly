@@ -90,7 +90,7 @@ export function BoardCard({ board, onDelete }: BoardCardProps) {
   }
 
   return (
-    <div className="group relative rounded-lg bg-white dark:bg-[#17171F] monday-card-shadow hover:monday-card-shadow-hover transition-all hover:-translate-y-1 duration-200">
+    <div className="group relative rounded-lg bg-card border border-border monday-card-shadow hover:monday-card-shadow-hover dark:shadow-black/20 transition-all hover:-translate-y-1 duration-200">
       {/* Top colored strip */}
       <div
         className="h-1.5 rounded-t-lg"
@@ -104,10 +104,10 @@ export function BoardCard({ board, onDelete }: BoardCardProps) {
 
           {/* Board Title */}
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-[15px] text-[#323338] dark:text-[#F0F0F5] mb-1 truncate">
+            <h3 className="font-semibold text-[15px] text-card-foreground mb-1 truncate">
               {board.name}
             </h3>
-            <p className="text-xs text-[#676879] dark:text-[#9090A8]">
+            <p className="text-xs text-muted-foreground">
               Last updated {getDaysSince(board.updatedAt)}
             </p>
           </div>
@@ -120,7 +120,7 @@ export function BoardCard({ board, onDelete }: BoardCardProps) {
             {memberColors.map((color, i) => (
               <div
                 key={i}
-                className="w-7 h-7 rounded-full border-2 border-white dark:border-[#17171F] flex items-center justify-center text-white text-xs font-medium"
+                className="w-7 h-7 rounded-full border-2 border-card flex items-center justify-center text-white text-xs font-medium"
                 style={{ backgroundColor: color }}
               >
                 {String.fromCharCode(65 + i)}
@@ -129,7 +129,7 @@ export function BoardCard({ board, onDelete }: BoardCardProps) {
           </div>
 
           {/* Items Count */}
-          <span className="text-xs text-[#9699A6] dark:text-[#5A5A70] font-medium">
+          <span className="text-xs text-muted-foreground font-medium">
             {Math.floor(Math.random() * 20) + 5} items
           </span>
         </div>
@@ -140,18 +140,18 @@ export function BoardCard({ board, onDelete }: BoardCardProps) {
         {/* Favorite Star */}
         <button
           onClick={toggleFavorite}
-          className="p-1.5 rounded-lg hover:bg-[#F6F7FB] dark:hover:bg-white/10 transition-colors"
+          className="p-1.5 rounded-lg hover:bg-accent transition-colors"
           title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
         >
           <Star
-            className={`h-4 w-4 ${isFavorite ? 'fill-monday-warning text-monday-warning' : 'text-[#676879] dark:text-[#9090A8]'}`}
+            className={`h-4 w-4 ${isFavorite ? 'fill-monday-warning text-monday-warning' : 'text-muted-foreground'}`}
           />
         </button>
 
         {/* Three-dot menu */}
         <DropdownMenu>
-          <DropdownMenuTrigger className="p-1.5 rounded-lg hover:bg-[#F6F7FB] dark:hover:bg-white/10 transition-colors">
-            <MoreHorizontal className="h-4 w-4 text-[#676879] dark:text-[#9090A8]" />
+          <DropdownMenuTrigger className="p-1.5 rounded-lg hover:bg-accent transition-colors">
+            <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
             <DropdownMenuItem

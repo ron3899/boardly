@@ -49,7 +49,7 @@ export function Sidebar() {
 
       <aside
         className={cn(
-          'fixed left-0 top-0 z-40 h-full w-[260px] bg-[#1C1F3B] dark:bg-[#0D0D12] transition-transform md:translate-x-0',
+          'fixed left-0 top-0 z-40 h-full w-[260px] bg-[hsl(var(--sidebar-bg))] transition-transform md:translate-x-0',
           collapsed ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         )}
       >

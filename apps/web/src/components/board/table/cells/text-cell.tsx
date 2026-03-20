@@ -31,7 +31,7 @@ export function TextCell({ value, onChange }: TextCellProps) {
             setEditing(false)
           }
         }}
-        className="w-full h-8 px-2 text-sm bg-background border rounded outline-none"
+        className="w-full h-8 px-2 text-sm bg-background text-foreground border border-border rounded outline-none focus:border-primary"
         autoFocus
       />
     )
@@ -40,7 +40,7 @@ export function TextCell({ value, onChange }: TextCellProps) {
   return (
     <div
       onClick={() => setEditing(true)}
-      className="h-8 px-2 flex items-center text-sm cursor-pointer rounded hover:bg-accent truncate"
+      className="h-8 px-2 flex items-center text-sm text-foreground cursor-pointer rounded hover:bg-muted/50 truncate"
     >
       {(value as string) || <span className="text-muted-foreground">-</span>}
     </div>

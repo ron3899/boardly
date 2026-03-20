@@ -55,7 +55,7 @@ export function ItemModal({ item, columns, mutations, members }: ItemModalProps)
               onKeyDown={(e) => {
                 if (e.key === 'Enter') saveName()
               }}
-              className="w-full bg-transparent text-lg font-semibold outline-none border-b border-transparent focus:border-primary"
+              className="w-full bg-background text-foreground text-lg font-semibold outline-none border-b border-transparent focus:border-primary"
             />
           </SheetTitle>
         </SheetHeader>

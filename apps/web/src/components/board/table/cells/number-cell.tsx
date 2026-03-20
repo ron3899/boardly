@@ -34,7 +34,7 @@ export function NumberCell({ value, onChange }: NumberCellProps) {
             setEditing(false)
           }
         }}
-        className="w-full h-8 px-2 text-sm bg-background border rounded outline-none"
+        className="w-full h-8 px-2 text-sm bg-background text-foreground border border-border rounded outline-none focus:border-primary"
         autoFocus
       />
     )
@@ -43,7 +43,7 @@ export function NumberCell({ value, onChange }: NumberCellProps) {
   return (
     <div
       onClick={() => setEditing(true)}
-      className="h-8 px-2 flex items-center text-sm cursor-pointer rounded hover:bg-accent"
+      className="h-8 px-2 flex items-center text-sm text-foreground cursor-pointer rounded hover:bg-muted/50"
     >
       {numValue !== null ? numValue : <span className="text-muted-foreground">-</span>}
     </div>

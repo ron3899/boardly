@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boardly - הסרת Auto-Login | Demo</title>
+    <title>Boardly Dark Mode - Comprehensive Audit & Fix</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,533 +15,806 @@
         }
 
         body {
-            font-family: 'Heebo', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 2rem;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 14px;
+            background: #0C0C0E;
+            color: #F2F2F5;
+            line-height: 1.5;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 40px 20px;
         }
 
         .header {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
             text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #6161FF 0%, #579BFC 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(97, 97, 255, 0.3);
         }
 
         .header h1 {
-            color: #667eea;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .header .subtitle {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .badge {
-            display: inline-block;
-            background: #10b981;
+            font-size: 42px;
+            font-weight: 700;
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .theme-toggle button {
+            background: #1A1A23;
+            border: 2px solid #2A2A38;
+            color: #F2F2F5;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
             font-weight: 600;
-            margin-top: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+        .theme-toggle button:hover {
+            background: #6161FF;
+            border-color: #6161FF;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(97, 97, 255, 0.4);
         }
 
-        .card {
-            background: white;
-            padding: 2rem;
+        .section {
+            background: #17171F;
+            border: 1px solid #2A2A38;
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .card h2 {
-            color: #667eea;
-            margin-bottom: 1rem;
+        .section:hover {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #F2F2F5;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 12px;
         }
 
-        .icon {
-            width: 24px;
+        .section h2::before {
+            content: '';
+            width: 4px;
             height: 24px;
+            background: linear-gradient(180deg, #6161FF, #579BFC);
+            border-radius: 2px;
         }
 
-        .change-list {
-            list-style: none;
-            margin-bottom: 1rem;
+        .section p {
+            color: #9090A8;
+            margin-bottom: 24px;
+            font-size: 14px;
         }
 
-        .change-list li {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
-            display: flex;
-            align-items: start;
-            gap: 0.5rem;
-        }
-
-        .change-list li.removed {
-            background: #fee;
-            border-right: 3px solid #ef4444;
-        }
-
-        .change-list li.added {
-            background: #efe;
-            border-right: 3px solid #10b981;
-        }
-
-        .change-list li.modified {
-            background: #fef3c7;
-            border-right: 3px solid #f59e0b;
-        }
-
-        .change-icon {
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .code-block {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 1rem;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-
-        .code-block .comment {
-            color: #6a9955;
-        }
-
-        .code-block .keyword {
-            color: #569cd6;
-        }
-
-        .code-block .string {
-            color: #ce9178;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        .tab {
-            padding: 0.75rem 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: 'Heebo', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #666;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.3s;
-        }
-
-        .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-
-        .tab:hover {
-            color: #667eea;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .comparison {
+        .component-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
         }
 
-        .comparison-side {
-            padding: 1rem;
-            border-radius: 8px;
-        }
-
-        .comparison-side h3 {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .comparison-side.before {
-            background: #fef2f2;
-            border: 2px solid #ef4444;
-        }
-
-        .comparison-side.after {
-            background: #f0fdf4;
-            border: 2px solid #10b981;
-        }
-
-        .flow-diagram {
-            background: #f9fafb;
-            padding: 2rem;
+        .component-demo {
+            background: #1A1A23;
+            border: 1px solid #2A2A38;
             border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .component-demo:hover {
+            border-color: #6161FF;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(97, 97, 255, 0.2);
+        }
+
+        .component-demo h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #F2F2F5;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2A2A38;
+        }
+
+        .mock-header {
+            background: #0C0C0E;
+            border-bottom: 1px solid #2A2A38;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .mock-header h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #F2F2F5;
+        }
+
+        .mock-search {
+            background: #26262E;
+            border: 1px solid #2A2A38;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #9090A8;
+            font-size: 13px;
+            width: 200px;
+        }
+
+        .mock-button {
+            background: #6161FF;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 13px;
+        }
+
+        .mock-button:hover {
+            background: #5050EE;
+            transform: translateY(-1px);
+        }
+
+        .mock-button.secondary {
+            background: #26262E;
+            color: #F2F2F5;
+            border: 1px solid #2A2A38;
+        }
+
+        .mock-button.secondary:hover {
+            background: #2E2E3A;
+        }
+
+        .mock-card {
+            background: #17171F;
+            border: 1px solid #2A2A38;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .mock-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .mock-card .accent {
+            height: 4px;
+            border-radius: 4px 4px 0 0;
+            margin: -16px -16px 12px;
+        }
+
+        .mock-card h5 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #F2F2F5;
+            margin-bottom: 8px;
+        }
+
+        .mock-card p {
+            font-size: 12px;
+            color: #9090A8;
+            margin: 0;
+        }
+
+        .mock-table {
+            background: #17171F;
+            border: 1px solid #2A2A38;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .mock-table-header {
+            background: rgba(42, 42, 56, 0.3);
+            padding: 12px 16px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 16px;
+            border-bottom: 1px solid #2A2A38;
+        }
+
+        .mock-table-header span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #9090A8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mock-table-row {
+            padding: 12px 16px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 16px;
+            border-bottom: 1px solid #2A2A38;
+            transition: background 0.2s ease;
+        }
+
+        .mock-table-row:hover {
+            background: rgba(42, 42, 56, 0.2);
+        }
+
+        .mock-table-row:last-child {
+            border-bottom: none;
+        }
+
+        .mock-table-row span {
+            font-size: 13px;
+            color: #F2F2F5;
+        }
+
+        .mock-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
             text-align: center;
-            margin-top: 1rem;
         }
 
-        .flow-step {
+        .mock-status.done {
+            background: #00C875;
+            color: white;
+        }
+
+        .mock-status.working {
+            background: #FDAB3D;
+            color: white;
+        }
+
+        .mock-status.stuck {
+            background: #E2445C;
+            color: white;
+        }
+
+        .mock-kanban {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .mock-kanban-column {
+            background: rgba(42, 42, 56, 0.2);
+            border: 1px solid #2A2A38;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .mock-kanban-header {
+            padding: 12px 16px;
+            font-weight: 600;
+            font-size: 13px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mock-kanban-body {
+            padding: 12px;
+        }
+
+        .mock-kanban-card {
+            background: #17171F;
+            border: 1px solid #2A2A38;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mock-kanban-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .mock-kanban-card p {
+            font-size: 13px;
+            color: #F2F2F5;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .mock-dropdown {
+            background: #1A1A23;
+            border: 1px solid #2A2A38;
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            margin-top: 8px;
+        }
+
+        .mock-dropdown-item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            color: #F2F2F5;
+            font-size: 13px;
+        }
+
+        .mock-dropdown-item:hover {
+            background: #26262E;
+        }
+
+        .mock-input {
+            background: #0C0C0E;
+            border: 1px solid #2A2A38;
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: #F2F2F5;
+            font-size: 13px;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .mock-input:focus {
+            outline: none;
+            border-color: #6161FF;
+            box-shadow: 0 0 0 3px rgba(97, 97, 255, 0.1);
+        }
+
+        .mock-input::placeholder {
+            color: #5A5A70;
+        }
+
+        .fixes-list {
+            background: #1A1A23;
+            border-left: 4px solid #00C875;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .fixes-list h4 {
+            color: #00C875;
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .fixes-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .fixes-list li {
+            padding: 8px 0;
+            color: #D0D0DE;
+            font-size: 13px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .fixes-list li::before {
+            content: '✓';
+            color: #00C875;
+            font-weight: bold;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        body.light {
+            background: #F5F6F8;
+            color: #323338;
+        }
+
+        body.light .section {
             background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-color: #E6E9EF;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
-        .flow-arrow {
-            color: #667eea;
-            font-size: 2rem;
-            margin: 0.5rem 0;
+        body.light .section:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         }
 
-        .highlight-box {
-            background: #eff6ff;
-            border-right: 4px solid #3b82f6;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
+        body.light .section h2 {
+            color: #323338;
         }
 
-        .highlight-box strong {
-            color: #3b82f6;
+        body.light .section p {
+            color: #676879;
+        }
+
+        body.light .component-demo {
+            background: #F6F7FB;
+            border-color: #E6E9EF;
+        }
+
+        body.light .component-demo:hover {
+            border-color: #6161FF;
+        }
+
+        body.light .component-demo h3 {
+            color: #323338;
+            border-color: #E6E9EF;
+        }
+
+        body.light .mock-header {
+            background: white;
+            border-color: #E6E9EF;
+        }
+
+        body.light .mock-header h4 {
+            color: #323338;
+        }
+
+        body.light .mock-search {
+            background: #F6F7FB;
+            border-color: #E6E9EF;
+            color: #9699A6;
+        }
+
+        body.light .mock-button.secondary {
+            background: #F6F7FB;
+            color: #323338;
+            border-color: #E6E9EF;
+        }
+
+        body.light .mock-button.secondary:hover {
+            background: #E6E9EF;
+        }
+
+        body.light .mock-card {
+            background: white;
+            border-color: #E6E9EF;
+        }
+
+        body.light .mock-card h5 {
+            color: #323338;
+        }
+
+        body.light .mock-card p {
+            color: #676879;
+        }
+
+        body.light .mock-table {
+            background: white;
+            border-color: #E6E9EF;
+        }
+
+        body.light .mock-table-header {
+            background: #F6F7FB;
+            border-color: #E6E9EF;
+        }
+
+        body.light .mock-table-header span {
+            color: #676879;
+        }
+
+        body.light .mock-table-row {
+            border-color: #E6E9EF;
+        }
+
+        body.light .mock-table-row:hover {
+            background: #F6F7FB;
+        }
+
+        body.light .mock-table-row span {
+            color: #323338;
+        }
+
+        body.light .mock-kanban-column {
+            background: #F6F7FB;
+            border-color: #E6E9EF;
+        }
+
+        body.light .mock-kanban-card {
+            background: white;
+            border-color: #E6E9EF;
+        }
+
+        body.light .mock-kanban-card p {
+            color: #323338;
+        }
+
+        body.light .mock-dropdown {
+            background: white;
+            border-color: #E6E9EF;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        body.light .mock-dropdown-item {
+            color: #323338;
+        }
+
+        body.light .mock-dropdown-item:hover {
+            background: #F6F7FB;
+        }
+
+        body.light .mock-input {
+            background: white;
+            border-color: #E6E9EF;
+            color: #323338;
+        }
+
+        body.light .mock-input::placeholder {
+            color: #9699A6;
+        }
+
+        body.light .fixes-list {
+            background: #F6F7FB;
+        }
+
+        body.light .fixes-list li {
+            color: #323338;
+        }
+
+        body.light .theme-toggle button {
+            background: white;
+            border-color: #E6E9EF;
+            color: #323338;
+        }
+
+        body.light .theme-toggle button:hover {
+            background: #6161FF;
+            color: white;
         }
 
         @media (max-width: 768px) {
-            .comparison {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .component-grid {
                 grid-template-columns: 1fr;
             }
 
-            .header h1 {
-                font-size: 1.8rem;
+            .mock-kanban {
+                grid-template-columns: 1fr;
+            }
+
+            .mock-table-header,
+            .mock-table-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="theme-toggle">
+        <button onclick="toggleTheme()">🌓 Toggle Theme</button>
+    </div>
+
     <div class="container">
         <div class="header">
-            <h1>🎯 Boardly - הסרת מנגנון Auto-Login</h1>
-            <p class="subtitle">מיזוג מוצלח של השינויים מ-PR #6 ל-main branch</p>
-            <span class="badge">✅ Merged Successfully</span>
+            <h1>✨ Boardly Dark Mode Audit</h1>
+            <p>Comprehensive dark mode fixes across the entire application</p>
         </div>
 
-        <div class="content-grid">
-            <div class="card">
-                <h2>
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    סיכום השינויים
-                </h2>
-                <ul class="change-list">
-                    <li class="removed">
-                        <span class="change-icon">−</span>
-                        <div>
-                            <strong>הסרת Auto-Login Mechanism</strong>
-                            <div>הסרנו את המנגנון שבדק אימות אוטומטי בטעינת הדף</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">~</span>
-                        <div>
-                            <strong>שינוי ב-useAuth Hook</strong>
-                            <div>הגדרת <code>enabled: false</code> ב-query של האימות</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">~</span>
-                        <div>
-                            <strong>עדכון Middleware</strong>
-                            <div>הסרת redirect אוטומטי מדפי login/register</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">+</span>
-                        <div>
-                            <strong>הוספת checkAuth Method</strong>
-                            <div>שיטה ידנית לבדיקת סטטוס אימות</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+        <div class="section">
+            <h2>🎯 Overview</h2>
+            <p>This demo showcases all the dark mode improvements made to the Boardly web application. Every component has been audited and fixed to ensure proper contrast, visibility, and consistency in both light and dark modes.</p>
 
-            <div class="card">
-                <h2>
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                    קבצים ששונו
-                </h2>
-                <ul class="change-list">
-                    <li class="modified">
-                        <span class="change-icon">📝</span>
-                        <div>
-                            <strong>apps/web/src/hooks/use-auth.ts</strong>
-                            <div style="font-size: 0.9rem; color: #666;">4 שורות שונו</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">📝</span>
-                        <div>
-                            <strong>apps/web/src/middleware.ts</strong>
-                            <div style="font-size: 0.9rem; color: #666;">6 שורות שונו</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">➕</span>
-                        <div>
-                            <strong>vercel.json</strong>
-                            <div style="font-size: 0.9rem; color: #666;">הוסף עבור deployment</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">➕</span>
-                        <div>
-                            <strong>render.yaml</strong>
-                            <div style="font-size: 0.9rem; color: #666;">עודכן עבור deployment</div>
-                        </div>
-                    </li>
+            <div class="fixes-list">
+                <h4>✓ Components Fixed</h4>
+                <ul>
+                    <li>Header component - Replaced hardcoded colors with semantic Tailwind tokens</li>
+                    <li>Sidebar navigation - Consistent dark styling with proper backgrounds</li>
+                    <li>Dashboard page - Greeting text, board grid, and add board button</li>
+                    <li>BoardCard - All text, borders, and hover states properly styled</li>
+                    <li>Table view - Headers, rows, cells, borders, and inputs</li>
+                    <li>All table cell types - Text, Status, Dropdown, Number, Date, Person</li>
+                    <li>Kanban view - Columns, cards, backgrounds, and borders</li>
+                    <li>Item modal and board header - Inputs and text fields</li>
+                    <li>All UI components - Dropdown menus, dialogs, sheets, and selects</li>
                 </ul>
             </div>
         </div>
 
-        <div class="card">
-            <div class="tabs">
-                <button class="tab active" onclick="switchTab('before-after')">לפני ואחרי</button>
-                <button class="tab" onclick="switchTab('code-changes')">שינויי קוד</button>
-                <button class="tab" onclick="switchTab('flow')">תרשים זרימה</button>
-            </div>
-
-            <div id="before-after" class="tab-content active">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">השוואה: לפני ואחרי</h2>
-                <div class="comparison">
-                    <div class="comparison-side before">
-                        <h3>❌ לפני - עם Auto-Login</h3>
-                        <ul style="list-style: none;">
-                            <li style="margin: 0.5rem 0;">🔄 בדיקה אוטומטית בכל טעינת דף</li>
-                            <li style="margin: 0.5rem 0;">🔄 Redirect אוטומטי ל-/app אם יש token</li>
-                            <li style="margin: 0.5rem 0;">⚠️ גורם לבעיות UX</li>
-                            <li style="margin: 0.5rem 0;">⚠️ משתמשים לא יכלו להתנתק באופן אפקטיבי</li>
-                        </ul>
-                    </div>
-                    <div class="comparison-side after">
-                        <h3>✅ אחרי - בלי Auto-Login</h3>
-                        <ul style="list-style: none;">
-                            <li style="margin: 0.5rem 0;">✋ אין בדיקה אוטומטית</li>
-                            <li style="margin: 0.5rem 0;">👤 משתמשים חייבים להתחבר באופן מפורש</li>
-                            <li style="margin: 0.5rem 0;">✨ חוויית משתמש משופרת</li>
-                            <li style="margin: 0.5rem 0;">✨ התנתקות עובדת כראוי</li>
-                        </ul>
-                    </div>
+        <div class="section">
+            <h2>📋 Header & Navigation</h2>
+            <p>Header and sidebar now use semantic tokens for consistent theming</p>
+            <div class="mock-header">
+                <h4>Boardly Dashboard</h4>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <input type="text" class="mock-search" placeholder="Search...">
+                    <button class="mock-button">+ New Board</button>
                 </div>
             </div>
+        </div>
 
-            <div id="code-changes" class="tab-content">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">שינויי קוד מפתח</h2>
-
-                <h3 style="margin: 1.5rem 0 1rem;">1. apps/web/src/hooks/use-auth.ts</h3>
-                <div class="code-block">
-<span class="keyword">const</span> { data, isLoading, refetch } = <span class="keyword">useQuery</span>({
-  queryKey: [<span class="string">'auth'</span>, <span class="string">'me'</span>],
-  queryFn: () => api.get&lt;{ user: User }&gt;(<span class="string">'/auth/me'</span>),
-  retry: <span class="keyword">false</span>,
-  enabled: <span class="keyword">false</span>, <span class="comment">// Disable automatic authentication check</span>
-})
-
-<span class="comment">// Added manual authentication check method:</span>
-checkAuth: refetch, <span class="comment">// Manual method to check authentication status</span>
+        <div class="section">
+            <h2>🃏 Board Cards</h2>
+            <p>Board cards with proper dark mode styling, shadows, and hover effects</p>
+            <div class="component-grid">
+                <div class="mock-card">
+                    <div class="accent" style="background: #6161FF;"></div>
+                    <h5>📊 Marketing Campaign</h5>
+                    <p>Last updated 2 days ago</p>
                 </div>
-
-                <h3 style="margin: 1.5rem 0 1rem;">2. apps/web/src/middleware.ts</h3>
-                <div class="code-block">
-<span class="comment">// Only protect /app routes - redirect to login if no token</span>
-<span class="keyword">if</span> (request.nextUrl.pathname.startsWith(<span class="string">'/app'</span>) && !token) {
-  <span class="keyword">return</span> NextResponse.redirect(<span class="keyword">new</span> URL(<span class="string">'/login'</span>, request.url))
-}
-
-<span class="comment">// Removed: Auto-redirect from login/register pages when token exists</span>
-<span class="comment">// Users must explicitly login even if they have a token cookie</span>
+                <div class="mock-card">
+                    <div class="accent" style="background: #00C875;"></div>
+                    <h5>🎯 Product Roadmap</h5>
+                    <p>Last updated yesterday</p>
                 </div>
-
-                <div class="highlight-box">
-                    <strong>💡 מה זה אומר?</strong><br>
-                    משתמשים חייבים ללחוץ על כפתור "התחבר" בכל פעם שהם רוצים לגשת לאפליקציה,
-                    גם אם הם מחוברים. זה פותר את הבעיה שבה משתמשים לא יכלו להתנתק או לעבור
-                    בין חשבונות שונים.
+                <div class="mock-card">
+                    <div class="accent" style="background: #FDAB3D;"></div>
+                    <h5>💼 Client Projects</h5>
+                    <p>Last updated today</p>
                 </div>
             </div>
+        </div>
 
-            <div id="flow" class="tab-content">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">תרשים זרימת אימות</h2>
-
-                <div class="flow-diagram">
-                    <h3 style="color: #667eea; margin-bottom: 1rem;">זרימת אימות חדשה</h3>
-
-                    <div class="flow-step">
-                        <strong>1️⃣ משתמש נכנס לדף /login</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">הדף נטען ללא בדיקות אימות אוטומטיות</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>2️⃣ משתמש מזין פרטי התחברות</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">מייל וסיסמה</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>3️⃣ לחיצה על כפתור "התחבר"</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">שליחת בקשת POST ל-/auth/login</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>4️⃣ שרת מאמת ומחזיר token</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">Token נשמר ב-cookie</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step" style="background: #f0fdf4; border: 2px solid #10b981;">
-                        <strong>5️⃣ ניווט ל-/app</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">משתמש מחובר בהצלחה!</div>
-                    </div>
+        <div class="section">
+            <h2>📊 Table View</h2>
+            <p>Table with proper borders, row hover states, and cell styling</p>
+            <div class="mock-table">
+                <div class="mock-table-header">
+                    <span>Item</span>
+                    <span>Status</span>
+                    <span>Priority</span>
+                    <span>Owner</span>
                 </div>
+                <div class="mock-table-row">
+                    <span>Design new landing page</span>
+                    <span><span class="mock-status done">Done</span></span>
+                    <span>High</span>
+                    <span>Alice</span>
+                </div>
+                <div class="mock-table-row">
+                    <span>Implement authentication</span>
+                    <span><span class="mock-status working">Working</span></span>
+                    <span>Critical</span>
+                    <span>Bob</span>
+                </div>
+                <div class="mock-table-row">
+                    <span>Fix mobile responsiveness</span>
+                    <span><span class="mock-status stuck">Stuck</span></span>
+                    <span>Medium</span>
+                    <span>Charlie</span>
+                </div>
+            </div>
+        </div>
 
-                <div class="flow-diagram" style="margin-top: 2rem;">
-                    <h3 style="color: #667eea; margin-bottom: 1rem;">הגנת נתיבים (Route Protection)</h3>
-
-                    <div class="flow-step">
-                        <strong>משתמש מנסה לגשת ל-/app</strong>
+        <div class="section">
+            <h2>📌 Kanban View</h2>
+            <p>Kanban columns and cards with proper dark mode backgrounds</p>
+            <div class="mock-kanban">
+                <div class="mock-kanban-column">
+                    <div class="mock-kanban-header" style="background: #00C875;">
+                        Done <span style="opacity: 0.8;">3</span>
                     </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step" style="background: #fef3c7;">
-                        <strong>Middleware בודק אם יש token</strong>
-                    </div>
-
-                    <div class="flow-arrow">↙ ↘</div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-                        <div class="flow-step" style="background: #fee; border: 2px solid #ef4444;">
-                            <strong>❌ אין token</strong>
-                            <div style="color: #666; margin-top: 0.5rem;">Redirect ל-/login</div>
+                    <div class="mock-kanban-body">
+                        <div class="mock-kanban-card">
+                            <p>Setup CI/CD pipeline</p>
                         </div>
-                        <div class="flow-step" style="background: #f0fdf4; border: 2px solid #10b981;">
-                            <strong>✅ יש token</strong>
-                            <div style="color: #666; margin-top: 0.5rem;">גישה לאפליקציה</div>
+                        <div class="mock-kanban-card">
+                            <p>Write documentation</p>
+                        </div>
+                        <div class="mock-kanban-card">
+                            <p>Code review</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mock-kanban-column">
+                    <div class="mock-kanban-header" style="background: #FDAB3D;">
+                        In Progress <span style="opacity: 0.8;">2</span>
+                    </div>
+                    <div class="mock-kanban-body">
+                        <div class="mock-kanban-card">
+                            <p>Database optimization</p>
+                        </div>
+                        <div class="mock-kanban-card">
+                            <p>API integration</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mock-kanban-column">
+                    <div class="mock-kanban-header" style="background: #E2445C;">
+                        Stuck <span style="opacity: 0.8;">1</span>
+                    </div>
+                    <div class="mock-kanban-body">
+                        <div class="mock-kanban-card">
+                            <p>Performance issue</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card" style="margin-top: 2rem;">
-            <h2 style="color: #667eea; margin-bottom: 1rem;">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                </svg>
-                סיכום טכני
-            </h2>
-
-            <div style="display: grid; gap: 1rem;">
-                <div class="highlight-box">
-                    <strong>📊 סטטיסטיקות:</strong><br>
-                    • 2 קבצים שונו<br>
-                    • 6 שורות הוספו, 4 שורות הוסרו<br>
-                    • 4 commits נוספים (deployment configs)<br>
-                    • Fast-forward merge (ללא conflicts)
+        <div class="section">
+            <h2>🎨 UI Components</h2>
+            <p>Buttons, inputs, and dropdown menus with proper dark mode styling</p>
+            <div class="component-grid">
+                <div class="component-demo">
+                    <h3>Buttons</h3>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <button class="mock-button">Primary</button>
+                        <button class="mock-button secondary">Secondary</button>
+                    </div>
                 </div>
-
-                <div class="highlight-box" style="background: #fef3c7; border-right-color: #f59e0b;">
-                    <strong>⚠️ שינויים פורצי תאימות (Breaking Changes):</strong><br>
-                    • משתמשים חייבים להתחבר באופן מפורש בכל פעם<br>
-                    • אין יותר "remember me" functionality אוטומטית<br>
-                    • Token cookies לא מספיקים להתחברות אוטומטית
+                <div class="component-demo">
+                    <h3>Input Fields</h3>
+                    <input type="text" class="mock-input" placeholder="Enter text...">
                 </div>
-
-                <div class="highlight-box" style="background: #f0fdf4; border-right-color: #10b981;">
-                    <strong>✅ יתרונות:</strong><br>
-                    • חוויית משתמש טובה יותר<br>
-                    • משתמשים יכולים להתנתק בצורה אפקטיבית<br>
-                    • אין loops של redirects<br>
-                    • התנהגות צפויה ועקבית
+                <div class="component-demo">
+                    <h3>Dropdown Menu</h3>
+                    <button class="mock-button secondary" style="width: 100%;">Select option ▼</button>
+                    <div class="mock-dropdown">
+                        <div class="mock-dropdown-item">Option 1</div>
+                        <div class="mock-dropdown-item">Option 2</div>
+                        <div class="mock-dropdown-item">Option 3</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="card" style="margin-top: 2rem; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-            <h2 style="color: white; margin-bottom: 1rem;">🎉 המיזוג הושלם בהצלחה!</h2>
-            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
-                כל השינויים מ-PR #6 נמזגו ל-main branch
-            </p>
-            <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                <strong>Git Commands שרצו:</strong><br>
-                <code style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem;">
-                    git checkout -b main 4f06a3c<br>
-                    git merge owla/remove-the-auto-login-mechanism-that-is-causing-is-a213e4<br>
-                    git push -u origin main
-                </code>
+        <div class="section">
+            <h2>🎉 Results</h2>
+            <p>All components now feature:</p>
+            <div class="fixes-list">
+                <h4>✓ Dark Mode Improvements</h4>
+                <ul>
+                    <li>Consistent semantic color tokens (background, foreground, muted, border)</li>
+                    <li>Proper contrast ratios for text readability</li>
+                    <li>Visible borders and separators in dark mode</li>
+                    <li>Smooth hover and focus states</li>
+                    <li>Dark-appropriate shadows (black/20 instead of gray)</li>
+                    <li>Proper popover and dropdown styling</li>
+                    <li>All hardcoded colors replaced with Tailwind tokens</li>
+                    <li>Consistent experience across light and dark themes</li>
+                </ul>
             </div>
         </div>
     </div>
 
     <script>
-        function switchTab(tabId) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-
-            // Show selected tab content
-            document.getElementById(tabId).classList.add('active');
-
-            // Add active class to clicked tab
-            event.target.classList.add('active');
+        function toggleTheme() {
+            document.body.classList.toggle('light');
         }
+
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const header = document.querySelector('.header');
+            if (header) {
+                header.style.transform = 'translateY(' + (scrolled * 0.3) + 'px)';
+                header.style.opacity = 1 - (scrolled / 500);
+            }
+        });
     </script>
 </body>
 </html>

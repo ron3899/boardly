@@ -25,15 +25,15 @@ export function TableView({ board, mutations }: TableViewProps) {
 
   return (
     <BoardDndContext board={board} mutations={mutations}>
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-6 bg-background">
         <div className="min-w-[800px]">
           {board.groups.map((group) => (
             <SortableGroup key={group.id} id={group.id}>
               <div className="mb-6">
                 <GroupHeader group={group} mutations={mutations} />
                 {!group.collapsed && (
-                  <div className="border rounded-lg overflow-hidden">
-                    <div className="flex bg-muted/50 border-b">
+                  <div className="border border-border rounded-lg overflow-hidden bg-card">
+                    <div className="flex bg-muted/50 border-b border-border">
                       <div className="w-10 px-2 py-2 flex-shrink-0" />
                       <div className="min-w-[250px] flex-1 px-3 py-2 text-xs font-medium text-muted-foreground uppercase">
                         Item
@@ -48,7 +48,7 @@ export function TableView({ board, mutations }: TableViewProps) {
                       <div className="w-10 flex-shrink-0 flex items-center justify-center">
                         <button
                           onClick={() => setAddColumnOpen(true)}
-                          className="p-1 rounded hover:bg-accent text-muted-foreground"
+                          className="p-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
                           title="Add column"
                         >
                           <Plus className="h-3 w-3" />

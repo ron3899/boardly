@@ -62,28 +62,28 @@ export function Header({ title, breadcrumb, children }: HeaderProps) {
   }, [debounceTimeout])
 
   return (
-    <header className="sticky top-0 z-30 bg-white dark:bg-[#111116] border-b border-[#E6E9EF] dark:border-[#2A2A38] h-[60px] flex items-center px-6">
+    <header className="sticky top-0 z-30 bg-background border-b border-border h-[60px] flex items-center px-6">
       <div className="flex-1 flex items-center gap-4">
         {/* Page Title and Breadcrumb */}
         <div className="flex flex-col">
           {breadcrumb && (
-            <span className="text-xs text-[#9699A6] dark:text-[#5A5A70] font-medium">{breadcrumb}</span>
+            <span className="text-xs text-muted-foreground font-medium">{breadcrumb}</span>
           )}
-          <h2 className="text-[15px] font-semibold text-[#323338] dark:text-[#F0F0F5]">{title}</h2>
+          <h2 className="text-[15px] font-semibold text-foreground">{title}</h2>
         </div>
       </div>
 
       {/* Center Search Bar */}
       <div className="hidden md:flex flex-1 justify-center max-w-md">
         <div className="relative w-full max-w-[300px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#676879] dark:text-[#9090A8]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search"
             value={searchValue}
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
-            className="w-full h-9 pl-10 pr-4 rounded-full bg-[#F6F7FB] dark:bg-[#1E1E2A] border border-[#E6E9EF] dark:border-[#2A2A38] text-sm text-[#323338] dark:text-[#F0F0F5] placeholder:text-[#9699A6] dark:placeholder:text-[#5A5A70] focus:outline-none focus:ring-2 focus:ring-monday-purple/20 focus:border-monday-purple transition-all"
+            className="w-full h-9 pl-10 pr-4 rounded-full bg-muted border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-monday-purple/20 focus:border-monday-purple transition-all"
           />
         </div>
       </div>
@@ -94,17 +94,17 @@ export function Header({ title, breadcrumb, children }: HeaderProps) {
 
         {/* Icon Buttons */}
         <button
-          className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F6F7FB] dark:hover:bg-white/10 transition-colors"
+          className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-accent transition-colors"
           title="Notifications"
         >
-          <Bell className="h-[18px] w-[18px] text-[#676879] dark:text-[#9090A8]" />
+          <Bell className="h-[18px] w-[18px] text-muted-foreground hover:text-foreground transition-colors" />
         </button>
 
         <button
-          className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-[#F6F7FB] dark:hover:bg-white/10 transition-colors"
+          className="hidden md:flex items-center justify-center w-8 h-8 rounded-lg hover:bg-accent transition-colors"
           title="Help"
         >
-          <HelpCircle className="h-[18px] w-[18px] text-[#676879] dark:text-[#9090A8]" />
+          <HelpCircle className="h-[18px] w-[18px] text-muted-foreground hover:text-foreground transition-colors" />
         </button>
 
         {/* Theme Toggle */}

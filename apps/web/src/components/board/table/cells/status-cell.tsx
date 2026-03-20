@@ -40,7 +40,7 @@ export function StatusCell({ value, onChange, settings }: StatusCellProps) {
         {currentLabel?.label || 'Select'}
       </button>
       {open && (
-        <div className="absolute z-50 top-full mt-1 left-0 bg-popover border rounded-md shadow-md p-1 min-w-[140px]">
+        <div className="absolute z-50 top-full mt-1 left-0 bg-popover border border-border rounded-md shadow-md dark:shadow-black/30 p-1 min-w-[140px]">
           {Object.entries(labels).map(([key, label]) => (
             <button
               key={key}
@@ -48,7 +48,7 @@ export function StatusCell({ value, onChange, settings }: StatusCellProps) {
                 onChange(key)
                 setOpen(false)
               }}
-              className="w-full h-7 rounded text-xs font-medium mb-1 last:mb-0"
+              className="w-full h-7 rounded text-xs font-medium mb-1 last:mb-0 hover:opacity-90"
               style={{ backgroundColor: label.color, color: '#fff' }}
             >
               {label.label}
@@ -59,7 +59,7 @@ export function StatusCell({ value, onChange, settings }: StatusCellProps) {
               onChange(null)
               setOpen(false)
             }}
-            className="w-full h-7 rounded text-xs text-muted-foreground hover:bg-accent"
+            className="w-full h-7 rounded text-xs text-muted-foreground hover:bg-muted"
           >
             Clear
           </button>

@@ -67,8 +67,8 @@ export function GroupHeader({ group, mutations }: GroupHeaderProps) {
               setEditing(false)
             }
           }}
-          className="text-base font-semibold bg-transparent border-b-2 outline-none"
-          style={{ borderColor: group.color, color: group.color }}
+          className="text-base font-semibold bg-background text-foreground border-b-2 outline-none"
+          style={{ borderColor: group.color }}
         />
       ) : (
         <h3
@@ -80,15 +80,15 @@ export function GroupHeader({ group, mutations }: GroupHeaderProps) {
         </h3>
       )}
 
-      <span className="text-xs text-muted-foreground">
+      <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
         {group.items?.length || 0} items
       </span>
 
       <DropdownMenu>
-        <DropdownMenuTrigger className="p-1 rounded hover:bg-accent opacity-0 group-hover:opacity-100">
+        <DropdownMenuTrigger className="p-1 rounded hover:bg-accent text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-colors">
           <Palette className="h-3 w-3" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className="bg-popover border-border">
           <div className="flex gap-1 p-2">
             {GROUP_COLORS.map((color) => (
               <button
