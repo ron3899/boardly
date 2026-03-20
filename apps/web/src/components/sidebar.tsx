@@ -49,9 +49,10 @@ export function Sidebar() {
 
       <aside
         className={cn(
-          'fixed left-0 top-0 z-40 h-full w-[260px] bg-[#1C1F3B] dark:bg-[#0D0D12] transition-transform md:translate-x-0',
+          'fixed left-0 top-0 z-40 h-full w-[260px] transition-transform md:translate-x-0',
           collapsed ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         )}
+        style={{ backgroundColor: 'hsl(var(--sidebar-bg))' }}
       >
         <div className="flex h-full flex-col text-white">
           {/* Logo and Workspace */}
@@ -89,7 +90,7 @@ export function Sidebar() {
                   className={cn(
                     'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
                     isActive
-                      ? 'bg-white/12 text-white'
+                      ? 'bg-white/10 text-white'
                       : 'text-white/90 hover:bg-white/8'
                   )}
                 >
@@ -114,7 +115,7 @@ export function Sidebar() {
                   className={cn(
                     'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
                     isActive
-                      ? 'bg-white/12 text-white'
+                      ? 'bg-white/10 text-white'
                       : 'text-white/90 hover:bg-white/8'
                   )}
                 >
@@ -127,7 +128,7 @@ export function Sidebar() {
 
           {/* User Profile Section */}
           <div className="border-t border-white/10 p-3">
-            <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-white/8 transition-colors">
+            <div className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-white/5 hover:bg-white/8 transition-colors">
               <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-monday-purple to-monday-info text-white text-sm font-semibold">
                 {user?.name?.charAt(0).toUpperCase() || 'U'}
               </div>
@@ -137,10 +138,10 @@ export function Sidebar() {
               </div>
               <button
                 onClick={() => logout()}
-                className="flex-shrink-0 p-1.5 rounded-lg hover:bg-white/10 transition-colors"
+                className="flex-shrink-0 p-1.5 rounded-lg hover:bg-white/10 transition-colors text-white/70 hover:text-white"
                 title="Logout"
               >
-                <LogOut className="h-4 w-4 text-white/70" />
+                <LogOut className="h-4 w-4" />
               </button>
             </div>
           </div>

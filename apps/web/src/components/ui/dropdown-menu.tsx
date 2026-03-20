@@ -52,7 +52,7 @@ function DropdownMenuContent({ children, className, align = 'start', ...props }:
     <div
       ref={ref}
       className={cn(
-        'absolute z-50 min-w-[8rem] rounded-md border bg-popover p-1 text-popover-foreground shadow-md',
+        'absolute z-50 min-w-[8rem] rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-lg',
         align === 'end' ? 'right-0' : 'left-0',
         className
       )}
@@ -81,7 +81,7 @@ function DropdownMenuItem({ className, ...props }: React.ButtonHTMLAttributes<HT
 }
 
 function DropdownMenuSeparator({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('-mx-1 my-1 h-px bg-muted', className)} {...props} />
+  return <div className={cn('-mx-1 my-1 h-px bg-border', className)} {...props} />
 }
 
 export { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator }

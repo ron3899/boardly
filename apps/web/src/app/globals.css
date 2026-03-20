@@ -16,7 +16,7 @@
     --monday-danger: 353 76% 58%;
     --monday-info: 214 92% 68%;
 
-    /* Sidebar */
+    /* Sidebar - intentionally dark in both modes (brand design) */
     --sidebar-bg: 236 37% 17%;
     --sidebar-text: 0 0% 100%;
     --sidebar-hover: 0 0% 100% / 0.08;
@@ -26,6 +26,14 @@
     /* Main Content */
     --content-bg: 227 32% 97%;
     --white-surface: 0 0% 100%;
+
+    /* Surface Tokens */
+    --surface: 0 0% 100%;
+    --surface-foreground: 230 11% 20%;
+    --surface-variant: 223 17% 96%;
+    --on-surface-variant: 235 9% 44%;
+    --elevation-1: 0 0% 98%;
+    --elevation-2: 0 0% 96%;
 
     /* Text Colors */
     --text-primary: 230 11% 20%;
@@ -85,11 +93,19 @@
     --input: 240 5% 16%;
     --ring: 250 70% 69%;
 
-    /* Sidebar dark */
-    --sidebar-bg: 240 10% 7%;
-    --sidebar-text: 0 0% 95%;
-    --sidebar-hover: 0 0% 100% / 0.06;
-    --sidebar-active: 0 0% 100% / 0.10;
+    /* Surface Tokens Dark */
+    --surface: 240 8% 9%;
+    --surface-foreground: 0 0% 95%;
+    --surface-variant: 240 6% 12%;
+    --on-surface-variant: 0 0% 70%;
+    --elevation-1: 240 8% 11%;
+    --elevation-2: 240 6% 14%;
+
+    /* Sidebar dark - intentionally dark in both modes (brand design) */
+    --sidebar-bg: 236 37% 17%;
+    --sidebar-text: 0 0% 100%;
+    --sidebar-hover: 0 0% 100% / 0.08;
+    --sidebar-active: 0 0% 100% / 0.12;
 
     /* Content dark */
     --content-bg: 240 10% 5%;
@@ -105,7 +121,7 @@
     /* Borders dark */
     --border-color: 240 5% 16%;
     --monday-bg: 240 10% 5%;
-    --monday-dark: 240 10% 7%;
+    --monday-dark: 236 37% 17%;
   }
 }
 
@@ -137,19 +153,20 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 rounded-full;
+    background-color: hsl(var(--border));
+    @apply rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-400;
+    background-color: hsl(var(--muted-foreground) / 0.3);
   }
 
   .dark ::-webkit-scrollbar-thumb {
-    @apply bg-gray-600;
+    background-color: hsl(var(--border));
   }
 
   .dark ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-500;
+    background-color: hsl(var(--muted-foreground) / 0.5);
   }
 }
 
