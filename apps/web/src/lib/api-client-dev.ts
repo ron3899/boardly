@@ -62,29 +62,29 @@ async function handleMockRequest<T>(path: string, options: RequestInit = {}): Pr
     if (path === '/boards' && method === 'POST') {
       return (await mockApi.boards.create(body)) as T
     }
-    if (path.startsWith('/boards/') && method === 'GET') {
-      const id = path.split('/')[2]
-      return (await mockApi.boards.get(id)) as T
-    }
-    if (path.startsWith('/boards/') && method === 'PATCH') {
-      const id = path.split('/')[2]
-      return (await mockApi.boards.update(id, body)) as T
-    }
-    if (path.startsWith('/boards/') && method === 'DELETE') {
-      const id = path.split('/')[2]
-      return (await mockApi.boards.delete(id)) as T
-    }
 
-    // Board groups routes
+    // Board sub-routes (check these before generic board routes)
     if (path.includes('/boards/') && path.includes('/groups') && method === 'POST') {
       const boardId = path.split('/')[2]
       return (await mockApi.groups.create(boardId, body)) as T
     }
-
-    // Board columns routes
     if (path.includes('/boards/') && path.includes('/columns') && method === 'POST') {
       const boardId = path.split('/')[2]
       return (await mockApi.columns.create(boardId, body)) as T
+    }
+
+    // Generic board routes (after sub-routes)
+    if (path.startsWith('/boards/') && method === 'GET' && !path.includes('/groups') && !path.includes('/columns')) {
+      const id = path.split('/')[2]
+      return (await mockApi.boards.get(id)) as T
+    }
+    if (path.startsWith('/boards/') && method === 'PATCH' && !path.includes('/groups') && !path.includes('/columns')) {
+      const id = path.split('/')[2]
+      return (await mockApi.boards.update(id, body)) as T
+    }
+    if (path.startsWith('/boards/') && method === 'DELETE' && !path.includes('/groups') && !path.includes('/columns')) {
+      const id = path.split('/')[2]
+      return (await mockApi.boards.delete(id)) as T
     }
 
     // Group routes
