@@ -43,16 +43,41 @@ async function handleMockRequest<T>(path: string, options: RequestInit = {}): Pr
   try {
     // Auth routes
     if (path === '/auth/me' && method === 'GET') {
-      return (await mockApi.auth.me()) as T
+      // Check for token cookie
+      if (typeof document !== 'undefined' && document.cookie.includes('token=')) {
+        // Simulate network delay
+        await new Promise((resolve) => setTimeout(resolve, 300))
+        const { mockUser } = await import('./mock-data')
+        return { user: mockUser } as T
+      }
+      throw new ApiError(401, 'Not authenticated')
     }
     if (path === '/auth/login' && method === 'POST') {
-      return (await mockApi.auth.login(body)) as T
+      // Validate credentials
+      const { email, password } = body
+      if (email === 'demo@boardly.com' && password === 'demo1234') {
+        // Set token cookie
+        if (typeof document !== 'undefined') {
+          document.cookie = 'token=mock-token-demo; path=/; max-age=604800'
+        }
+        // Simulate network delay
+        await new Promise((resolve) => setTimeout(resolve, 500))
+        const { mockUser } = await import('./mock-data')
+        return { user: mockUser, token: 'mock-token-demo' } as T
+      }
+      throw new ApiError(401, 'Invalid credentials')
     }
     if (path === '/auth/register' && method === 'POST') {
       return (await mockApi.auth.register(body)) as T
     }
     if (path === '/auth/logout' && method === 'POST') {
-      return (await mockApi.auth.logout()) as T
+      // Clear token cookie
+      if (typeof document !== 'undefined') {
+        document.cookie = 'token=; path=/; max-age=0'
+      }
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 300))
+      return {} as T
     }
 
     // Board routes

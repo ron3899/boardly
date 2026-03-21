@@ -4,9 +4,10 @@ import { ColumnType, DEFAULT_STATUS_LABELS } from '@boardly/shared'
 // Mock User
 export const mockUser: User = {
   id: 'user-1',
-  email: 'demo@example.com',
+  email: 'demo@boardly.com',
   name: 'Demo User',
-  createdAt: new Date().toISOString(),
+  createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+  updatedAt: new Date().toISOString(),
 }
 
 // Mock Boards
