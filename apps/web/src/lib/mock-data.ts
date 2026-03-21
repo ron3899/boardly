@@ -239,9 +239,25 @@ export const mockBoardWithDetails: BoardWithDetails = {
   ],
 }
 
+// Helper to deep clone board details
+function deepCloneBoardWithDetails(board: BoardWithDetails): BoardWithDetails {
+  return {
+    ...board,
+    groups: board.groups.map(g => ({
+      ...g,
+      items: g.items?.map(i => ({
+        ...i,
+        columnValues: i.columnValues?.map(cv => ({ ...cv })) || []
+      })) || []
+    })),
+    columns: board.columns.map(c => ({ ...c, settings: { ...c.settings } })),
+    members: board.members.map(m => ({ ...m, user: { ...m.user } }))
+  }
+}
+
 // In-memory storage for development mode
 let boards = [...mockBoards]
-let boardDetails = new Map<string, BoardWithDetails>([['board-1', mockBoardWithDetails]])
+let boardDetails = new Map<string, BoardWithDetails>([['board-1', deepCloneBoardWithDetails(mockBoardWithDetails)]])
 let currentUser = { ...mockUser }
 let isAuthenticated = false
 
@@ -547,6 +563,18 @@ export const mockApi = {
       board.columns.push(newColumn)
       return { column: newColumn }
     },
+    update: async (id: string, input: { name?: string; settings?: Record<string, unknown> }) => {
+      await delay(400)
+      for (const board of boardDetails.values()) {
+        const column = board.columns.find((c) => c.id === id)
+        if (column) {
+          if (input.name !== undefined) column.name = input.name
+          if (input.settings !== undefined) column.settings = { ...column.settings, ...input.settings }
+          return { column }
+        }
+      }
+      throw new Error('Column not found')
+    },
     delete: async (id: string) => {
       await delay(400)
       for (const board of boardDetails.values()) {
@@ -577,7 +605,7 @@ function delay(ms: number) {
 // Reset function for testing
 export function resetMockData() {
   boards = [...mockBoards]
-  boardDetails = new Map([['board-1', mockBoardWithDetails]])
+  boardDetails = new Map([['board-1', deepCloneBoardWithDetails(mockBoardWithDetails)]])
   currentUser = { ...mockUser }
   isAuthenticated = false
   idCounter = 100
