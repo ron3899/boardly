@@ -51,6 +51,12 @@ export class BoardsService {
   }
 
   async create(userId: string, input: CreateBoardInput) {
+    // If no groups provided, create a default "Main Group"
+    const defaultGroups = [{ name: 'Main Group', color: '#579bfc' }]
+    const groupsToCreate = input.groups && input.groups.length > 0
+      ? input.groups
+      : defaultGroups
+
     const board = await this.prisma.board.create({
       data: {
         name: input.name,
@@ -58,9 +64,11 @@ export class BoardsService {
           create: { userId, role: 'owner' },
         },
         groups: {
-          create: [
-            { name: 'Group 1', color: '#579bfc', order: 0 },
-          ],
+          create: groupsToCreate.map((group, index) => ({
+            name: group.name,
+            color: group.color || '#579bfc',
+            order: index,
+          })),
         },
         columns: {
           create: [
