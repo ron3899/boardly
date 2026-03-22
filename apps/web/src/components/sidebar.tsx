@@ -12,7 +12,12 @@ import {
   Star,
   Bell,
   Search,
-  Plus
+  Plus,
+  Cloud,
+  MessageSquare,
+  Github,
+  Zap,
+  HardDrive
 } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
@@ -30,6 +35,14 @@ const navItems = [
 const secondaryNavItems = [
   { href: '/app/inbox', icon: Bell, label: 'Inbox' },
   { href: '/app/search', icon: Search, label: 'Search' },
+]
+
+const integrationItems = [
+  { href: '/app/integrations/salesforce', icon: Cloud, label: 'Salesforce' },
+  { href: '/app/integrations/slack', icon: MessageSquare, label: 'Slack' },
+  { href: '/app/integrations/github', icon: Github, label: 'GitHub' },
+  { href: '/app/integrations/zapier', icon: Zap, label: 'Zapier' },
+  { href: '/app/integrations/google-drive', icon: HardDrive, label: 'Google Drive' },
 ]
 
 export function Sidebar() {
@@ -104,6 +117,36 @@ export function Sidebar() {
 
             {/* Secondary Navigation */}
             {secondaryNavItems.map((item) => {
+              const Icon = item.icon
+              const isActive = pathname === item.href
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
+                    isActive
+                      ? 'bg-white/12 text-white'
+                      : 'text-white/90 hover:bg-white/8'
+                  )}
+                >
+                  <Icon className="h-4 w-4 flex-shrink-0" />
+                  {item.label}
+                </Link>
+              )
+            })}
+
+            {/* Divider */}
+            <div className="h-px bg-white/10 my-3" />
+
+            {/* Integrations Section Label */}
+            <div className="text-xs text-white/40 uppercase tracking-wider px-3 mb-1">
+              Integrations
+            </div>
+
+            {/* Integrations Navigation */}
+            {integrationItems.map((item) => {
               const Icon = item.icon
               const isActive = pathname === item.href
 
