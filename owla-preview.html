@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boardly - הסרת Auto-Login | Demo</title>
+    <title>Roadmap Feature Preview - Boardly</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,533 +15,728 @@
         }
 
         body {
-            font-family: 'Heebo', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0D0D12;
+            color: #F0F0F5;
+            line-height: 1.6;
             min-height: 100vh;
-            padding: 2rem;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-        }
-
-        .header {
-            background: white;
             padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            text-align: center;
         }
 
-        .header h1 {
-            color: #667eea;
-            font-size: 2.5rem;
+        /* Header Styles */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 2rem;
+            background: #1C1F3B;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin: -2rem -2rem 2rem -2rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #6E41E2 0%, #5B8DEF 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .breadcrumb {
+            color: #9090A8;
+            font-size: 0.875rem;
+        }
+
+        /* Sidebar Toggle */
+        .sidebar-toggle {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .sidebar-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
             margin-bottom: 0.5rem;
         }
 
-        .header .subtitle {
-            color: #666;
-            font-size: 1.1rem;
+        .page-title svg {
+            width: 32px;
+            height: 32px;
+            color: #6E41E2;
         }
 
+        .page-title h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .page-subtitle {
+            color: #9090A8;
+            font-size: 1rem;
+            margin-left: 2.75rem;
+        }
+
+        /* Timeline Grid */
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (min-width: 1024px) {
+            .timeline-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Column Styles */
+        .timeline-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .column-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-dot.now {
+            background: #10B981;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .status-dot.next {
+            background: #3B82F6;
+        }
+
+        .status-dot.later {
+            background: #A855F7;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
+        }
+
+        .column-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .column-header h2.now {
+            color: #10B981;
+        }
+
+        .column-header h2.next {
+            color: #3B82F6;
+        }
+
+        .column-header h2.later {
+            color: #A855F7;
+        }
+
+        /* Card Styles */
+        .roadmap-card {
+            background: #1C1F3B;
+            border-radius: 12px;
+            padding: 1.25rem;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .roadmap-card.now {
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .roadmap-card.next {
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .roadmap-card.later {
+            border-color: rgba(168, 85, 247, 0.2);
+        }
+
+        .roadmap-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .roadmap-card.now:hover {
+            border-color: rgba(16, 185, 129, 0.4);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.1);
+        }
+
+        .roadmap-card.next:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.1);
+        }
+
+        .roadmap-card.later:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.1);
+        }
+
+        .card-content {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-icon.now {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+
+        .card-icon.next {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
+        }
+
+        .card-icon.later {
+            background: rgba(168, 85, 247, 0.1);
+            color: #A855F7;
+        }
+
+        .card-text {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.375rem;
+        }
+
+        .card-description {
+            font-size: 0.875rem;
+            color: #9090A8;
+            line-height: 1.5;
+        }
+
+        /* Footer Note */
+        .footer-note {
+            background: #1C1F3B;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .footer-note p {
+            color: #9090A8;
+            font-size: 0.875rem;
+        }
+
+        .footer-note a {
+            color: #6E41E2;
+            text-decoration: underline;
+            transition: color 0.2s;
+        }
+
+        .footer-note a:hover {
+            color: #8B5CF6;
+        }
+
+        /* Badge */
         .badge {
             display: inline-block;
-            background: #10b981;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
             font-weight: 600;
-            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+        .badge.in-progress {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
         }
 
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        .badge.planned {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3B82F6;
         }
 
-        .card h2 {
-            color: #667eea;
-            margin-bottom: 1rem;
+        .badge.future {
+            background: rgba(168, 85, 247, 0.15);
+            color: #A855F7;
+        }
+
+        /* Interactive Elements */
+        .interactive-demo {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #6E41E2 0%, #5B8DEF 100%);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(110, 65, 226, 0.4);
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .icon {
-            width: 24px;
-            height: 24px;
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(110, 65, 226, 0.6);
         }
 
-        .change-list {
-            list-style: none;
-            margin-bottom: 1rem;
-        }
-
-        .change-list li {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border-radius: 8px;
-            display: flex;
-            align-items: start;
-            gap: 0.5rem;
-        }
-
-        .change-list li.removed {
-            background: #fee;
-            border-right: 3px solid #ef4444;
-        }
-
-        .change-list li.added {
-            background: #efe;
-            border-right: 3px solid #10b981;
-        }
-
-        .change-list li.modified {
-            background: #fef3c7;
-            border-right: 3px solid #f59e0b;
-        }
-
-        .change-icon {
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .code-block {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 1rem;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-        }
-
-        .code-block .comment {
-            color: #6a9955;
-        }
-
-        .code-block .keyword {
-            color: #569cd6;
-        }
-
-        .code-block .string {
-            color: #ce9178;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        .tab {
-            padding: 0.75rem 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-family: 'Heebo', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #666;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.3s;
-        }
-
-        .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-
-        .tab:hover {
-            color: #667eea;
-        }
-
-        .tab-content {
+        /* Modal */
+        .modal {
             display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .comparison-side {
-            padding: 1rem;
-            border-radius: 8px;
-        }
-
-        .comparison-side h3 {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .comparison-side.before {
-            background: #fef2f2;
-            border: 2px solid #ef4444;
-        }
-
-        .comparison-side.after {
-            background: #f0fdf4;
-            border: 2px solid #10b981;
-        }
-
-        .flow-diagram {
-            background: #f9fafb;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
             padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 1rem;
         }
 
-        .flow-step {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .modal.active {
+            display: flex;
         }
 
-        .flow-arrow {
-            color: #667eea;
-            font-size: 2rem;
-            margin: 0.5rem 0;
+        .modal-content {
+            background: #1C1F3B;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            animation: slideUp 0.3s ease-out;
         }
 
-        .highlight-box {
-            background: #eff6ff;
-            border-right: 4px solid #3b82f6;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        .highlight-box strong {
-            color: #3b82f6;
-        }
-
-        @media (max-width: 768px) {
-            .comparison {
-                grid-template-columns: 1fr;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-
-            .header h1 {
-                font-size: 1.8rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .close-button {
+            background: transparent;
+            border: none;
+            color: #9090A8;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            color: #9090A8;
+            line-height: 1.8;
+        }
+
+        .modal-body p {
+            margin-bottom: 1rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
         <div class="header">
-            <h1>🎯 Boardly - הסרת מנגנון Auto-Login</h1>
-            <p class="subtitle">מיזוג מוצלח של השינויים מ-PR #6 ל-main branch</p>
-            <span class="badge">✅ Merged Successfully</span>
-        </div>
-
-        <div class="content-grid">
-            <div class="card">
-                <h2>
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            <div class="header-left">
+                <button class="sidebar-toggle" aria-label="Toggle sidebar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
-                    סיכום השינויים
-                </h2>
-                <ul class="change-list">
-                    <li class="removed">
-                        <span class="change-icon">−</span>
-                        <div>
-                            <strong>הסרת Auto-Login Mechanism</strong>
-                            <div>הסרנו את המנגנון שבדק אימות אוטומטי בטעינת הדף</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">~</span>
-                        <div>
-                            <strong>שינוי ב-useAuth Hook</strong>
-                            <div>הגדרת <code>enabled: false</code> ב-query של האימות</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">~</span>
-                        <div>
-                            <strong>עדכון Middleware</strong>
-                            <div>הסרת redirect אוטומטי מדפי login/register</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">+</span>
-                        <div>
-                            <strong>הוספת checkAuth Method</strong>
-                            <div>שיטה ידנית לבדיקת סטטוס אימות</div>
-                        </div>
-                    </li>
-                </ul>
+                </button>
+                <div class="logo">
+                    <div class="logo-icon">📋</div>
+                    <span>Boardly</span>
+                </div>
             </div>
-
-            <div class="card">
-                <h2>
-                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                    קבצים ששונו
-                </h2>
-                <ul class="change-list">
-                    <li class="modified">
-                        <span class="change-icon">📝</span>
-                        <div>
-                            <strong>apps/web/src/hooks/use-auth.ts</strong>
-                            <div style="font-size: 0.9rem; color: #666;">4 שורות שונו</div>
-                        </div>
-                    </li>
-                    <li class="modified">
-                        <span class="change-icon">📝</span>
-                        <div>
-                            <strong>apps/web/src/middleware.ts</strong>
-                            <div style="font-size: 0.9rem; color: #666;">6 שורות שונו</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">➕</span>
-                        <div>
-                            <strong>vercel.json</strong>
-                            <div style="font-size: 0.9rem; color: #666;">הוסף עבור deployment</div>
-                        </div>
-                    </li>
-                    <li class="added">
-                        <span class="change-icon">➕</span>
-                        <div>
-                            <strong>render.yaml</strong>
-                            <div style="font-size: 0.9rem; color: #666;">עודכן עבור deployment</div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <div class="breadcrumb">Product / Roadmap</div>
         </div>
 
-        <div class="card">
-            <div class="tabs">
-                <button class="tab active" onclick="switchTab('before-after')">לפני ואחרי</button>
-                <button class="tab" onclick="switchTab('code-changes')">שינויי קוד</button>
-                <button class="tab" onclick="switchTab('flow')">תרשים זרימה</button>
-            </div>
-
-            <div id="before-after" class="tab-content active">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">השוואה: לפני ואחרי</h2>
-                <div class="comparison">
-                    <div class="comparison-side before">
-                        <h3>❌ לפני - עם Auto-Login</h3>
-                        <ul style="list-style: none;">
-                            <li style="margin: 0.5rem 0;">🔄 בדיקה אוטומטית בכל טעינת דף</li>
-                            <li style="margin: 0.5rem 0;">🔄 Redirect אוטומטי ל-/app אם יש token</li>
-                            <li style="margin: 0.5rem 0;">⚠️ גורם לבעיות UX</li>
-                            <li style="margin: 0.5rem 0;">⚠️ משתמשים לא יכלו להתנתק באופן אפקטיבי</li>
-                        </ul>
-                    </div>
-                    <div class="comparison-side after">
-                        <h3>✅ אחרי - בלי Auto-Login</h3>
-                        <ul style="list-style: none;">
-                            <li style="margin: 0.5rem 0;">✋ אין בדיקה אוטומטית</li>
-                            <li style="margin: 0.5rem 0;">👤 משתמשים חייבים להתחבר באופן מפורש</li>
-                            <li style="margin: 0.5rem 0;">✨ חוויית משתמש משופרת</li>
-                            <li style="margin: 0.5rem 0;">✨ התנתקות עובדת כראוי</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="code-changes" class="tab-content">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">שינויי קוד מפתח</h2>
-
-                <h3 style="margin: 1.5rem 0 1rem;">1. apps/web/src/hooks/use-auth.ts</h3>
-                <div class="code-block">
-<span class="keyword">const</span> { data, isLoading, refetch } = <span class="keyword">useQuery</span>({
-  queryKey: [<span class="string">'auth'</span>, <span class="string">'me'</span>],
-  queryFn: () => api.get&lt;{ user: User }&gt;(<span class="string">'/auth/me'</span>),
-  retry: <span class="keyword">false</span>,
-  enabled: <span class="keyword">false</span>, <span class="comment">// Disable automatic authentication check</span>
-})
-
-<span class="comment">// Added manual authentication check method:</span>
-checkAuth: refetch, <span class="comment">// Manual method to check authentication status</span>
-                </div>
-
-                <h3 style="margin: 1.5rem 0 1rem;">2. apps/web/src/middleware.ts</h3>
-                <div class="code-block">
-<span class="comment">// Only protect /app routes - redirect to login if no token</span>
-<span class="keyword">if</span> (request.nextUrl.pathname.startsWith(<span class="string">'/app'</span>) && !token) {
-  <span class="keyword">return</span> NextResponse.redirect(<span class="keyword">new</span> URL(<span class="string">'/login'</span>, request.url))
-}
-
-<span class="comment">// Removed: Auto-redirect from login/register pages when token exists</span>
-<span class="comment">// Users must explicitly login even if they have a token cookie</span>
-                </div>
-
-                <div class="highlight-box">
-                    <strong>💡 מה זה אומר?</strong><br>
-                    משתמשים חייבים ללחוץ על כפתור "התחבר" בכל פעם שהם רוצים לגשת לאפליקציה,
-                    גם אם הם מחוברים. זה פותר את הבעיה שבה משתמשים לא יכלו להתנתק או לעבור
-                    בין חשבונות שונים.
-                </div>
-            </div>
-
-            <div id="flow" class="tab-content">
-                <h2 style="color: #667eea; margin-bottom: 1rem;">תרשים זרימת אימות</h2>
-
-                <div class="flow-diagram">
-                    <h3 style="color: #667eea; margin-bottom: 1rem;">זרימת אימות חדשה</h3>
-
-                    <div class="flow-step">
-                        <strong>1️⃣ משתמש נכנס לדף /login</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">הדף נטען ללא בדיקות אימות אוטומטיות</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>2️⃣ משתמש מזין פרטי התחברות</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">מייל וסיסמה</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>3️⃣ לחיצה על כפתור "התחבר"</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">שליחת בקשת POST ל-/auth/login</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step">
-                        <strong>4️⃣ שרת מאמת ומחזיר token</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">Token נשמר ב-cookie</div>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step" style="background: #f0fdf4; border: 2px solid #10b981;">
-                        <strong>5️⃣ ניווט ל-/app</strong>
-                        <div style="color: #666; margin-top: 0.5rem;">משתמש מחובר בהצלחה!</div>
-                    </div>
-                </div>
-
-                <div class="flow-diagram" style="margin-top: 2rem;">
-                    <h3 style="color: #667eea; margin-bottom: 1rem;">הגנת נתיבים (Route Protection)</h3>
-
-                    <div class="flow-step">
-                        <strong>משתמש מנסה לגשת ל-/app</strong>
-                    </div>
-
-                    <div class="flow-arrow">↓</div>
-
-                    <div class="flow-step" style="background: #fef3c7;">
-                        <strong>Middleware בודק אם יש token</strong>
-                    </div>
-
-                    <div class="flow-arrow">↙ ↘</div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-                        <div class="flow-step" style="background: #fee; border: 2px solid #ef4444;">
-                            <strong>❌ אין token</strong>
-                            <div style="color: #666; margin-top: 0.5rem;">Redirect ל-/login</div>
-                        </div>
-                        <div class="flow-step" style="background: #f0fdf4; border: 2px solid #10b981;">
-                            <strong>✅ יש token</strong>
-                            <div style="color: #666; margin-top: 0.5rem;">גישה לאפליקציה</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="margin-top: 2rem;">
-            <h2 style="color: #667eea; margin-bottom: 1rem;">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
                 </svg>
-                סיכום טכני
-            </h2>
+                <h1>Roadmap</h1>
+            </div>
+            <p class="page-subtitle">Track what's being built and what's coming next</p>
+        </div>
 
-            <div style="display: grid; gap: 1rem;">
-                <div class="highlight-box">
-                    <strong>📊 סטטיסטיקות:</strong><br>
-                    • 2 קבצים שונו<br>
-                    • 6 שורות הוספו, 4 שורות הוסרו<br>
-                    • 4 commits נוספים (deployment configs)<br>
-                    • Fast-forward merge (ללא conflicts)
+        <!-- Timeline Grid -->
+        <div class="timeline-grid">
+            <!-- Now Column -->
+            <div class="timeline-column">
+                <div class="column-header">
+                    <div class="status-dot now"></div>
+                    <h2 class="now">Now</h2>
+                    <span class="badge in-progress">In Progress</span>
                 </div>
 
-                <div class="highlight-box" style="background: #fef3c7; border-right-color: #f59e0b;">
-                    <strong>⚠️ שינויים פורצי תאימות (Breaking Changes):</strong><br>
-                    • משתמשים חייבים להתחבר באופן מפורש בכל פעם<br>
-                    • אין יותר "remember me" functionality אוטומטית<br>
-                    • Token cookies לא מספיקים להתחברות אוטומטית
+                <div class="roadmap-card now">
+                    <div class="card-content">
+                        <div class="card-icon now">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 3l2 7h7l-5.5 4 2 7L12 17l-5.5 4 2-7L3 10h7l2-7z"/>
+                            </svg>
+                        </div>
+                        <div class="card-text">
+                            <h3 class="card-title">AI-powered editing</h3>
+                            <p class="card-description">Smart suggestions and automated content generation for your boards</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="highlight-box" style="background: #f0fdf4; border-right-color: #10b981;">
-                    <strong>✅ יתרונות:</strong><br>
-                    • חוויית משתמש טובה יותר<br>
-                    • משתמשים יכולים להתנתק בצורה אפקטיבית<br>
-                    • אין loops של redirects<br>
-                    • התנהגות צפויה ועקבית
+                <div class="roadmap-card now">
+                    <div class="card-content">
+                        <div class="card-icon now">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                        </div>
+                        <div class="card-text">
+                            <h3 class="card-title">Team collaboration</h3>
+                            <p class="card-description">Real-time editing and commenting with your team members</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="roadmap-card now">
+                    <div class="card-content">
+                        <div class="card-icon now">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="card-text">
+                            <h3 class="card-title">Custom templates</h3>
+                            <p class="card-description">Create and save your own board templates for quick setup</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Column -->
+            <div class="timeline-column">
+                <div class="column-header">
+                    <div class="status-dot next"></div>
+                    <h2 class="next">Next</h2>
+                    <span class="badge planned">Planned</span>
+                </div>
+
+                <div class="roadmap-card next">
+                    <div class="card-content">
+                        <div class="card-icon next">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 3l2 7h7l-5.5 4 2 7L12 17l-5.5 4 2-7L3 10h7l2-7z"/>
+                            </svg>
+                        </div>
+                        <div class="card-text">
+                            <h3 class="card-title">Analytics dashboard</h3>
+                            <p class="card-description">Visualize your productivity metrics and team performance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="roadmap-card next">
+                    <div class="card-content">
+                        <div class="card-icon next">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                            </svg>
+                        </div>
+                        <div class="card-text">
+                            <h3 class="card-title">Mobile app</h3>
+                            <p class="card-description">Native iOS and Android apps for work on the go</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="roadmap-card next">
+                    <div class="card-content">
+                        <div class="card-icon next">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
+                        </div>
+                        <div class="card-text">
+                            <h3 class="card-title">API integrations</h3>
+                            <p class="card-description">Connect with Slack, GitHub, Jira, and more</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Later Column -->
+            <div class="timeline-column">
+                <div class="column-header">
+                    <div class="status-dot later"></div>
+                    <h2 class="later">Later</h2>
+                    <span class="badge future">Future</span>
+                </div>
+
+                <div class="roadmap-card later">
+                    <div class="card-content">
+                        <div class="card-icon later">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                        </div>
+                        <div class="card-text">
+                            <h3 class="card-title">Offline mode</h3>
+                            <p class="card-description">Work without internet and sync when you reconnect</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="roadmap-card later">
+                    <div class="card-content">
+                        <div class="card-icon later">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
+                        </div>
+                        <div class="card-text">
+                            <h3 class="card-title">Webhooks support</h3>
+                            <p class="card-description">Automate workflows with custom webhook integrations</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="card" style="margin-top: 2rem; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-            <h2 style="color: white; margin-bottom: 1rem;">🎉 המיזוג הושלם בהצלחה!</h2>
-            <p style="font-size: 1.1rem; margin-bottom: 1rem;">
-                כל השינויים מ-PR #6 נמזגו ל-main branch
-            </p>
-            <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-                <strong>Git Commands שרצו:</strong><br>
-                <code style="background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 4px; display: block; margin-top: 0.5rem;">
-                    git checkout -b main 4f06a3c<br>
-                    git merge owla/remove-the-auto-login-mechanism-that-is-causing-is-a213e4<br>
-                    git push -u origin main
-                </code>
+        <!-- Footer Note -->
+        <div class="footer-note">
+            <p>Have a feature request? <a href="#" id="feedbackLink">Let us know</a> what you'd like to see next!</p>
+        </div>
+    </div>
+
+    <!-- Interactive Demo Button -->
+    <div class="interactive-demo">
+        <button class="demo-button" id="demoButton">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="8 12 12 16 16 12"></polyline>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+            </svg>
+            View Details
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Roadmap Feature</h3>
+                <button class="close-button" id="closeModal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>New Roadmap Page</strong></p>
+                <p>This feature adds a dedicated roadmap section to Boardly, giving teams visibility into what's being built and what's coming next.</p>
+                <p><strong>Key Features:</strong></p>
+                <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                    <li>Three-column timeline view (Now, Next, Later)</li>
+                    <li>Color-coded status indicators</li>
+                    <li>Hover effects and smooth animations</li>
+                    <li>Consistent dark theme styling</li>
+                    <li>Responsive design for all screen sizes</li>
+                </ul>
+                <p>The roadmap is accessible from the main navigation sidebar and automatically highlights when active.</p>
             </div>
         </div>
     </div>
 
     <script>
-        function switchTab(tabId) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
+        // Modal controls
+        const modal = document.getElementById('modal');
+        const demoButton = document.getElementById('demoButton');
+        const closeModal = document.getElementById('closeModal');
+        const feedbackLink = document.getElementById('feedbackLink');
+
+        demoButton.addEventListener('click', () => {
+            modal.classList.add('active');
+        });
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        feedbackLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.classList.add('active');
+        });
+
+        // Card animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 100);
+                }
             });
+        }, observerOptions);
 
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
+        document.querySelectorAll('.roadmap-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease-out';
+            observer.observe(card);
+        });
+
+        // Card click interaction
+        document.querySelectorAll('.roadmap-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const title = card.querySelector('.card-title').textContent;
+                const description = card.querySelector('.card-description').textContent;
+
+                const modalBody = document.querySelector('.modal-body');
+                modalBody.innerHTML = `
+                    <p><strong>${title}</strong></p>
+                    <p>${description}</p>
+                    <p style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                        This feature is part of our product roadmap. Click the cards to see more details about each planned feature.
+                    </p>
+                `;
+
+                modal.classList.add('active');
             });
-
-            // Show selected tab content
-            document.getElementById(tabId).classList.add('active');
-
-            // Add active class to clicked tab
-            event.target.classList.add('active');
-        }
+        });
     </script>
 </body>
 </html>

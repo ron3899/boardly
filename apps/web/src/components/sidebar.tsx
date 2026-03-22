@@ -9,6 +9,7 @@ import {
   X,
   CheckSquare,
   LayoutGrid,
+  Map,
   Star,
   Bell,
   Search,
@@ -24,6 +25,7 @@ const navItems = [
   { href: '/app', icon: LayoutDashboard, label: 'Home' },
   { href: '/app/my-work', icon: CheckSquare, label: 'My Work' },
   { href: '/app/boards', icon: LayoutGrid, label: 'Boards' },
+  { href: '/app/roadmap', icon: Map, label: 'Roadmap' },
   { href: '/app/favorites', icon: Star, label: 'Favorites' },
 ]
 
